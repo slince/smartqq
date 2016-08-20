@@ -7,7 +7,17 @@ namespace Slince\SmartQQ\Request;
 
 interface RequestInterface
 {
+    /**
+     * 请求方式，Get
+     * @var string
+     */
     const REQUEST_METHOD_GET = 'get';
+
+    /**
+     * 请求方式，Post
+     * @var string
+     */
+    const REQUEST_METHOD_POST = 'post';
 
     /**
      * 获取请求地址
@@ -26,4 +36,16 @@ interface RequestInterface
      * @return string
      */
     function getRequestMethod();
+
+    /**
+     * 获取请求参数
+     * @return string
+     */
+    function getParameters();
+
+    /**
+     * 设置请求参数
+     * @param array $parameters
+     */
+    function setParameters(array $parameters);
 }
