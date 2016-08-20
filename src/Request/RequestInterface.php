@@ -48,4 +48,17 @@ interface RequestInterface
      * @param array $parameters
      */
     function setParameters(array $parameters);
+
+    /**
+     * 设置链接中的占位符
+     * @param $tokens
+     */
+    function setTokens($tokens);
+
+    /**
+     * 设置链接中的指定占位符
+     * @param $name
+     * @param $token
+     */
+    function setToken($name, $token);
 }

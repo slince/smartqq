@@ -102,4 +102,52 @@ class UrlStore
      * @var string
      */
     const GET_FRIEND_DETAIL_REFERER = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
+
+    /**
+     * 获取群
+     * @var string
+     */
+    const GET_GROUPS = 'http://s.web2.qq.com/api/get_group_name_list_mask2';
+
+    /**
+     * 获取群referer
+     * @var string
+     */
+    const GET_GROUPS_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 获取群详细信息
+     * @var string
+     */
+    const GET_GROUP_DETAIL = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode=#{group_code}&vfwebqq=#{vfwebqq}&t=0.1';
+
+    /**
+     * 获取群详细信息referer
+     * @var string
+     */
+    const GET_GROUP_DETAIL_REFERER = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
+
+    /**
+     * 获取讨论组
+     * @var string
+     */
+    const GET_DISCUSES = 'http://s.web2.qq.com/api/get_discus_list?clientid=53999199&psessionid=#{psessionid}&vfwebqq=#{vfwebqq}&t=0.1';
+
+    /**
+     * 获取讨论组referer
+     * @var string
+     */
+    const GET_DISCUSES_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 获取讨论组详细信息
+     * @var string
+     */
+    const GET_DISCUS_DETAIL = 'http://d1.web2.qq.com/channel/get_discu_info?did=#{discuss_id}&psessionid=#{psessionid}&vfwebqq=#{vfwebqq}&clientid=53999199&t=0.1';
+
+    /**
+     * 获取讨论组详细信息referer
+     * @var string
+     */
+    const GET_DISCUS_DETAIL_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
 }

@@ -7,20 +7,14 @@ namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\UrlStore;
 
-class GetFriendDetailRequest
+class GetFriendDetailRequest extends AbstractRequest
 {
     protected $url = UrlStore::GET_FRIEND_DETAIL;
 
     protected $referer = UrlStore::GET_FRIEND_DETAIL_REFERER;
 
-    /**
-     * 设置uin、vfwebqq、psessionid参数
-     * @param $uin
-     * @param $vfWebQQ
-     * @param $psessionid
-     */
-    function setUinAndvfWebQQAndPsessionid($uin, $vfWebQQ, $psessionid)
+    function __construct($uin)
     {
-        $this->url = str_replace(['{uin}', '{vfWebQQ}', '{psessionid}'], [$uin, $vfWebQQ, $psessionid], $this->url);
+        return str_replace('{uin}', $uin, $this->url);
     }
 }

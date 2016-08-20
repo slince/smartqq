@@ -32,12 +32,17 @@ class AbstractRequest implements RequestInterface
     protected $parameters = [];
 
     /**
+     * 处理占位符
+     * @var array
+     */
+    protected $tokens = [];
+    /**
      * 获取请求地址
      * @return string
      */
     public function getUrl()
     {
-        return $this->url;
+        return $this->processUrl($this->url);
     }
 
     /**
@@ -46,7 +51,7 @@ class AbstractRequest implements RequestInterface
      */
     public function getReferer()
     {
-        return $this->referer;
+        return $this->processUrl($this->referer);
     }
 
     /**
@@ -92,5 +97,45 @@ class AbstractRequest implements RequestInterface
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
+    }
+
+    /**
+     * 设置链接中的占位符
+     * @param array $tokens
+     */
+    public function setTokens($tokens)
+    {
+        $this->tokens = $tokens;
+    }
+
+    /**
+     * 获取所有的token
+     * @return array
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
+     * 设置链接中的指定占位符
+     * @param $name
+     * @param $token
+     */
+    function setToken($name, $token)
+    {
+        $this->tokens[$name] = $token;
+    }
+
+    /**
+     * 处理链接中的占位符
+     * @param $url
+     * @return mixed
+     */
+    protected function processUrl($url)
+    {
+        return preg_replace('#\{([a-zA-Z0-9_,]*)\}#i', function ($matches){
+            return isset($this->tokens[$matches[1]]) ? $this->tokens[$matches[1]] : '';
+        }, $url);
     }
 }
