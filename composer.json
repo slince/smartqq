@@ -1,0 +1,23 @@
+{
+    "name": "slince/smartqq",
+    "description": "SmartQQ Protocol",
+    "type": "project",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "tao",
+            "email": "taosikai@yeah.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Slince\\SmartQQ\\": "./src"
+        }
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "guzzlehttp/guzzle": "~6.2",
+        "symfony/filesystem": "^3.1"
+    },
+    "minimum-stability": "stable"
+}
