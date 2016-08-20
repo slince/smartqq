@@ -54,4 +54,52 @@ class UrlStore
      * @var string
      */
     const GET_UINANDPSESSIONID_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 获取好友列表
+     * @var string
+     */
+    const GET_USER_FRIENDS = 'http://s.web2.qq.com/api/get_user_friends2';
+
+    /**
+     * 获取好友列表的REFERER
+     * @var string
+     */
+    const GET_USER_FRIENDS_REFERER = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
+
+    /**
+     * 获取好友在线状态
+     * @var string
+     */
+    const GET_FRIENDS_ONLINE_STATUS = 'http://d1.web2.qq.com/channel/get_online_buddies2?vfwebqq=#{vfwebqq}&clientid=53999199&psessionid=#{psessionid}&t=0.1';
+
+    /**
+     * 获取好友在线状态referer
+     * @var string
+     */
+    const GET_FRIENDS_ONLINE_STATUS_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 获取好友qq号
+     * @var string
+     */
+    const GET_QQ = 'http://s.web2.qq.com/api/get_friend_uin2?tuid=#{uin}&type=1&vfwebqq=#{vfwebqq}&t=0.1';
+
+    /**
+     * 获取好友qq号referer
+     * @var string
+     */
+    const GET_QQ_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 获取好友详细信息
+     * @var string
+     */
+    const GET_FRIEND_DETAIL = 'http://s.web2.qq.com/api/get_friend_info2?tuin=#{uin}&vfwebqq=#{vfwebqq}&clientid=53999199&psessionid=#{psessionid}&t=0.1';
+
+    /**
+     * 获取好友详细信息referer
+     * @var string
+     */
+    const GET_FRIEND_DETAIL_REFERER = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 }

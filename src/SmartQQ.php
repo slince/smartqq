@@ -7,6 +7,11 @@ namespace Slince\SmartQQ;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Slince\SmartQQ\Request\GetFriendDetailRequest;
+use Slince\SmartQQ\Request\GetFriendsOnlineStatusRequest;
+use Slince\SmartQQ\Request\GetQQRequest;
+use Slince\SmartQQ\Request\GetUserFriendsRequest;
+use Symfony\Component\Filesystem\Filesystem;
 use Slince\Cache\ArrayCache;
 use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Request\GetPtWebQQRequest;
@@ -15,7 +20,7 @@ use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
 use Slince\SmartQQ\Request\GetVfWebQQRequest;
 use Slince\SmartQQ\Request\RequestInterface;
 use Slince\SmartQQ\Request\VerifyQrCodeRequest;
-use Symfony\Component\Filesystem\Filesystem;
+
 
 class SmartQQ
 {
@@ -46,7 +51,7 @@ class SmartQQ
     /**
      * @param $filePath
      */
-    function makeQrCodeImage($filePath)
+    protected function makeQrCodeImage($filePath)
     {
         $response = $this->request(new GetQrCodeRequest());
         $this->filesystem->dumpFile($filePath, $response->getBody());
@@ -56,7 +61,7 @@ class SmartQQ
      * 获取QR Code认证结果
      * @return int
      */
-    function getVerifyQrCodeStatus()
+    protected function getVerifyQrCodeStatus()
     {
         $request = new VerifyQrCodeRequest();
         $response = $this->request($request);
@@ -81,7 +86,7 @@ class SmartQQ
      * @param $certificationUrl
      * @return string
      */
-    function getPtWebQQ($certificationUrl)
+    protected function getPtWebQQ($certificationUrl)
     {
         $request = new GetPtWebQQRequest();
         $request->setUrl($certificationUrl);
@@ -95,7 +100,7 @@ class SmartQQ
      * @param $ptWebQQ
      * @return string
      */
-    function getVfWebQQ($ptWebQQ)
+    protected function getVfWebQQ($ptWebQQ)
     {
         $request = new GetVfWebQQRequest();
         $request->setPtWebQQ($ptWebQQ);
@@ -109,7 +114,7 @@ class SmartQQ
      * @param $ptWebQQ
      * @return array
      */
-    function getUinAndPsessionid($ptWebQQ)
+    protected function getUinAndPsessionid($ptWebQQ)
     {
         $request = new GetUinAndPsessionidRequest();
         $request->setParameters([
@@ -124,6 +129,74 @@ class SmartQQ
         $jsonData = \GuzzleHttp\json_decode($response);
         return [$jsonData['result']['uin'], $jsonData['result']['psessionid']];
     }
+
+    /**
+     * 获取好友
+     * @param $vfWebQQ
+     * @param $uin
+     * @param $ptWebQQ
+     * @return mixed
+     */
+    function getUserFriends($vfWebQQ, $uin, $ptWebQQ)
+    {
+        $request = new GetUserFriendsRequest();
+        $request->setParameters([
+            'r' => json_encode([
+                'vfwebqq' => $vfWebQQ,
+                'hash' => $this->getHash($uin, $ptWebQQ),
+            ])
+        ]);
+        $response = $this->request($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['result']['friends'];
+    }
+
+    /**
+     * 获取在线好友
+     * @param $vfWebQQ
+     * @param $psessionid
+     * @return mixed
+     */
+    function getFriendsOnlineStatus($vfWebQQ, $psessionid)
+    {
+        $request = new GetFriendsOnlineStatusRequest();
+        $request->setVfWebQQAndPsessionid($vfWebQQ, $psessionid);
+        $response = $this->request($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['result'];
+    }
+
+    /**
+     * 获取好友信息
+     * @param $uin
+     * @param $vfWebQQ
+     * @return mixed
+     */
+    function getQQInfo($uin, $vfWebQQ)
+    {
+        $request = new GetQQRequest();
+        $request->setUinAndvfWebQQ($uin, $vfWebQQ);
+        $response = $this->request($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['result'];
+    }
+
+    /**
+     * 获取好友详情
+     * @param $uin
+     * @param $vfWebQQ
+     * @param $psessionid
+     * @return mixed
+     */
+    function getFriendDetail($uin, $vfWebQQ, $psessionid)
+    {
+        $request = new GetFriendDetailRequest();
+        $request->setUinAndvfWebQQAndPsessionid($uin, $vfWebQQ, $psessionid);
+        $response = $this->request($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['result'];
+    }
+
     
     /**
      * 从验证结果中提取下一步登录所需要的参数
@@ -139,7 +212,8 @@ class SmartQQ
         }
         return false;
     }
-    function request(RequestInterface $request)
+
+    protected function request(RequestInterface $request)
     {
         $response = $this->httpClient->send($this->convertRequest($request));
         return $response;
@@ -151,35 +225,39 @@ class SmartQQ
     }
 
     /**
-     * @param array $parameters
+     * 获取uin和ptWebQQ参数hash之后的结果
+     * @param $uin
+     * @param $ptWebQQ
+     * @return string
      */
-    public function setParameters($parameters)
+    protected function getHash($uin, $ptWebQQ)
     {
-        $this->parameters = $parameters;
+        static $hash = '';
+        if (empty($hash)) {
+            $hash = static::hash($uin, $ptWebQQ);
+        }
+        return $hash;
     }
 
     /**
-     * @return array
+     * hash
+     * @param $uin
+     * @param $ptWebQQ
+     * @return string
      */
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $parameter
-     */
-    public function setParameter($name, $parameter)
-    {
-        $this->parameters[$name] = $parameter;
-    }
-
-    /**
-     * @return array
-     */
-    public function getParameter($name, $default = null)
-    {
-        return isset();
+    protected static function hash($uin, $ptWebQQ) {
+        $x = array(
+            0, $uin >> 24 & 0xff ^ 0x45,
+            0, $uin >> 16 & 0xff ^ 0x43,
+            0, $uin >>  8 & 0xff ^ 0x4f,
+            0, $uin       & 0xff ^ 0x4b,
+        );
+        for ($i = 0; $i < 64; ++$i)
+            $x[($i & 3) << 1] ^= ord(substr($ptWebQQ, $i, 1));
+        $hex = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
+        $hash = '';
+        for ($i = 0; $i < 8; ++$i)
+            $hash .= $hex[$x[$i] >> 4 & 0xf] . $hex[$x[$i] & 0xf];
+        return $hash;
     }
 }
