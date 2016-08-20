@@ -150,4 +150,71 @@ class UrlStore
      * @var string
      */
     const GET_DISCUS_DETAIL_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 获取最近会话详情
+     * @var string
+     */
+    const GET_RECENT_LIST = 'http://d1.web2.qq.com/channel/get_recent_list2';
+
+    /**
+     * 获取当前登录用户信息
+     * @var string
+     */
+    const GET_LOGIN_INFO = 'http://s.web2.qq.com/api/get_self_info2&t=0.1';
+
+    /**
+     * 获取当前登录用户信息referer
+     * @var string
+     */
+    const GET_LOGIN_INFO_REFERER = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
+
+    /**
+     * 轮询消息
+     * @var string
+     */
+    const POLL_MESSAGES = 'http://d1.web2.qq.com/channel/poll2';
+
+    /**
+     * 轮询消息referer
+     * @var string
+     */
+    const POLL_MESSAGES_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 发送消息给好友
+     * @var string
+     */
+    const SEND_MESSAGE_TO_FRIEND = 'http://d1.web2.qq.com/channel/send_buddy_msg2';
+
+    /**
+     * 发送消息给好友referer
+     * @var string
+     */
+    const SEND_MESSAGE_TO_FRIEND_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 发送群消息referer
+     * @var string
+     */
+    const SEND_MESSAGE_TO_GROUP = 'http://d1.web2.qq.com/channel/send_qun_msg2';
+
+    /**
+     * 发送群消息referer
+     * @var string
+     */
+    const SEND_MESSAGE_TO_GROUP_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
+    /**
+     * 发送讨论组消息
+     * @var string
+     */
+    const SEND_MESSAGE_TO_DISCUS = 'http://d1.web2.qq.com/channel/send_discu_msg2';
+
+    /**
+     * 发送讨论组消息referer
+     * @var string
+     */
+    const SEND_MESSAGE_TO_DISCUS_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
 }

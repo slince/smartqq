@@ -15,6 +15,10 @@ use Slince\SmartQQ\Request\GetGroupDetailRequest;
 use Slince\SmartQQ\Request\GetGroupsRequest;
 use Slince\SmartQQ\Request\GetQQRequest;
 use Slince\SmartQQ\Request\GetUserFriendsRequest;
+use Slince\SmartQQ\Request\PollMessagesRequest;
+use Slince\SmartQQ\Request\SendDiscusMessageRequest;
+use Slince\SmartQQ\Request\SendFriendMessageRequest;
+use Slince\SmartQQ\Request\SendGroupMessageRequest;
 use Symfony\Component\Filesystem\Filesystem;
 use Slince\Cache\ArrayCache;
 use Slince\SmartQQ\Exception\RuntimeException;
@@ -50,6 +54,32 @@ class SmartQQ
         $this->filesystem = new Filesystem();
         $this->httpClient = new Client();
         $this->parameters = new ArrayCache();
+    }
+
+    /**
+     * 登录
+     * @param string $filePath 二维码图片位置
+     */
+    function login($filePath)
+    {
+        $this->makeQrCodeImage($filePath);
+        while (true) {
+            $status = $this->getVerifyQrCodeStatus();
+            if ($status == VerifyQrCodeRequest::STATUS_EXPIRED) {
+                $this->makeQrCodeImage($filePath);
+            } elseif ($status == VerifyQrCodeRequest::STATUS_CERTIFICATION) {
+                //授权成功跳出状态检查
+                break;
+            }
+            sleep(1);
+        }
+        $ptWebQQ = $this->getPtWebQQ($this->parameters->get('certificationUrl'));
+        $this->parameters->set('ptWebQQ', $ptWebQQ);
+        $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
+        $this->parameters->set('vfWebQQ', $vfWebQQ);
+        list($uin, $psessionId) = $this->getUinAndPsessionid($ptWebQQ);
+        $this->parameters->set('uin', $uin);
+        $this->parameters->set('psessionId', $psessionId);
     }
 
     /**
@@ -136,18 +166,15 @@ class SmartQQ
 
     /**
      * 获取好友
-     * @param $vfWebQQ
-     * @param $uin
-     * @param $ptWebQQ
-     * @return mixed
+     * @return array
      */
-    function getUserFriends($vfWebQQ, $uin, $ptWebQQ)
+    function getUserFriends()
     {
         $request = new GetUserFriendsRequest();
         $request->setParameters([
             'r' => json_encode([
-                'vfwebqq' => $vfWebQQ,
-                'hash' => $this->getHash($uin, $ptWebQQ),
+                'vfwebqq' => $this->parameters->get('vfWebQQ'),
+                'hash' => $this->getHash($this->parameters->get('uin'), $this->parameters->get('ptWebQQ')),
             ])
         ]);
         $response = $this->send($request);
@@ -157,16 +184,14 @@ class SmartQQ
 
     /**
      * 获取在线好友
-     * @param $vfWebQQ
-     * @param $psessionid
-     * @return mixed
+     * @return array
      */
-    function getFriendsOnlineStatus($vfWebQQ, $psessionid)
+    function getFriendsOnlineStatus()
     {
         $request = new GetFriendsOnlineStatusRequest();
         $request->setTokens([
-            'vfwebqq' => $vfWebQQ,
-            'psessionid' => $psessionid
+            'vfwebqq' => $this->parameters->get('vfWebQQ'),
+            'psessionid' => $this->parameters->get('psessionid')
         ]);
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
@@ -176,13 +201,12 @@ class SmartQQ
     /**
      * 获取好友信息
      * @param $uin
-     * @param $vfWebQQ
      * @return mixed
      */
-    function getQQInfo($uin, $vfWebQQ)
+    function getQQInfo($uin)
     {
         $request = new GetQQRequest($uin);
-        $request->setToken('vfwebqq', $vfWebQQ);
+        $request->setToken('vfwebqq', $this->parameters->get('vfWebQQ'));
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
         return $jsonData['result'];
@@ -191,16 +215,14 @@ class SmartQQ
     /**
      * 获取好友详情
      * @param $uin
-     * @param $vfWebQQ
-     * @param $psessionid
      * @return mixed
      */
-    function getFriendDetail($uin, $vfWebQQ, $psessionid)
+    function getFriendDetail($uin)
     {
         $request = new GetFriendDetailRequest($uin);
         $request->setTokens([
-            'vfwebqq' => $vfWebQQ,
-            'psessionid' => $psessionid
+            'vfwebqq' => $this->parameters->get('vfWebQQ'),
+            'psessionid' => $this->parameters->get('psessionid')
         ]);
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
@@ -209,20 +231,15 @@ class SmartQQ
 
     /**
      * 获取群列表
-     * @param $uin
-     * @param $ptWebQQ
-     * @param $vfWebQQ
      * @return mixed
      */
-    function getGroups($uin, $ptWebQQ, $vfWebQQ)
+    function getGroups()
     {
         $request = new GetGroupsRequest();
-        $request->setParameters([
-            'r' => json_encode([
-                'vfwebqq' => $vfWebQQ,
-                'hash' => $this->getHash($uin, $ptWebQQ),
-            ])
-        ]);
+        $request->setParameter('r', json_encode([
+            'vfwebqq' => $this->parameters->get('vfWebQQ'),
+            'hash' => $this->getHash($this->parameters->get('uin'), $this->parameters->get('ptWebQQ')),
+        ]));
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
         return $jsonData['result'];
@@ -231,13 +248,12 @@ class SmartQQ
     /**
      * 获取群信息
      * @param $groupCode
-     * @param $vfWebQQ
-     * @return mixed
+     * @return array
      */
-    function getGroupDetail($groupCode, $vfWebQQ)
+    function getGroupDetail($groupCode)
     {
         $request = new GetGroupDetailRequest($groupCode);
-        $request->setToken('vfwebqq', $vfWebQQ);
+        $request->setToken('vfwebqq', $this->parameters->get('vfWebQQ'));
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
         return $jsonData['result'];
@@ -245,16 +261,14 @@ class SmartQQ
 
     /**
      * 获取讨论组列表
-     * @param $ptWebQQ
-     * @param $vfWebQQ
-     * @return mixed
+     * @return array
      */
-    function getDiscuses($psessionid, $vfWebQQ)
+    function getDiscuses()
     {
         $request = new GetDiscusesRequest();
         $request->setTokens([
-            'psessionid' => $psessionid,
-            'vfwebqq' => $vfWebQQ
+            'psessionid' => $this->parameters->get('psessionid'),
+            'vfwebqq' => $this->parameters->get('vfWebQQ')
         ]);
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
@@ -264,16 +278,122 @@ class SmartQQ
     /**
      * 获取讨论组信息
      * @param $discussId
-     * @param $vfWebQQ
      * @return mixed
      */
-    function GetDiscusDetail($discussId, $vfWebQQ)
+    function GetDiscusDetail($discussId)
     {
         $request = new GetDiscusDetailRequest($discussId);
-        $request->setToken('vfwebqq', $vfWebQQ);
+        $request->setToken('vfwebqq', $this->parameters->get('vfWebQQ'));
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
         return $jsonData['result'];
+    }
+
+    /**
+     * 轮询消息
+     * @return array
+     */
+    function pollMessages()
+    {
+        $request = new PollMessagesRequest();
+        $response = $this->send($request);
+        return \GuzzleHttp\json_decode($response);
+    }
+
+    /**
+     * 发送消息给好友
+     * @param $userId
+     * @param $message
+     * @return bool
+     */
+    function sendMessageToFriend($userId, $message)
+    {
+        $request = new SendFriendMessageRequest();
+        $request->setParameter('r', json_encode([
+            'to' => $userId,
+            'content' => [
+                $message,
+                [
+                    'font' => [
+                        'name' => '宋体',
+                        'size'=> 10,
+                        'style'=> [0, 0, 0],
+                        'color' => '000000'
+                    ]
+                ],
+                'face' => 522,
+                'clientid' => '53999199',
+                'msg_id' => '65890001',
+                'psessionid' => $this->parameters->get('psessionid')
+            ]
+        ]));
+        $response = $this->send($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['errCode'] === 0;
+    }
+
+    /**
+     * 发送消息到群
+     * @param $groupUin
+     * @param $message
+     * @return bool
+     */
+    function sendMessageToGroup($groupUin, $message)
+    {
+        $request = new SendGroupMessageRequest();
+        $request->setParameter('r', json_encode([
+            'group_uin' => $groupUin,
+            'content' => [
+                $message,
+                [
+                    'font' => [
+                        'name' => '宋体',
+                        'size'=> 10,
+                        'style'=> [0, 0, 0],
+                        'color' => '000000'
+                    ]
+                ],
+                'face' => 522,
+                'clientid' => '53999199',
+                'msg_id' => '65890001',
+                'psessionid' => $this->parameters->get('psessionid')
+            ]
+        ]));
+        $response = $this->send($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['errCode'] === 0;
+    }
+
+    /**
+     * 发送消息到讨论组
+     * @param $discussId
+     * @param $message
+     * @return bool
+     */
+    function sendMessageToDiscus($discussId, $message)
+    {
+        $request = new SendDiscusMessageRequest();
+        $request->setParameter('r', json_encode([
+            'did' => $discussId,
+            'content' => [
+                $message,
+                [
+                    'font' => [
+                        'name' => '宋体',
+                        'size'=> 10,
+                        'style'=> [0, 0, 0],
+                        'color' => '000000'
+                    ]
+                ],
+                'face' => 522,
+                'clientid' => '53999199',
+                'msg_id' => '65890001',
+                'psessionid' => $this->parameters->get('psessionid')
+            ]
+        ]));
+        $response = $this->send($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['errCode'] === 0;
     }
 
     /**
@@ -298,13 +418,32 @@ class SmartQQ
      */
     protected function send(RequestInterface $request)
     {
-        $response = $this->httpClient->send($this->convertRequest($request));
+        $options = [];
+        if ($request->getRequestMethod() == RequestInterface::REQUEST_METHOD_GET) {
+            $options['query'] = $request->getParameters();
+        } else {
+            $options['form_params'] = $request->getParameters();
+        }
+        if ($referer = $request->getReferer()) {
+            $options['headers'] = [
+                'Referer' => $referer
+            ];
+        }
+        $response = $this->httpClient->send($this->convertRequest($request), $options);
         return $response;
     }
 
+    /**
+     * 转换请求成PSR请求
+     * @param RequestInterface $request
+     * @return Request
+     */
     protected function convertRequest(RequestInterface $request)
     {
-        return new Request();
+        $psrRequest = new Request($request->getRequestMethod(),
+            $request->getUrl()
+        );
+        return $psrRequest;
     }
 
     /**

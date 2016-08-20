@@ -50,6 +50,13 @@ interface RequestInterface
     function setParameters(array $parameters);
 
     /**
+     * 设置请求参数
+     * @param $name
+     * @param $parameter
+     */
+    function setParameter($name, $parameter);
+
+    /**
      * 设置链接中的占位符
      * @param $tokens
      */

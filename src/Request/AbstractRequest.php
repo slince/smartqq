@@ -100,6 +100,16 @@ class AbstractRequest implements RequestInterface
     }
 
     /**
+     * 设置请求参数
+     * @param $name
+     * @param $parameter
+     */
+    function setParameter($name, $parameter)
+    {
+        $this->parameters[$name] = $parameter;
+    }
+
+    /**
      * 设置链接中的占位符
      * @param array $tokens
      */
