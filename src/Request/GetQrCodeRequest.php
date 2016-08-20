@@ -9,7 +9,7 @@ use Slince\SmartQQ\UrlStore;
 
 class GetQrCodeRequest extends AbstractRequest
 {
-    protected $url = UrlStore::FETCH_QR_CODE;
+    protected $url = UrlStore::GET_QR_CODE;
 
     protected $referer = null;
 }

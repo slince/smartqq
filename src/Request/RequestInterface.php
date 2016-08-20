@@ -11,13 +11,13 @@ interface RequestInterface
      * 请求方式，Get
      * @var string
      */
-    const REQUEST_METHOD_GET = 'get';
+    const REQUEST_METHOD_GET = 'GET';
 
     /**
      * 请求方式，Post
      * @var string
      */
-    const REQUEST_METHOD_POST = 'post';
+    const REQUEST_METHOD_POST = 'POST';
 
     /**
      * 获取请求地址

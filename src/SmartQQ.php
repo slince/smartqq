@@ -13,7 +13,9 @@ use Slince\SmartQQ\Request\GetFriendDetailRequest;
 use Slince\SmartQQ\Request\GetFriendsOnlineStatusRequest;
 use Slince\SmartQQ\Request\GetGroupDetailRequest;
 use Slince\SmartQQ\Request\GetGroupsRequest;
+use Slince\SmartQQ\Request\GetLoginInfoRequest;
 use Slince\SmartQQ\Request\GetQQRequest;
+use Slince\SmartQQ\Request\GetRecentListRequest;
 use Slince\SmartQQ\Request\GetUserFriendsRequest;
 use Slince\SmartQQ\Request\PollMessagesRequest;
 use Slince\SmartQQ\Request\SendDiscusMessageRequest;
@@ -106,6 +108,8 @@ class SmartQQ
         } elseif (strpos($response->getBody(), '认证中') !== false) {
             $status = VerifyQrCodeRequest::STATUS_ACCREDITATION;
         } else {
+            file_put_contents(getcwd() . '/a.log', strval($response->getBody()));
+            var_dump(strval($response->getBody()));exit;
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
             $certificationUrl = $this->extractUrlFromVerifyResponse(strval($response->getBody()));
             if ($certificationUrl ===  false) {
@@ -278,12 +282,41 @@ class SmartQQ
     /**
      * 获取讨论组信息
      * @param $discussId
-     * @return mixed
+     * @return array
      */
-    function GetDiscusDetail($discussId)
+    function getDiscusDetail($discussId)
     {
         $request = new GetDiscusDetailRequest($discussId);
         $request->setToken('vfwebqq', $this->parameters->get('vfWebQQ'));
+        $response = $this->send($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['result'];
+    }
+
+    /**
+     * 获取最近会话
+     * @return array
+     */
+    function getRecentList()
+    {
+        $request = new GetRecentListRequest();
+        $request->setParameter('r', json_encode([
+            'vfwebqq' => $this->parameters->get('vfWebQQ'),
+            'clientid' => 53999199,
+            'psessionid' => $this->parameters->get('psessionid')
+        ]));
+        $response = $this->send($request);
+        $jsonData = \GuzzleHttp\json_decode($response);
+        return $jsonData['result'];
+    }
+
+    /**
+     * 获取最近会话
+     * @return array
+     */
+    function getLoginInfo()
+    {
+        $request = new GetLoginInfoRequest();
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response);
         return $jsonData['result'];
@@ -418,12 +451,17 @@ class SmartQQ
      */
     protected function send(RequestInterface $request)
     {
-        $options = [];
-        if ($request->getRequestMethod() == RequestInterface::REQUEST_METHOD_GET) {
-            $options['query'] = $request->getParameters();
-        } else {
-            $options['form_params'] = $request->getParameters();
+        $options = [
+            'verify' => false
+        ];
+        if ($parameters = $request->getParameters()) {
+            if ($request->getRequestMethod() == RequestInterface::REQUEST_METHOD_GET) {
+                $options['query'] = $parameters;
+            } else {
+                $options['form_params'] = $parameters;
+            }
         }
+        //如果有referer需要伪造该信息
         if ($referer = $request->getReferer()) {
             $options['headers'] = [
                 'Referer' => $referer

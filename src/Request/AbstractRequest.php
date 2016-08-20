@@ -144,7 +144,7 @@ class AbstractRequest implements RequestInterface
      */
     protected function processUrl($url)
     {
-        return preg_replace('#\{([a-zA-Z0-9_,]*)\}#i', function ($matches){
+        return preg_replace_callback('#\{([a-zA-Z0-9_,]*)\}#i', function ($matches){
             return isset($this->tokens[$matches[1]]) ? $this->tokens[$matches[1]] : '';
         }, $url);
     }
