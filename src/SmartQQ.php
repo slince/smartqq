@@ -8,6 +8,7 @@ namespace Slince\SmartQQ;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
+use Slince\SmartQQ\Model\Font;
 use Symfony\Component\Filesystem\Filesystem;
 use Slince\Cache\ArrayCache;
 use Slince\SmartQQ\Request\GetDiscusDetailRequest;
@@ -66,6 +67,7 @@ class SmartQQ
             'proxy' => 'tcp://127.0.0.1:8888'
         ]);
         $this->parameters = new ArrayCache();
+        $font = new Font();
     }
 
     /**
