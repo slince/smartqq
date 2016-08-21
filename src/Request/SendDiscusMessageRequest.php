@@ -12,4 +12,6 @@ class SendDiscusMessageRequest extends AbstractRequest
     protected $url = UrlStore::SEND_MESSAGE_TO_DISCUS;
 
     protected $referer = UrlStore::SEND_MESSAGE_TO_DISCUS_REFERER;
+
+    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
 }

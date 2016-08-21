@@ -12,4 +12,6 @@ class SendGroupMessageRequest extends AbstractRequest
     protected $url = UrlStore::SEND_MESSAGE_TO_GROUP;
 
     protected $referer = UrlStore::SEND_MESSAGE_TO_GROUP_REFERER;
+
+    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
 }

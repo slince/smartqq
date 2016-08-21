@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\UrlStore;
 
-class GetVfWebQQRequest extends AbstractRequest
+class GetVfwebqqRequest extends AbstractRequest
 {
     protected $url = UrlStore::GET_VFWEBQQ;
 
