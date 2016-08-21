@@ -6,7 +6,10 @@
 namespace Slince\SmartQQ;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
+use Symfony\Component\Filesystem\Filesystem;
+use Slince\Cache\ArrayCache;
 use Slince\SmartQQ\Request\GetDiscusDetailRequest;
 use Slince\SmartQQ\Request\GetDiscusesRequest;
 use Slince\SmartQQ\Request\GetFriendDetailRequest;
@@ -21,8 +24,6 @@ use Slince\SmartQQ\Request\PollMessagesRequest;
 use Slince\SmartQQ\Request\SendDiscusMessageRequest;
 use Slince\SmartQQ\Request\SendFriendMessageRequest;
 use Slince\SmartQQ\Request\SendGroupMessageRequest;
-use Symfony\Component\Filesystem\Filesystem;
-use Slince\Cache\ArrayCache;
 use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Request\GetPtWebQQRequest;
 use Slince\SmartQQ\Request\GetQrCodeRequest;
@@ -46,6 +47,11 @@ class SmartQQ
     protected $filesystem;
 
     /**
+     * @var CookieJar
+     */
+    protected $cookies;
+
+    /**
      * 参数存储
      * @var ArrayCache
      */
@@ -54,7 +60,11 @@ class SmartQQ
     function __construct()
     {
         $this->filesystem = new Filesystem();
-        $this->httpClient = new Client();
+        $this->cookies = new CookieJar();
+        $this->httpClient = new Client([
+            'cookies' => $this->cookies,
+            'proxy' => 'tcp://127.0.0.1:8888'
+        ]);
         $this->parameters = new ArrayCache();
     }
 
@@ -108,8 +118,6 @@ class SmartQQ
         } elseif (strpos($response->getBody(), '认证中') !== false) {
             $status = VerifyQrCodeRequest::STATUS_ACCREDITATION;
         } else {
-            file_put_contents(getcwd() . '/a.log', strval($response->getBody()));
-            var_dump(strval($response->getBody()));exit;
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
             $certificationUrl = $this->extractUrlFromVerifyResponse(strval($response->getBody()));
             if ($certificationUrl ===  false) {
@@ -128,10 +136,13 @@ class SmartQQ
     {
         $request = new GetPtWebQQRequest();
         $request->setUrl($certificationUrl);
-        $response = $this->send($request);
-        $response->getHeaderLine('set-cookie');
-        $ptWebQQ = '';
-        return $ptWebQQ;
+        $this->send($request);
+        foreach ($this->cookies as $cookie) {
+            if (strcasecmp($cookie->getName(), 'ptwebqq') == 0) {
+                return $cookie->getValue();
+            }
+        }
+        throw new RuntimeException("Extract parameter [ptwebqq] error");
     }
 
     /**
@@ -143,7 +154,7 @@ class SmartQQ
         $request = new GetVfWebQQRequest();
         $request->setToken('ptwebqq', $ptWebQQ);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result']['vfwebqq'];
     }
 
@@ -164,7 +175,7 @@ class SmartQQ
             ])
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return [$jsonData['result']['uin'], $jsonData['result']['psessionid']];
     }
 
@@ -182,7 +193,7 @@ class SmartQQ
             ])
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result']['friends'];
     }
 
@@ -198,7 +209,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -212,7 +223,7 @@ class SmartQQ
         $request = new GetQQRequest($uin);
         $request->setToken('vfwebqq', $this->parameters->get('vfWebQQ'));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -229,7 +240,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -245,7 +256,7 @@ class SmartQQ
             'hash' => $this->getHash($this->parameters->get('uin'), $this->parameters->get('ptWebQQ')),
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -259,7 +270,7 @@ class SmartQQ
         $request = new GetGroupDetailRequest($groupCode);
         $request->setToken('vfwebqq', $this->parameters->get('vfWebQQ'));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -275,7 +286,7 @@ class SmartQQ
             'vfwebqq' => $this->parameters->get('vfWebQQ')
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result']['dnamelist'];
     }
 
@@ -289,7 +300,7 @@ class SmartQQ
         $request = new GetDiscusDetailRequest($discussId);
         $request->setToken('vfwebqq', $this->parameters->get('vfWebQQ'));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -306,7 +317,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -318,7 +329,7 @@ class SmartQQ
     {
         $request = new GetLoginInfoRequest();
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['result'];
     }
 
@@ -330,7 +341,7 @@ class SmartQQ
     {
         $request = new PollMessagesRequest();
         $response = $this->send($request);
-        return \GuzzleHttp\json_decode($response);
+        return \GuzzleHttp\json_decode($response->getBody());
     }
 
     /**
@@ -361,7 +372,7 @@ class SmartQQ
             ]
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['errCode'] === 0;
     }
 
@@ -393,7 +404,7 @@ class SmartQQ
             ]
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['errCode'] === 0;
     }
 
@@ -425,7 +436,7 @@ class SmartQQ
             ]
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody());
         return $jsonData['errCode'] === 0;
     }
 
@@ -438,7 +449,7 @@ class SmartQQ
     {
         foreach (explode(',', $response) as $fragment) {
             if (strpos($fragment, 'http') !== false) {
-                return $fragment;
+                return trim($fragment, "'");
             }
         }
         return false;

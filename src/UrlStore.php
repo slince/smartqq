@@ -35,7 +35,7 @@ class UrlStore
      * 获取vfwebqq参数
      * @var string
      */
-    const GET_VFWEBQQ = 'http://s.web2.qq.com/api/getvfwebqq?ptwebqq=#{ptwebqq}&clientid=53999199&psessionid=&t=0.1';
+    const GET_VFWEBQQ = 'http://s.web2.qq.com/api/getvfwebqq?ptwebqq={ptwebqq}&clientid=53999199&psessionid=&t=0.1';
 
     /**
      * 获取vfwebqq参数referer
@@ -71,7 +71,7 @@ class UrlStore
      * 获取好友在线状态
      * @var string
      */
-    const GET_FRIENDS_ONLINE_STATUS = 'http://d1.web2.qq.com/channel/get_online_buddies2?vfwebqq=#{vfwebqq}&clientid=53999199&psessionid=#{psessionid}&t=0.1';
+    const GET_FRIENDS_ONLINE_STATUS = 'http://d1.web2.qq.com/channel/get_online_buddies2?vfwebqq={vfwebqq}&clientid=53999199&psessionid={psessionid}&t=0.1';
 
     /**
      * 获取好友在线状态referer
@@ -83,7 +83,7 @@ class UrlStore
      * 获取好友qq号
      * @var string
      */
-    const GET_QQ = 'http://s.web2.qq.com/api/get_friend_uin2?tuid=#{uin}&type=1&vfwebqq=#{vfwebqq}&t=0.1';
+    const GET_QQ = 'http://s.web2.qq.com/api/get_friend_uin2?tuid={uin}&type=1&vfwebqq={vfwebqq}&t=0.1';
 
     /**
      * 获取好友qq号referer
@@ -95,7 +95,7 @@ class UrlStore
      * 获取好友详细信息
      * @var string
      */
-    const GET_FRIEND_DETAIL = 'http://s.web2.qq.com/api/get_friend_info2?tuin=#{uin}&vfwebqq=#{vfwebqq}&clientid=53999199&psessionid=#{psessionid}&t=0.1';
+    const GET_FRIEND_DETAIL = 'http://s.web2.qq.com/api/get_friend_info2?tuin={uin}&vfwebqq={vfwebqq}&clientid=53999199&psessionid={psessionid}&t=0.1';
 
     /**
      * 获取好友详细信息referer
@@ -119,7 +119,7 @@ class UrlStore
      * 获取群详细信息
      * @var string
      */
-    const GET_GROUP_DETAIL = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode=#{group_code}&vfwebqq=#{vfwebqq}&t=0.1';
+    const GET_GROUP_DETAIL = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={group_code}&vfwebqq={vfwebqq}&t=0.1';
 
     /**
      * 获取群详细信息referer
@@ -131,7 +131,7 @@ class UrlStore
      * 获取讨论组
      * @var string
      */
-    const GET_DISCUSES = 'http://s.web2.qq.com/api/get_discus_list?clientid=53999199&psessionid=#{psessionid}&vfwebqq=#{vfwebqq}&t=0.1';
+    const GET_DISCUSES = 'http://s.web2.qq.com/api/get_discus_list?clientid=53999199&psessionid={psessionid}&vfwebqq={vfwebqq}&t=0.1';
 
     /**
      * 获取讨论组referer
@@ -143,7 +143,7 @@ class UrlStore
      * 获取讨论组详细信息
      * @var string
      */
-    const GET_DISCUS_DETAIL = 'http://d1.web2.qq.com/channel/get_discu_info?did=#{discuss_id}&psessionid=#{psessionid}&vfwebqq=#{vfwebqq}&clientid=53999199&t=0.1';
+    const GET_DISCUS_DETAIL = 'http://d1.web2.qq.com/channel/get_discu_info?did={discuss_id}&psessionid={psessionid}&vfwebqq={vfwebqq}&clientid=53999199&t=0.1';
 
     /**
      * 获取讨论组详细信息referer

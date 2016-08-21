@@ -2,6 +2,8 @@
 use Slince\SmartQQ\SmartQQ;
 include __DIR__ . '/../vendor/autoload.php';
 
+date_default_timezone_set('Prc');
+
 $smartQQ = new SmartQQ();
 
 //先登录
