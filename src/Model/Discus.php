@@ -10,21 +10,8 @@ namespace Slince\SmartQQ\Model;
  * @package Slince\SmartQQ\Model
  * @property int $id
  * @property string $name
+ * @property Member[] $members
  */
 class Discus extends Model
 {
-    /**
-     * 讨论组会员
-     * @var Member[]
-     */
-    protected $members = [];
-
-    /**
-     * 所有会员
-     * @return Member[]
-     */
-    function getMembers()
-    {
-        return $this->members;
-    }
 }

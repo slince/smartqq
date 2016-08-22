@@ -12,6 +12,13 @@ namespace Slince\SmartQQ\Model;
  * @property int $nickname
  * @property string $status
  * @property int $clientType
+ *
+ * @property string $account QQ号
+ * @property string $markname 备注名
+ * @property boolean $isVip
+ * @property int $vipLevel
+ * @property Category $category //所属分组
+ * @property Profile $profile //详细信息
  */
 class Member extends Model
 {
