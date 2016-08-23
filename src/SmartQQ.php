@@ -61,6 +61,10 @@ class SmartQQ
      */
     protected $parameters;
 
+    protected static $messageId = 43690001;
+
+    protected static $clientId = 53999199;
+
     public function __construct()
     {
         $this->filesystem = new Filesystem();
@@ -174,7 +178,7 @@ class SmartQQ
         $request->setParameters([
             'r' => json_encode([
                 'ptwebqq' => $ptwebqq,
-                'clientid' => 53999199,
+                'clientid' => static::$clientId,
                 'psessionid' => '',
                 'status' => 'online'
             ])
@@ -310,7 +314,7 @@ class SmartQQ
         $request = new GetRecentListRequest();
         $request->setParameter('r', json_encode([
             'vfwebqq' => $this->parameters->get('vfwebqq'),
-            'clientid' => 53999199,
+            'clientid' => static::$clientId,
             'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
@@ -342,7 +346,7 @@ class SmartQQ
     /**
      * 发送消息给好友
      * @param $userId
-     * @param Message $message
+     * @param string $message
      * @return bool
      */
     function sendMessageToFriend($userId, $message)
@@ -354,17 +358,12 @@ class SmartQQ
                 $message,
                 [
                     'font',
-                    [
-                        'name' => '宋体',
-                        'size'=> 10,
-                        'style'=> [0, 0, 0],
-                        'color' => '000000'
-                    ]
+                    Font::makeDefaultFont()
                 ]
             ]),
             'face' => 522,
-            'clientid' => '53999199',
-            'msg_id' => '65890001',
+            'clientid' => static::$clientId,
+            'msg_id' => static::$messageId ++,
             'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
@@ -388,16 +387,12 @@ class SmartQQ
             'content' => [
                 $message,
                 [
-                    'font' => [
-                        'name' => '宋体',
-                        'size'=> 10,
-                        'style'=> [0, 0, 0],
-                        'color' => '000000'
-                    ]
+                    'font',
+                    Font::makeDefaultFont()
                 ],
                 'face' => 522,
-                'clientid' => '53999199',
-                'msg_id' => '65890001',
+                'clientid' => static::$clientId,
+                'msg_id' => static::$messageId ++,
                 'psessionid' => $this->parameters->get('psessionid')
             ]
         ]));
@@ -428,8 +423,8 @@ class SmartQQ
                     ]
                 ],
                 'face' => 522,
-                'clientid' => '53999199',
-                'msg_id' => '65890001',
+                'clientid' => static::$clientId,
+                'msg_id' => static::$messageId ++,
                 'psessionid' => $this->parameters->get('psessionid')
             ]
         ]));
