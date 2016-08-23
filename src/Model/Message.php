@@ -19,5 +19,5 @@ namespace Slince\SmartQQ\Model;
  */
 class Message extends Model
 {
-
+    
 }

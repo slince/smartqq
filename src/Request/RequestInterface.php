@@ -5,6 +5,8 @@
  */
 namespace Slince\SmartQQ\Request;
 
+use GuzzleHttp\Psr7\Response;
+
 interface RequestInterface
 {
     /**
@@ -68,4 +70,11 @@ interface RequestInterface
      * @param $token
      */
     function setToken($name, $token);
+
+    /**
+     * 解析响应数据
+     * @param Response $response
+     * @return mixed
+     */
+    function parseResponse(Response $response);
 }

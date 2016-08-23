@@ -5,6 +5,8 @@
  */
 namespace Slince\SmartQQ\Request;
 
+use GuzzleHttp\Psr7\Response;
+
 class AbstractRequest implements RequestInterface
 {
     /**
@@ -147,5 +149,14 @@ class AbstractRequest implements RequestInterface
         return preg_replace_callback('#\{([a-zA-Z0-9_,]*)\}#i', function ($matches){
             return isset($this->tokens[$matches[1]]) ? $this->tokens[$matches[1]] : '';
         }, $url);
+    }
+
+    /**
+     * 解析响应数据
+     * @param Response $response
+     * @return mixed
+     */
+    function parseResponse(Response $response)
+    {
     }
 }
