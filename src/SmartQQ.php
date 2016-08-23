@@ -9,6 +9,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
 use Slince\SmartQQ\Model\Font;
+use Slince\SmartQQ\Model\Member;
+use Slince\SmartQQ\Model\OnlineStatus;
+use Slince\SmartQQ\Model\Profile;
 use Symfony\Component\Filesystem\Filesystem;
 use Slince\Cache\ArrayCache;
 use Slince\SmartQQ\Request\GetDiscusDetailRequest;
@@ -57,7 +60,7 @@ class SmartQQ
      */
     protected $parameters;
 
-    function __construct()
+    public function __construct()
     {
         $this->filesystem = new Filesystem();
         $this->cookies = new CookieJar();
@@ -182,7 +185,7 @@ class SmartQQ
 
     /**
      * 获取好友
-     * @return array
+     * @return Member[]
      */
     function getUserFriends()
     {
@@ -194,13 +197,12 @@ class SmartQQ
             ])
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
      * 获取在线好友
-     * @return array
+     * @return OnlineStatus[]
      */
     function getFriendsOnlineStatus()
     {
@@ -210,28 +212,26 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
      * 获取好友信息
      * @param $uin
-     * @return mixed
+     * @return Member
      */
     function getQQInfo($uin)
     {
         $request = new GetQQRequest($uin);
         $request->setToken('vfwebqq', $this->parameters->get('vfwebqq'));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
      * 获取好友详情
      * @param $uin
-     * @return mixed
+     * @return Profile
      */
     function getFriendDetail($uin)
     {
@@ -241,8 +241,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
@@ -257,8 +256,7 @@ class SmartQQ
             'hash' => $this->getHash($this->parameters->get('uin'), $this->parameters->get('ptwebqq')),
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
@@ -271,8 +269,7 @@ class SmartQQ
         $request = new GetGroupDetailRequest($groupCode);
         $request->setToken('vfwebqq', $this->parameters->get('vfwebqq'));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
@@ -287,8 +284,7 @@ class SmartQQ
             'vfwebqq' => $this->parameters->get('vfwebqq')
         ]);
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
@@ -301,8 +297,7 @@ class SmartQQ
         $request = new GetDiscusDetailRequest($discussId);
         $request->setToken('vfwebqq', $this->parameters->get('vfwebqq'));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
