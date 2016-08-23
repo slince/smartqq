@@ -472,6 +472,7 @@ class SmartQQ
             ];
         }
         $response = $this->httpClient->send($this->convertRequest($request), $options);
+        @file_put_contents(__DIR__ . '/' . basename(get_class($request)), $response->getBody(), true);
         return $response;
     }
 

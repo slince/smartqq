@@ -64,4 +64,13 @@ class Model implements ModelInterface
     {
         return $this->attributes[$attribute] ?: null;
     }
+
+    /**
+     * 继承方法
+     * @return array
+     */
+    function jsonSerialize()
+    {
+        return $this->attributes;
+    }
 }

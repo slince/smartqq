@@ -24,7 +24,7 @@ $discuses = $smartQQ->getDiscuses();
 logResult($discuses);
 
 //发送消息给好友
-$result = $smartQQ->sendMessageToFriend('1582213624', "Test Message");
+$result = $smartQQ->sendMessageToFriend('1861230730', "Test Message");
 var_dump($result);
 
 /**

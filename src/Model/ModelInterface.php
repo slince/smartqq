@@ -5,7 +5,7 @@
  */
 namespace Slince\SmartQQ\Model;
 
-interface ModelInterface
+interface ModelInterface extends \JsonSerializable
 {
 
 }
