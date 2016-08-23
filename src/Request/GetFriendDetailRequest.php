@@ -8,7 +8,6 @@ namespace Slince\SmartQQ\Request;
 use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Model\Birthday;
-use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\Model\Profile;
 use Slince\SmartQQ\UrlStore;
 

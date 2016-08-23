@@ -5,6 +5,11 @@
  */
 namespace Slince\SmartQQ\Request;
 
+use Cake\Utility\Hash;
+use GuzzleHttp\Psr7\Response;
+use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Model\Discus;
+use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\UrlStore;
 
 class GetDiscusDetailRequest extends AbstractRequest
@@ -21,27 +26,29 @@ class GetDiscusDetailRequest extends AbstractRequest
     /**
      * 解析响应数据
      * @param Response $response
-     * @return Group
+     * @return Discus
      */
     function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
-            $groupData = $jsonData['result']['ginfo'];
-            $vips = Hash::combine($jsonData['result']['vipinfo'], "{n}.u", "{n}");
+            $discusData = [
+                'id' => $jsonData['result']['info']['did'],
+                'name' => $jsonData['result']['info']['discu_name'],
+            ];
+            $stauses = Hash::combine($jsonData['result']['mem_status'], "{n}.uin", "{n}");
             $members = [];
-            foreach ($jsonData['result']['minfo'] as $memberData) {
+            foreach ($jsonData['result']['mem_info'] as $memberData) {
                 $member = new Member([
                     'uin' => $memberData['uin'],
                     'nickname' => $memberData['nick'],
-                    'profile' => new Profile($memberData),
-                    'isVip' => isset($vips[$memberData['uin']]) ?  $vips[$memberData['uin']]['is_vip'] : 0,
-                    'vipLevel' => isset($vips[$memberData['uin']]) ?  $vips[$memberData['uin']]['vip_level'] : 0,
+                    'clientType' => isset($stauses[$memberData['uin']]) ? $stauses[$memberData['uin']] : 0,
+                    'status' => isset($stauses[$memberData['status']]) ? $stauses[$memberData['status']] : 0,
                 ]);
                 $members[] = new Member($member);
             }
-            $groupData['members'] = $members;
-            return new Group($groupData);
+            $discusData['members'] = $members;
+            return new Discus($discusData);
         }
         throw new RuntimeException("Response Error");
     }

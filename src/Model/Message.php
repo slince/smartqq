@@ -15,9 +15,13 @@ namespace Slince\SmartQQ\Model;
  * @property string $content
  * @property Font $font
  * @property int $fromUin
- *
+ * @property int $toUin
  */
 class Message extends Model
 {
-    
+    const TYPE_FRIEND = 'message';
+
+    const TYPE_GROUP = 'group_message';
+
+    const TYPE_DISCUS = 'discu_message';
 }

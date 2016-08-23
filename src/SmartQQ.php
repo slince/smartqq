@@ -10,6 +10,7 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
 use Slince\SmartQQ\Model\Font;
 use Slince\SmartQQ\Model\Member;
+use Slince\SmartQQ\Model\Message;
 use Slince\SmartQQ\Model\OnlineStatus;
 use Slince\SmartQQ\Model\Profile;
 use Symfony\Component\Filesystem\Filesystem;
@@ -313,8 +314,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
@@ -325,8 +325,7 @@ class SmartQQ
     {
         $request = new GetLoginInfoRequest();
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result'];
+        return $request->parseResponse($response);
     }
 
     /**
@@ -337,13 +336,13 @@ class SmartQQ
     {
         $request = new PollMessagesRequest();
         $response = $this->send($request);
-        return \GuzzleHttp\json_decode($response->getBody(), true);
+        return $request->parseResponse($response);
     }
 
     /**
      * 发送消息给好友
      * @param $userId
-     * @param $message
+     * @param Message $message
      * @return bool
      */
     function sendMessageToFriend($userId, $message)
