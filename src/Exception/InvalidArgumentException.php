@@ -5,6 +5,6 @@
  */
 namespace Slince\SmartQQ\Exception;
 
-class InvalidArgumentException  extends \InvalidArgumentException
+class InvalidArgumentException extends \InvalidArgumentException
 {
 }

@@ -216,5 +216,4 @@ class UrlStore
      * @var string
      */
     const SEND_MESSAGE_TO_DISCUS_REFERER = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
-
 }

@@ -1,5 +1,6 @@
 <?php
 use Slince\SmartQQ\SmartQQ;
+
 include __DIR__ . '/../vendor/autoload.php';
 
 date_default_timezone_set('Prc');
@@ -33,4 +34,3 @@ function logResult($result)
 {
     @file_put_contents(getcwd() . '/result.log', print_r($result, true) . "\r\n", FILE_APPEND);
 }
-

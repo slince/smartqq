@@ -33,7 +33,6 @@ use Slince\SmartQQ\Request\GetVfwebqqRequest;
 use Slince\SmartQQ\Request\RequestInterface;
 use Slince\SmartQQ\Request\VerifyQrCodeRequest;
 
-
 class SmartQQ
 {
 
@@ -376,7 +375,8 @@ class SmartQQ
         ]));
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        var_dump($jsonData, $response->getBody());exit;
+        var_dump($jsonData, $response->getBody());
+        exit;
         return $jsonData['errCode'] === 0;
     }
 
@@ -493,7 +493,8 @@ class SmartQQ
      */
     protected function convertRequest(RequestInterface $request)
     {
-        $psrRequest = new Request($request->getRequestMethod(),
+        $psrRequest = new Request(
+            $request->getRequestMethod(),
             $request->getUrl()
         );
         return $psrRequest;
@@ -520,19 +521,22 @@ class SmartQQ
      * @param $ptwebqq
      * @return string
      */
-    protected static function hash($uin, $ptwebqq) {
+    protected static function hash($uin, $ptwebqq)
+    {
         $x = array(
             0, $uin >> 24 & 0xff ^ 0x45,
             0, $uin >> 16 & 0xff ^ 0x43,
             0, $uin >>  8 & 0xff ^ 0x4f,
             0, $uin       & 0xff ^ 0x4b,
         );
-        for ($i = 0; $i < 64; ++$i)
+        for ($i = 0; $i < 64; ++$i) {
             $x[($i & 3) << 1] ^= ord(substr($ptwebqq, $i, 1));
+        }
         $hex = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
         $hash = '';
-        for ($i = 0; $i < 8; ++$i)
+        for ($i = 0; $i < 8; ++$i) {
             $hash .= $hex[$x[$i] >> 4 & 0xf] . $hex[$x[$i] & 0xf];
+        }
         return $hash;
     }
 }
