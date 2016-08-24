@@ -20,12 +20,14 @@ class Model implements ModelInterface
         }
     }
 
-    function __call($name, $arguments)
+    function __get($name)
     {
-        if (strpos($name, 'get') === 0) {
-            $attribute = Inflector::underscore(substr($name, 2));
-            return $this->get($attribute);
-        }
+        return $this->get($name);
+    }
+
+    function __set($name, $value)
+    {
+        $this->set($name, $value);
     }
 
     /**

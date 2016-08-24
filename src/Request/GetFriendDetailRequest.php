@@ -19,7 +19,7 @@ class GetFriendDetailRequest extends AbstractRequest
 
     function __construct($uin)
     {
-        return str_replace('{uin}', $uin, $this->url);
+        $this->url = str_replace('{uin}', $uin, $this->url);
     }
 
     /**

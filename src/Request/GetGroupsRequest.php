@@ -28,11 +28,11 @@ class GetGroupsRequest extends AbstractRequest
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
-            $groups = [];
             $names = Hash::combine($jsonData['result']['gnamelist'], "{n}.gid", "{n}");
             $marknames = Hash::combine($jsonData['result']['gmarklist'], "{n}.uin", "{n}");
-            foreach ($names as $groupData) {
-                $groupData['markname'] = $marknames[$groupData['gid']];
+            $groups = [];
+            foreach ($names as $gid => $groupData) {
+                $groupData['markname'] = isset($marknames[$gid]) ? $marknames[$gid] : '';
                 $groups[] = new Group($groupData);
             }
             return $groups;

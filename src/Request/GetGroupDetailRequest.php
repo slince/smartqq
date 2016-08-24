@@ -17,7 +17,7 @@ class GetGroupDetailRequest extends AbstractRequest
 {
     protected $url = UrlStore::GET_GROUP_DETAIL;
 
-    protected $referer = UrlStore::GET_GROUP_DETAIL_referer;
+    protected $referer = UrlStore::GET_GROUP_DETAIL_REFERER;
 
     function __construct($groupCode)
     {
@@ -44,7 +44,7 @@ class GetGroupDetailRequest extends AbstractRequest
                     'isVip' => isset($vips[$memberData['uin']]) ?  $vips[$memberData['uin']]['is_vip'] : 0,
                     'vipLevel' => isset($vips[$memberData['uin']]) ?  $vips[$memberData['uin']]['vip_level'] : 0,
                 ]);
-                $members[] = new Member($member);
+                $members[] = $member;
             }
             $groupData['members'] = $members;
             return new Group($groupData);

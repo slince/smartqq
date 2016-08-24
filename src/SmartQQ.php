@@ -8,7 +8,9 @@ namespace Slince\SmartQQ;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
+use Slince\SmartQQ\Model\Discus;
 use Slince\SmartQQ\Model\Font;
+use Slince\SmartQQ\Model\Group;
 use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\Model\Message;
 use Slince\SmartQQ\Model\OnlineStatus;
@@ -251,7 +253,7 @@ class SmartQQ
 
     /**
      * 获取群列表
-     * @return mixed
+     * @return Group[]
      */
     function getGroups()
     {
@@ -279,7 +281,7 @@ class SmartQQ
 
     /**
      * 获取讨论组列表
-     * @return array
+     * @return Discus[]
      */
     function getDiscuses()
     {
@@ -315,7 +317,7 @@ class SmartQQ
         $request->setParameter('r', json_encode([
             'vfwebqq' => $this->parameters->get('vfwebqq'),
             'clientid' => static::$clientId,
-            'psessionid' => $this->parameters->get('psessionid')
+            'psessionid' => ''
         ]));
         $response = $this->send($request);
         return $request->parseResponse($response);
@@ -472,7 +474,6 @@ class SmartQQ
             ];
         }
         $response = $this->httpClient->send($this->convertRequest($request), $options);
-        @file_put_contents(__DIR__ . '/' . basename(get_class($request)), $response->getBody(), true);
         return $response;
     }
 

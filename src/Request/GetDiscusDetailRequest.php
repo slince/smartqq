@@ -39,13 +39,12 @@ class GetDiscusDetailRequest extends AbstractRequest
             $stauses = Hash::combine($jsonData['result']['mem_status'], "{n}.uin", "{n}");
             $members = [];
             foreach ($jsonData['result']['mem_info'] as $memberData) {
-                $member = new Member([
+                $members[] = new Member([
                     'uin' => $memberData['uin'],
                     'nickname' => $memberData['nick'],
                     'clientType' => isset($stauses[$memberData['uin']]) ? $stauses[$memberData['uin']] : 0,
-                    'status' => isset($stauses[$memberData['status']]) ? $stauses[$memberData['status']] : 0,
+                    'status' => isset($stauses[$memberData['uin']]) ? $stauses[$memberData['uin']] : 0,
                 ]);
-                $members[] = new Member($member);
             }
             $discusData['members'] = $members;
             return new Discus($discusData);
