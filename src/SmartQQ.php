@@ -341,6 +341,12 @@ class SmartQQ
     function pollMessages()
     {
         $request = new PollMessagesRequest();
+        $request->setParameter('r', \GuzzleHttp\json_encode([
+            'ptwebqq' => $this->parameters->get('ptwebqq'),
+            'clientid' => static::$clientId,
+            'psessionid' => $this->parameters->get('psessionid'),
+            'key' => ''
+        ]));
         $response = $this->send($request);
         return $request->parseResponse($response);
     }
