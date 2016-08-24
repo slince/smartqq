@@ -1,7 +1,6 @@
 # SmartQQ协议
 
-SmartQQ(WebQQ)协议的PHP实现，灵感来自于[Java SmartQQ](https://github.com/ScienJus/smartqq)，感谢原作者
-对SmartQQ协议的详尽解释。
+SmartQQ(WebQQ) API的PHP实现，灵感来自于[Java SmartQQ](https://github.com/ScienJus/smartqq)，感谢原作者对SmartQQ的详尽解释。
 
 ## 安装
 ```
