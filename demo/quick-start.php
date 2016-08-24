@@ -48,11 +48,16 @@ try {
 }
 
 //发送消息给讨论组
-$result = $smartQQ->sendMessageToDiscus($discuses[0]->id, "Test Message");
-
-
+$result = $smartQQ->sendMessageToDiscus($discuses[0]->id, "Test Discus Message");
 var_dump($result);
 
+//发送消息给群
+$result = $smartQQ->sendMessageToGroup($groups[0]->id, "Test Group Message");
+var_dump($result);
+
+//发送消息给好友
+$result = $smartQQ->sendMessageToFriend($friends[2]->uin, "Test Friend Message");
+var_dump($result);
 /**
  * 记录返回结果
  * @param $result

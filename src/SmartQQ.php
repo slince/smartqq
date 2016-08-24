@@ -369,10 +369,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        var_dump($jsonData, $response->getBody());
-        exit;
-        return $jsonData['errCode'] === 0;
+        return $request->parseResponse($response);
     }
 
     /**
@@ -399,8 +396,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['errCode'] === 0;
+        return $request->parseResponse($response);
     }
 
     /**
@@ -427,8 +423,7 @@ class SmartQQ
             'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['errCode'] === 0;
+        return $request->parseResponse($response);
     }
 
     /**
