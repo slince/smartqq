@@ -75,7 +75,6 @@ class SmartQQ
             'cookies' => $this->cookies
         ]);
         $this->parameters = new ArrayCache();
-        $font = new Font();
     }
 
     /**
