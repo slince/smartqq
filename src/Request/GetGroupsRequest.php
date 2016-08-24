@@ -33,6 +33,8 @@ class GetGroupsRequest extends AbstractRequest
             $groups = [];
             foreach ($names as $gid => $groupData) {
                 $groupData['markname'] = isset($marknames[$gid]) ? $marknames[$gid] : '';
+                $groupData['id'] = $groupData['gid'];
+                unset($groupData['gid']);
                 $groups[] = new Group($groupData);
             }
             return $groups;

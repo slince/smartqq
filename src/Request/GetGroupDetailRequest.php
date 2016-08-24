@@ -47,6 +47,8 @@ class GetGroupDetailRequest extends AbstractRequest
                 $members[] = $member;
             }
             $groupData['members'] = $members;
+            $groupData['id'] = $groupData['gid'];
+            unset($groupData['gid']);
             return new Group($groupData);
         }
         throw new RuntimeException("Response Error");
