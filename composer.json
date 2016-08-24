@@ -1,6 +1,6 @@
 {
     "name": "slince/smartqq",
-    "description": "SmartQQ Protocol",
+    "description": "SmartQQ Api",
     "type": "project",
     "license": "Apache-2.0",
     "authors": [
