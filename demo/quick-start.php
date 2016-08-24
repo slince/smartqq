@@ -58,6 +58,19 @@ var_dump($result);
 //发送消息给好友
 $result = $smartQQ->sendMessageToFriend($friends[2]->uin, "Test Friend Message");
 var_dump($result);
+
+//循环消息
+logResult("Loop Message:\r\n");
+while (true) {
+    $messages = $smartQQ->pollMessages();
+    if ($messages) {
+        logResult($messages);
+        print_r($messages);
+    } else {
+        sleep(2);
+    }
+}
+
 /**
  * 记录返回结果
  * @param $result
