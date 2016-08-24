@@ -43,8 +43,7 @@ try {
     $recents = $smartQQ->getRecentList();
     logResult("RecentList:\r\n");
     logResult($recents);
-}catch (\Exception $e) {
-    
+} catch (\Exception $e) {
 }
 
 //发送消息给讨论组

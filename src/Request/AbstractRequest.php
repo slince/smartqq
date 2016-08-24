@@ -78,7 +78,7 @@ class AbstractRequest implements RequestInterface
      * 获取请求方式
      * @return string
      */
-    function getRequestMethod()
+    public function getRequestMethod()
     {
         return $this->requestMethod;
     }
@@ -106,7 +106,7 @@ class AbstractRequest implements RequestInterface
      * @param $name
      * @param $parameter
      */
-    function setParameter($name, $parameter)
+    public function setParameter($name, $parameter)
     {
         $this->parameters[$name] = $parameter;
     }
@@ -134,7 +134,7 @@ class AbstractRequest implements RequestInterface
      * @param $name
      * @param $token
      */
-    function setToken($name, $token)
+    public function setToken($name, $token)
     {
         $this->tokens[$name] = $token;
     }
@@ -156,7 +156,7 @@ class AbstractRequest implements RequestInterface
      * @param Response $response
      * @return mixed
      */
-    function parseResponse(Response $response)
+    public function parseResponse(Response $response)
     {
     }
 }

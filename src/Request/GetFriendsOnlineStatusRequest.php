@@ -22,7 +22,7 @@ class GetFriendsOnlineStatusRequest extends AbstractRequest
      * @param Response $response
      * @return OnlineStatus[]
      */
-    function parseResponse(Response $response)
+    public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {

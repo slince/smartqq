@@ -25,56 +25,56 @@ interface RequestInterface
      * 获取请求地址
      * @return string
      */
-    function getUrl();
+    public function getUrl();
 
     /**
      * 获取referer
      * @return string
      */
-    function getReferer();
+    public function getReferer();
 
     /**
      * 获取请求方式
      * @return string
      */
-    function getRequestMethod();
+    public function getRequestMethod();
 
     /**
      * 获取请求参数
      * @return string
      */
-    function getParameters();
+    public function getParameters();
 
     /**
      * 设置请求参数
      * @param array $parameters
      */
-    function setParameters(array $parameters);
+    public function setParameters(array $parameters);
 
     /**
      * 设置请求参数
      * @param $name
      * @param $parameter
      */
-    function setParameter($name, $parameter);
+    public function setParameter($name, $parameter);
 
     /**
      * 设置链接中的占位符
      * @param $tokens
      */
-    function setTokens($tokens);
+    public function setTokens($tokens);
 
     /**
      * 设置链接中的指定占位符
      * @param $name
      * @param $token
      */
-    function setToken($name, $token);
+    public function setToken($name, $token);
 
     /**
      * 解析响应数据
      * @param Response $response
      * @return mixed
      */
-    function parseResponse(Response $response);
+    public function parseResponse(Response $response);
 }

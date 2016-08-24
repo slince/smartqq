@@ -17,7 +17,7 @@ class GetFriendDetailRequest extends AbstractRequest
 
     protected $referer = UrlStore::GET_FRIEND_DETAIL_REFERER;
 
-    function __construct($uin)
+    public function __construct($uin)
     {
         $this->url = str_replace('{uin}', $uin, $this->url);
     }
@@ -27,7 +27,7 @@ class GetFriendDetailRequest extends AbstractRequest
      * @param Response $response
      * @return Profile
      */
-    function parseResponse(Response $response)
+    public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {

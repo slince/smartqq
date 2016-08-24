@@ -16,7 +16,7 @@ class GetQQRequest extends AbstractRequest
 
     protected $referer = UrlStore::GET_QQ_REFERER;
 
-    function __construct($uin)
+    public function __construct($uin)
     {
         return str_replace('{uin}', $uin, $this->url);
     }
@@ -26,7 +26,7 @@ class GetQQRequest extends AbstractRequest
      * @param Response $response
      * @return Member
      */
-    function parseResponse(Response $response)
+    public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {

@@ -26,7 +26,7 @@ class GetUserFriendsRequest extends AbstractRequest
      * @param Response $response
      * @return Member[]
      */
-    function parseResponse(Response $response)
+    public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
@@ -46,7 +46,8 @@ class GetUserFriendsRequest extends AbstractRequest
                     'markname' => isset($marknames[$uin]) ?  $marknames[$uin]['markname'] : '',
                     'isVip' => isset($vips[$uin]) ?  $vips[$uin]['is_vip'] : 0,
                     'vipLevel' => isset($vips[$uin]) ?  $vips[$uin]['vip_level'] : 0,
-                    'category' => isset($categories[$friend['categories']]) ? new Category($categories[$friend['categories']]) : null,
+                    'category' => isset($categories[$friend['categories']])
+                        ? new Category($categories[$friend['categories']]) : null,
                     'profile' => null
                 ];
                 $members[] = new Member($memberData);

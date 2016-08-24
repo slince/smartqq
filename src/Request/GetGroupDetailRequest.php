@@ -19,7 +19,7 @@ class GetGroupDetailRequest extends AbstractRequest
 
     protected $referer = UrlStore::GET_GROUP_DETAIL_REFERER;
 
-    function __construct($groupCode)
+    public function __construct($groupCode)
     {
         $this->url = str_replace('{group_code}', $groupCode, $this->url);
     }
@@ -29,7 +29,7 @@ class GetGroupDetailRequest extends AbstractRequest
      * @param Response $response
      * @return Group
      */
-    function parseResponse(Response $response)
+    public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {

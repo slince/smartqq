@@ -13,19 +13,19 @@ class Model implements ModelInterface
      */
     protected $attributes = [];
 
-    function __construct(array $attributes = [])
+    public function __construct(array $attributes = [])
     {
         if (!empty($attributes)) {
             $this->attributes = $attributes;
         }
     }
 
-    function __get($name)
+    public function __get($name)
     {
         return $this->get($name);
     }
 
-    function __set($name, $value)
+    public function __set($name, $value)
     {
         $this->set($name, $value);
     }
@@ -42,7 +42,7 @@ class Model implements ModelInterface
      * 输出数组形式
      * @return array
      */
-    function toArray()
+    public function toArray()
     {
         return $this->attributes;
     }
@@ -52,7 +52,7 @@ class Model implements ModelInterface
      * @param $attribute
      * @param $value
      */
-    function set($attribute, $value)
+    public function set($attribute, $value)
     {
         $this->attributes[$attribute] = $value;
     }
@@ -62,7 +62,7 @@ class Model implements ModelInterface
      * @param $attribute
      * @return null
      */
-    function get($attribute)
+    public function get($attribute)
     {
         return $this->attributes[$attribute] ?: null;
     }
@@ -71,7 +71,7 @@ class Model implements ModelInterface
      * 继承方法
      * @return array
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return $this->attributes;
     }

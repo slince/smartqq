@@ -23,7 +23,7 @@ class Font extends Model
      * 创建默认字体
      * @return Font
      */
-    static function makeDefaultFont()
+    public static function makeDefaultFont()
     {
         return new Font([
             'name' => '宋体',

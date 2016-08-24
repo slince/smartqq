@@ -83,7 +83,7 @@ class SmartQQ
      * 登录
      * @param string $filePath 二维码图片位置
      */
-    function login($filePath)
+    public function login($filePath)
     {
         $this->makeQrCodeImage($filePath);
         while (true) {
@@ -194,7 +194,7 @@ class SmartQQ
      * 获取好友
      * @return Member[]
      */
-    function getUserFriends()
+    public function getUserFriends()
     {
         $request = new GetUserFriendsRequest();
         $request->setParameters([
@@ -211,7 +211,7 @@ class SmartQQ
      * 获取在线好友
      * @return OnlineStatus[]
      */
-    function getFriendsOnlineStatus()
+    public function getFriendsOnlineStatus()
     {
         $request = new GetFriendsOnlineStatusRequest();
         $request->setTokens([
@@ -227,7 +227,7 @@ class SmartQQ
      * @param $uin
      * @return Member
      */
-    function getQQInfo($uin)
+    public function getQQInfo($uin)
     {
         $request = new GetQQRequest($uin);
         $request->setToken('vfwebqq', $this->parameters->get('vfwebqq'));
@@ -240,7 +240,7 @@ class SmartQQ
      * @param $uin
      * @return Profile
      */
-    function getFriendDetail($uin)
+    public function getFriendDetail($uin)
     {
         $request = new GetFriendDetailRequest($uin);
         $request->setTokens([
@@ -255,7 +255,7 @@ class SmartQQ
      * 获取群列表
      * @return Group[]
      */
-    function getGroups()
+    public function getGroups()
     {
         $request = new GetGroupsRequest();
         $request->setParameter('r', json_encode([
@@ -271,7 +271,7 @@ class SmartQQ
      * @param $groupCode
      * @return array
      */
-    function getGroupDetail($groupCode)
+    public function getGroupDetail($groupCode)
     {
         $request = new GetGroupDetailRequest($groupCode);
         $request->setToken('vfwebqq', $this->parameters->get('vfwebqq'));
@@ -283,7 +283,7 @@ class SmartQQ
      * 获取讨论组列表
      * @return Discus[]
      */
-    function getDiscuses()
+    public function getDiscuses()
     {
         $request = new GetDiscusesRequest();
         $request->setTokens([
@@ -299,7 +299,7 @@ class SmartQQ
      * @param $discussId
      * @return array
      */
-    function getDiscusDetail($discussId)
+    public function getDiscusDetail($discussId)
     {
         $request = new GetDiscusDetailRequest($discussId);
         $request->setToken('vfwebqq', $this->parameters->get('vfwebqq'));
@@ -311,7 +311,7 @@ class SmartQQ
      * 获取最近会话
      * @return array
      */
-    function getRecentList()
+    public function getRecentList()
     {
         $request = new GetRecentListRequest();
         $request->setParameter('r', json_encode([
@@ -327,7 +327,7 @@ class SmartQQ
      * 获取最近会话
      * @return array
      */
-    function getLoginInfo()
+    public function getLoginInfo()
     {
         $request = new GetLoginInfoRequest();
         $response = $this->send($request);
@@ -338,7 +338,7 @@ class SmartQQ
      * 轮询消息
      * @return array
      */
-    function pollMessages()
+    public function pollMessages()
     {
         $request = new PollMessagesRequest();
         $request->setParameter('r', \GuzzleHttp\json_encode([
@@ -357,7 +357,7 @@ class SmartQQ
      * @param string $message
      * @return bool
      */
-    function sendMessageToFriend($userId, $message)
+    public function sendMessageToFriend($userId, $message)
     {
         $request = new SendFriendMessageRequest();
         $request->setParameter('r', \GuzzleHttp\json_encode([
@@ -384,7 +384,7 @@ class SmartQQ
      * @param $message
      * @return bool
      */
-    function sendMessageToGroup($groupUin, $message)
+    public function sendMessageToGroup($groupUin, $message)
     {
         $request = new SendGroupMessageRequest();
         $request->setParameter('r', json_encode([
@@ -411,7 +411,7 @@ class SmartQQ
      * @param $message
      * @return bool
      */
-    function sendMessageToDiscus($discussId, $message)
+    public function sendMessageToDiscus($discussId, $message)
     {
         $request = new SendDiscusMessageRequest();
         $request->setParameter('r', json_encode([

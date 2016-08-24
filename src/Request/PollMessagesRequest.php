@@ -24,28 +24,28 @@ class PollMessagesRequest extends AbstractRequest
      * @param Response $response
      * @return Message[]
      */
-    function parseResponse(Response $response)
+    public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && $jsonData['retcode'] == 0 && $jsonData['result']) {
             $messages = [];
             foreach ($jsonData['result'] as $messageData) {
                 $message = [
-                    'id' => $messageData['msg_id'],
+                    'id' => $messageData['value']['msg_id'],
                     'type' => $messageData['poll_type'],
                     'message' => $messageData['value']['content'][1],
                     'font' => new Font($messageData['value']['content'][0][1]),
-                    'fromUin' => $messageData['from_uin'],
-                    'sendUin' => $messageData['send_uin'],
-                    'toUin' => $messageData['to_uin'],
-                    'time' => $messageData['time'],
+                    'fromUin' => $messageData['value']['from_uin'],
+                    'sendUin' => $messageData['value']['send_uin'],
+                    'toUin' => $messageData['value']['to_uin'],
+                    'time' => $messageData['value']['time'],
                 ];
                 if ($messageData['poll_type'] == Message::TYPE_GROUP) {
-                    $message['groupCode'] = $messageData['group_code'];
-                    $message['sendUin'] = $messageData['send_uin'];
+                    $message['groupCode'] = $messageData['value']['group_code'];
+                    $message['sendUin'] = $messageData['value']['send_uin'];
                 } elseif ($messageData['poll_type'] == Message::TYPE_DISCUS) {
-                    $message['discusId'] = $messageData['did'];
-                    $message['sendUin'] = $messageData['send_uin'];
+                    $message['discusId'] = $messageData['value']['did'];
+                    $message['sendUin'] = $messageData['value']['send_uin'];
                 }
                 $messages[] = new Message($message);
             }
