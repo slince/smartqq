@@ -38,13 +38,19 @@ $discus = $smartQQ->getDiscusDetail($discuses[0]->id);
 logResult("DiscusDetail:\r\n");
 logResult($discus);
 
+try {
 //获取最近消息
-$recents = $smartQQ->getRecentList();
-logResult("RecentList:\r\n");
-logResult($recents);
+    $recents = $smartQQ->getRecentList();
+    logResult("RecentList:\r\n");
+    logResult($recents);
+}catch (\Exception $e) {
+    
+}
 
-//发送消息给好友
-$result = $smartQQ->sendMessageToFriend('1861230730', "Test Message");
+//发送消息给讨论组
+$result = $smartQQ->sendMessageToDiscus($discuses[0]->id, "Test Message");
+
+
 var_dump($result);
 
 /**

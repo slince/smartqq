@@ -386,17 +386,17 @@ class SmartQQ
         $request = new SendGroupMessageRequest();
         $request->setParameter('r', json_encode([
             'group_uin' => $groupUin,
-            'content' => [
+            'content' => \GuzzleHttp\json_encode([
                 $message,
                 [
                     'font',
                     Font::makeDefaultFont()
-                ],
-                'face' => 522,
-                'clientid' => static::$clientId,
-                'msg_id' => static::$messageId ++,
-                'psessionid' => $this->parameters->get('psessionid')
-            ]
+                ]
+            ]),
+            'face' => 522,
+            'clientid' => static::$clientId,
+            'msg_id' => static::$messageId ++,
+            'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
@@ -414,21 +414,17 @@ class SmartQQ
         $request = new SendDiscusMessageRequest();
         $request->setParameter('r', json_encode([
             'did' => $discussId,
-            'content' => [
+            'content' => \GuzzleHttp\json_encode([
                 $message,
                 [
-                    'font' => [
-                        'name' => '宋体',
-                        'size'=> 10,
-                        'style'=> [0, 0, 0],
-                        'color' => '000000'
-                    ]
-                ],
-                'face' => 522,
-                'clientid' => static::$clientId,
-                'msg_id' => static::$messageId ++,
-                'psessionid' => $this->parameters->get('psessionid')
-            ]
+                    'font',
+                    Font::makeDefaultFont()
+                ]
+            ]),
+            'face' => 522,
+            'clientid' => static::$clientId,
+            'msg_id' => static::$messageId ++,
+            'psessionid' => $this->parameters->get('psessionid')
         ]));
         $response = $this->send($request);
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
