@@ -72,7 +72,8 @@ class SmartQQ
         $this->filesystem = new Filesystem();
         $this->cookies = new CookieJar();
         $this->httpClient = new Client([
-            'cookies' => $this->cookies
+            'cookies' => $this->cookies,
+            'proxy' => 'tcp://127.0.0.1:8888'
         ]);
         $this->parameters = new ArrayCache();
     }

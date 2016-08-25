@@ -27,16 +27,15 @@ class PollMessagesRequest extends AbstractRequest
     public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0 && $jsonData['result']) {
+        if ($jsonData && $jsonData['retcode'] == 0 && isset($jsonData['result'])) {
             $messages = [];
             foreach ($jsonData['result'] as $messageData) {
                 $message = [
                     'id' => $messageData['value']['msg_id'],
                     'type' => $messageData['poll_type'],
-                    'message' => $messageData['value']['content'][1],
+                    'content' => $messageData['value']['content'][1],
                     'font' => new Font($messageData['value']['content'][0][1]),
                     'fromUin' => $messageData['value']['from_uin'],
-                    'sendUin' => $messageData['value']['send_uin'],
                     'toUin' => $messageData['value']['to_uin'],
                     'time' => $messageData['value']['time'],
                 ];
