@@ -23,6 +23,6 @@ class SendFriendMessageRequest extends AbstractRequest
     public function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData && $jsonData['errCode'] === 0;
+        return isset($jsonData['errCode']) && $jsonData['errCode'] === 0;
     }
 }
