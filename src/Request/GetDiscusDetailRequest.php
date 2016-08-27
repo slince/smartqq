@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Cake\Utility\Hash;
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Discus;
 use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\UrlStore;
@@ -49,6 +49,6 @@ class GetDiscusDetailRequest extends AbstractRequest
             $discusData['members'] = $members;
             return new Discus($discusData);
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

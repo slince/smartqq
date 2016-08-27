@@ -6,7 +6,7 @@
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Font;
 use Slince\SmartQQ\Model\Message;
 use Slince\SmartQQ\UrlStore;
@@ -50,6 +50,6 @@ class PollMessagesRequest extends AbstractRequest
             }
             return $messages;
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

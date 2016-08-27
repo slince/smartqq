@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Cake\Utility\Hash;
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Group;
 use Slince\SmartQQ\UrlStore;
 
@@ -39,6 +39,6 @@ class GetGroupsRequest extends AbstractRequest
             }
             return $groups;
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

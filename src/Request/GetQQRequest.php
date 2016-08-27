@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\UrlStore;
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Member;
 
 class GetQQRequest extends AbstractRequest
@@ -35,6 +35,6 @@ class GetQQRequest extends AbstractRequest
                 'account' => $jsonData['result']['account']
             ]);
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

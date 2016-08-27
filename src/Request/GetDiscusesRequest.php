@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Cake\Utility\Hash;
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Discus;
 use Slince\SmartQQ\Model\Group;
 use Slince\SmartQQ\UrlStore;
@@ -36,6 +36,6 @@ class GetDiscusesRequest extends AbstractRequest
             }
             return $discuses;
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

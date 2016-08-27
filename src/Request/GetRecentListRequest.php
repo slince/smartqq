@@ -6,7 +6,7 @@
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Discus;
 use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\Model\Recent;
@@ -37,6 +37,6 @@ class GetRecentListRequest extends AbstractRequest
             }
             return $recents;
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

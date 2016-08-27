@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Cake\Utility\Hash;
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Group;
 use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\Model\Profile;
@@ -51,6 +51,6 @@ class GetGroupDetailRequest extends AbstractRequest
             unset($groupData['gid']);
             return new Group($groupData);
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

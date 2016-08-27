@@ -5,7 +5,7 @@
  */
 namespace Slince\SmartQQ\Exception;
 
-class RuntimeException extends \RuntimeException
+class ResponseException extends RuntimeException
 {
 
 }

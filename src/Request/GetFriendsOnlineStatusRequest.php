@@ -8,7 +8,7 @@ namespace Slince\SmartQQ\Request;
 use Slince\SmartQQ\Model\OnlineStatus;
 use Slince\SmartQQ\UrlStore;
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 
 class GetFriendsOnlineStatusRequest extends AbstractRequest
 {
@@ -32,6 +32,6 @@ class GetFriendsOnlineStatusRequest extends AbstractRequest
             }
             return $onlineStatuses;
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

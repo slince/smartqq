@@ -6,7 +6,7 @@
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Birthday;
 use Slince\SmartQQ\Model\Profile;
 use Slince\SmartQQ\UrlStore;
@@ -30,6 +30,6 @@ class GetLoginInfoRequest extends AbstractRequest
             $profile->birthday = new Birthday($profile->birthday);
             return $profile;
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }

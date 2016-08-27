@@ -6,7 +6,7 @@
 namespace Slince\SmartQQ\Request;
 
 use Cake\Utility\Hash;
-use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Category;
 use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\UrlStore;
@@ -54,6 +54,6 @@ class GetUserFriendsRequest extends AbstractRequest
             }
             return $members;
         }
-        throw new RuntimeException("Response Error");
+        throw new ResponseException("Response Error");
     }
 }
