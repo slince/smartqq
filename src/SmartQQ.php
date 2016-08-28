@@ -79,7 +79,8 @@ class SmartQQ
     }
 
     /**
-     * 登录
+     * 登录，登录的操作需要一次性通过如果出现异常需要
+     * 重新测试
      * @param string $filePath 二维码图片位置
      */
     public function login($filePath)
