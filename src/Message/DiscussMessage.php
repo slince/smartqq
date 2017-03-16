@@ -1,0 +1,107 @@
+<?php
+/**
+ * SmartQQ Library
+ * @author Tao <taosikai@yeah.net>
+ */
+namespace Slince\SmartQQ\Message;
+
+class DiscussMessage extends AbstractMessage
+{
+    /**
+     * 接收用户编号，也是QQ号
+     * @var int
+     */
+    protected $toUin;
+    
+    /**
+     * 讨论组编号
+     * @var int
+     */
+    protected $fromUin;
+
+    /**
+     * 讨论组编号，同fromUin
+     * PS: 对应影响中的did
+     * @var int
+     */
+    protected $discussId;
+
+    /**
+     * 发信用户编号，非QQ号
+     * @var int
+     */
+    protected $sendUin;
+
+    public function __construct($toUin, $fromUin, $discussId, $sendUin, Content $content, $time, $msgId = 0, $msgType = 0)
+    {
+        $this->toUin = $toUin;
+        $this->fromUin = $fromUin;
+        $this->discussId = $discussId;
+        $this->sendUin = $sendUin;
+        parent::__construct(MessageInterface::TYPE_GROUP, $content, $time, $msgId, $msgType);
+    }
+
+    /**
+     * @param int $toUin
+     */
+    public function setToUin($toUin)
+    {
+        $this->toUin = $toUin;
+    }
+
+    /**
+     * @param int $fromUin
+     */
+    public function setFromUin($fromUin)
+    {
+        $this->fromUin = $fromUin;
+    }
+
+    /**
+     * @param int $discussId
+     */
+    public function setDiscussId($discussId)
+    {
+        $this->discussId = $discussId;
+    }
+
+    /**
+     * @param int $sendUin
+     */
+    public function setSendUin($sendUin)
+    {
+        $this->sendUin = $sendUin;
+    }
+
+    /**
+     * @return int
+     */
+    public function getToUin()
+    {
+        return $this->toUin;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFromUin()
+    {
+        return $this->fromUin;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscussId()
+    {
+        return $this->discussId;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getSendUin()
+    {
+        return $this->sendUin;
+    }
+}

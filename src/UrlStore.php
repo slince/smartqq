@@ -1,11 +1,11 @@
 <?php
 /**
- * Slince SmartQQ Library
+ * SmartQQ Library
  * @author Tao <taosikai@yeah.net>
  */
 namespace Slince\SmartQQ;
 
-class UrlStore
+final class UrlStore
 {
     /**
      * 二维码图片地址

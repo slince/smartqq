@@ -1,8 +1,8 @@
 {
     "name": "slince/smartqq",
     "description": "SmartQQ Api",
-    "type": "project",
-    "license": "Apache-2.0",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "tao",
@@ -27,8 +27,7 @@
         "cakephp/utility": "^3.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.1",
-        "squizlabs/php_codesniffer": "^2.6"
+        "phpunit/phpunit": "~4.1"
     },
     "minimum-stability": "stable"
 }
