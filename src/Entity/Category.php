@@ -3,7 +3,7 @@
  * SmartQQ Library
  * @author Tao <taosikai@yeah.net>
  */
-namespace Slince\SmartQQ;
+namespace Slince\SmartQQ\Entity;
 
 /**
  * QQ好友分组

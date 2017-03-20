@@ -3,7 +3,7 @@
  * SmartQQ Library
  * @author Tao <taosikai@yeah.net>
  */
-namespace Slince\SmartQQ;
+namespace Slince\SmartQQ\Entity;
 
 class Friend
 {
@@ -45,15 +45,37 @@ class Friend
     /**
      * @var string
      */
+    protected $markName;
+
+    /**
+     * @var string
+     */
     protected $status;
 
-    public function __construct($uin, $qq, $isVip = 0, $vipLevel = 0, $flag = 0, Category $category = null)
+    public function __construct($uin, $qq, $markName, $isVip = 0, $vipLevel = 0, $flag = 0, Category $category = null)
     {
         $this->uin = $uin;
         $this->qq = $qq;
+        $this->markName = $markName;
         $this->isVip = $isVip;
         $this->vipLevel = $vipLevel;
         $this->category = $category;
+    }
+
+    /**
+     * @param string $markName
+     */
+    public function setMarkName($markName)
+    {
+        $this->markName = $markName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMarkName()
+    {
+        return $this->markName;
     }
 
     /**
