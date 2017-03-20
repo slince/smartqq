@@ -3,9 +3,12 @@
  * SmartQQ Library
  * @author Tao <taosikai@yeah.net>
  */
-namespace Slince\SmartQQ\Message;
+namespace Slince\SmartQQ\Message\Response;
 
-class DiscussMessage extends AbstractMessage
+use Slince\SmartQQ\Message\MessageInterface;
+use Slince\SmartQQ\Message\Content;
+
+class DiscussMessage extends Message
 {
     /**
      * 接收用户编号，也是QQ号

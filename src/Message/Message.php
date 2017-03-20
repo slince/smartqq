@@ -5,56 +5,76 @@
  */
 namespace Slince\SmartQQ\Message;
 
-class Message extends AbstractMessage
+abstract class Message implements MessageInterface
 {
     /**
-     * 接收用户编号，也是QQ号
-     * @var int
+     * 消息类型
+     * @var string
      */
-    protected $toUin;
+    protected $type;
 
     /**
-     * 发信用户编号，非QQ号
+     * @var Content
+     */
+    protected $content;
+
+    /**
+     * 消息id
      * @var int
      */
-    protected $fromUin;
+    protected $msgId;
 
-    public function __construct($toUin, $fromUin, Content $content, $time, $msgId = 0, $msgType = 0)
+    /**
+     * AbstractMessage constructor.
+     * @param string $type
+     * @param Content $content 消息内容
+     * @param int $msgId 消息id
+     */
+    public function __construct($type, Content $content, $msgId)
     {
-        $this->toUin = $toUin;
-        $this->fromUin = $fromUin;
-        parent::__construct(MessageInterface::TYPE_FRIEND, $content, $time, $msgId, $msgType);
+        $this->type = $type;
+        $this->content = $content;
+        $this->msgId = $msgId;
     }
 
     /**
-     * @param int $toUin
+     * 获取消息类型
+     * @return string
      */
-    public function setToUin($toUin)
+    public function getType()
     {
-        $this->toUin = $toUin;
+        return $this->type;
     }
 
     /**
-     * @param int $fromUin
+     * @param Content $content
      */
-    public function setFromUin($fromUin)
+    public function setContent($content)
     {
-        $this->fromUin = $fromUin;
+        $this->content = $content;
+    }
+
+    /**
+     * @param int $msgId
+     */
+    public function setMsgId($msgId)
+    {
+        $this->msgId = $msgId;
+    }
+
+    /**
+     * @return Content
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
     /**
      * @return int
      */
-    public function getToUin()
+    public function getMsgId()
     {
-        return $this->toUin;
-    }
-
-    /**
-     * @return int
-     */
-    public function getFromUin()
-    {
-        return $this->fromUin;
+        return $this->msgId;
     }
 }
