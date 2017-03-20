@@ -34,9 +34,9 @@ class Message extends BaseMessage
      */
     public static $msgId = 65890001;
 
-    public function __construct($type, Content $content)
+    public function __construct(Content $content)
     {
-        parent::__construct($type, $content, static::$msgId ++);
+        parent::__construct($content, static::$msgId ++);
     }
 
     /**

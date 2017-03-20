@@ -40,7 +40,7 @@ class GroupMessage extends Message
         $this->fromUin = $fromUin;
         $this->groupCode = $groupCode;
         $this->sendUin = $sendUin;
-        parent::__construct(MessageInterface::TYPE_GROUP, $content, $time, $msgId, $msgType);
+        parent::__construct($content, $time, $msgId, $msgType);
     }
 
     /**

@@ -26,7 +26,7 @@ class FriendMessage extends Message
     {
         $this->toUin = $toUin;
         $this->fromUin = $fromUin;
-        parent::__construct(MessageInterface::TYPE_FRIEND, $content, $time, $msgId, $msgType);
+        parent::__construct($content, $time, $msgId, $msgType);
     }
 
     /**

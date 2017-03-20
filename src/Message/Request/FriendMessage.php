@@ -6,7 +6,6 @@
 namespace Slince\SmartQQ\Message\Request;
 
 use Slince\SmartQQ\Message\Content;
-use Slince\SmartQQ\Message\MessageInterface;
 
 class FriendMessage extends Message
 {
@@ -19,6 +18,6 @@ class FriendMessage extends Message
     public function __construct($to, Content $content)
     {
         $this->to = $to;
-        parent::__construct(MessageInterface::TYPE_FRIEND, $content);
+        parent::__construct($content);
     }
 }

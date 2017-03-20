@@ -8,12 +8,6 @@ namespace Slince\SmartQQ\Message;
 abstract class Message implements MessageInterface
 {
     /**
-     * 消息类型
-     * @var string
-     */
-    protected $type;
-
-    /**
      * @var Content
      */
     protected $content;
@@ -26,24 +20,13 @@ abstract class Message implements MessageInterface
 
     /**
      * AbstractMessage constructor.
-     * @param string $type
      * @param Content $content 消息内容
      * @param int $msgId 消息id
      */
-    public function __construct($type, Content $content, $msgId)
+    public function __construct(Content $content, $msgId)
     {
-        $this->type = $type;
         $this->content = $content;
         $this->msgId = $msgId;
-    }
-
-    /**
-     * 获取消息类型
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

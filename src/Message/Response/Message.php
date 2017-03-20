@@ -24,17 +24,16 @@ class Message extends BaseMessage
 
     /**
      * AbstractMessage constructor.
-     * @param string $type
      * @param Content $content 消息内容
      * @param int $time 发信时间
      * @param int $msgId 消息id
      * @param int $msgType 消息类型
      */
-    public function __construct($type, Content $content, $time, $msgId, $msgType)
+    public function __construct(Content $content, $time, $msgId, $msgType)
     {
         $this->time = $time;
         $this->msgType = $msgType;
-        parent::__construct($type, $content, $msgId);
+        parent::__construct($content, $msgId);
     }
 
     /**
@@ -56,16 +55,16 @@ class Message extends BaseMessage
     /**
      * @return int
      */
-    public function getTime()
+    public function getMsgType()
     {
-        return $this->time;
+        return $this->msgType;
     }
 
     /**
      * @return int
      */
-    public function getMsgType()
+    public function getTime()
     {
-        return $this->msgType;
+        return $this->time;
     }
 }

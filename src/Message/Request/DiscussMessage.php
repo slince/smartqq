@@ -6,7 +6,6 @@
 namespace Slince\SmartQQ\Message\Request;
 
 use Slince\SmartQQ\Message\Content;
-use Slince\SmartQQ\Message\MessageInterface;
 
 class DiscussMessage extends Message
 {
@@ -19,6 +18,6 @@ class DiscussMessage extends Message
     public function __construct($discussId, Content $content)
     {
         $this->discussId = $discussId;
-        parent::__construct(MessageInterface::TYPE_DISCUSS, $content);
+        parent::__construct($content);
     }
 }

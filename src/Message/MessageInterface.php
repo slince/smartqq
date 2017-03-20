@@ -27,12 +27,6 @@ interface MessageInterface
     const TYPE_DISCUSS = 'discu_message';
 
     /**
-     * 获取消息类型
-     * @return string
-     */
-    public function getType();
-
-    /**
      * 获取消息内容
      * @return Content
      */

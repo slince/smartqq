@@ -41,7 +41,7 @@ class DiscussMessage extends Message
         $this->fromUin = $fromUin;
         $this->discussId = $discussId;
         $this->sendUin = $sendUin;
-        parent::__construct(MessageInterface::TYPE_GROUP, $content, $time, $msgId, $msgType);
+        parent::__construct($content, $time, $msgId, $msgType);
     }
 
     /**
