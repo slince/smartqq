@@ -60,4 +60,148 @@ class GroupMember
      * @var int
      */
     protected $vipLevel;
+
+    /**
+     * @return string
+     */
+    public function getNick()
+    {
+        return $this->nick;
+    }
+
+    /**
+     * @param string $nick
+     */
+    public function setNick($nick)
+    {
+        $this->nick = $nick;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProvince()
+    {
+        return $this->province;
+    }
+
+    /**
+     * @param string $province
+     */
+    public function setProvince($province)
+    {
+        $this->province = $province;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUin()
+    {
+        return $this->uin;
+    }
+
+    /**
+     * @param int $uin
+     */
+    public function setUin($uin)
+    {
+        $this->uin = $uin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCard()
+    {
+        return $this->card;
+    }
+
+    /**
+     * @param string $card
+     */
+    public function setCard($card)
+    {
+        $this->card = $card;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsVip()
+    {
+        return $this->isVip;
+    }
+
+    /**
+     * @param string $isVip
+     */
+    public function setIsVip($isVip)
+    {
+        $this->isVip = $isVip;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVipLevel()
+    {
+        return $this->vipLevel;
+    }
+
+    /**
+     * @param int $vipLevel
+     */
+    public function setVipLevel($vipLevel)
+    {
+        $this->vipLevel = $vipLevel;
+    }
 }

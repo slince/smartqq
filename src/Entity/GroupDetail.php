@@ -54,4 +54,153 @@ class GroupDetail
      * @var string
      */
     protected $memo;
+
+    /**
+     * @var GroupMember[]
+     */
+    protected $members;
+
+    /**
+     * @return int
+     */
+    public function getGid()
+    {
+        return $this->gid;
+    }
+
+    /**
+     * @param int $gid
+     */
+    public function setGid($gid)
+    {
+        $this->gid = $gid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param int $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCreateTime()
+    {
+        return $this->createTime;
+    }
+
+    /**
+     * @param int $createTime
+     */
+    public function setCreateTime($createTime)
+    {
+        $this->createTime = $createTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFlag()
+    {
+        return $this->flag;
+    }
+
+    /**
+     * @param int $flag
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemo()
+    {
+        return $this->memo;
+    }
+
+    /**
+     * @param string $memo
+     */
+    public function setMemo($memo)
+    {
+        $this->memo = $memo;
+    }
+
+    /**
+     * @return GroupMember[]
+     */
+    public function getMembers()
+    {
+        return $this->members;
+    }
+
+    /**
+     * @param GroupMember[] $members
+     */
+    public function setMembers($members)
+    {
+        $this->members = $members;
+    }
 }

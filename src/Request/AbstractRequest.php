@@ -5,6 +5,7 @@
  */
 namespace Slince\SmartQQ\Request;
 
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
 class AbstractRequest implements RequestInterface

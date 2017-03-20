@@ -25,7 +25,7 @@ interface RequestInterface
      * 获取请求地址
      * @return string
      */
-    public function getUrl();
+    public function getUri();
 
     /**
      * 获取referer
@@ -37,7 +37,7 @@ interface RequestInterface
      * 获取请求方式
      * @return string
      */
-    public function getRequestMethod();
+    public function getMethod();
 
     /**
      * 获取请求参数
