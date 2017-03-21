@@ -36,4 +36,84 @@ class Credential
      * @var string
      */
     protected $uin;
+
+    /**
+     * @return string
+     */
+    public function getPtWebQQ()
+    {
+        return $this->ptWebQQ;
+    }
+
+    /**
+     * @param string $ptWebQQ
+     */
+    public function setPtWebQQ($ptWebQQ)
+    {
+        $this->ptWebQQ = $ptWebQQ;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVfWebQQ()
+    {
+        return $this->vfWebQQ;
+    }
+
+    /**
+     * @param string $vfWebQQ
+     */
+    public function setVfWebQQ($vfWebQQ)
+    {
+        $this->vfWebQQ = $vfWebQQ;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPSessionId()
+    {
+        return $this->pSessionId;
+    }
+
+    /**
+     * @param string $pSessionId
+     */
+    public function setPSessionId($pSessionId)
+    {
+        $this->pSessionId = $pSessionId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @param int $clientId
+     */
+    public function setClientId($clientId)
+    {
+        $this->clientId = $clientId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUin()
+    {
+        return $this->uin;
+    }
+
+    /**
+     * @param string $uin
+     */
+    public function setUin($uin)
+    {
+        $this->uin = $uin;
+    }
 }
