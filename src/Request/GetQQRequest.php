@@ -10,7 +10,7 @@ use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Member;
 
-class GetQQRequest extends AbstractRequest
+class GetQQRequest extends Request
 {
     protected $url = UrlStore::GET_QQ;
 

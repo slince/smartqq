@@ -10,7 +10,7 @@ use Slince\SmartQQ\UrlStore;
 use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Exception\ResponseException;
 
-class GetFriendsOnlineStatusRequest extends AbstractRequest
+class GetFriendsOnlineStatusRequest extends Request
 {
     protected $url = UrlStore::GET_FRIENDS_ONLINE_STATUS;
 

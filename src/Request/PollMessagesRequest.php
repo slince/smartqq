@@ -12,7 +12,7 @@ use Slince\SmartQQ\Model\Font;
 use Slince\SmartQQ\Model\Message;
 use Slince\SmartQQ\UrlStore;
 
-class PollMessagesRequest extends AbstractRequest
+class PollMessagesRequest extends Request
 {
     protected $url = UrlStore::POLL_MESSAGES;
 

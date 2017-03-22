@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\UrlStore;
 
-class VerifyQrCodeRequest extends AbstractRequest
+class VerifyQrCodeRequest extends Request
 {
     /**
      * 二维码状态，未失效

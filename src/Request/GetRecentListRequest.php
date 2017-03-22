@@ -12,7 +12,7 @@ use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\Model\Recent;
 use Slince\SmartQQ\UrlStore;
 
-class GetRecentListRequest extends AbstractRequest
+class GetRecentListRequest extends Request
 {
     protected $url = UrlStore::GET_RECENT_LIST;
 

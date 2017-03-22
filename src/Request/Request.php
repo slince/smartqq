@@ -5,28 +5,27 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
-class AbstractRequest implements RequestInterface
+class Request implements RequestInterface
 {
     /**
      * 请求地址
      * @var string
      */
-    protected $url;
+    protected $uri;
+
+    /**
+     * 请求方式
+     * @var string
+     */
+    protected $method = RequestInterface::REQUEST_METHOD_GET;
 
     /**
      * referer
      * @var string
      */
     protected $referer;
-
-    /**
-     * 请求方式
-     * @var string
-     */
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_GET;
 
     /**
      * 请求参数
@@ -39,13 +38,21 @@ class AbstractRequest implements RequestInterface
      * @var array
      */
     protected $tokens = [];
+
+    public function __construct($uri = null, $method = RequestInterface::REQUEST_METHOD_GET, $parameters = [])
+    {
+        $this->uri = $uri;
+        $this->method = $method;
+        $this->parameters = $parameters;
+    }
+
     /**
      * 获取请求地址
      * @return string
      */
-    public function getUrl()
+    public function getUri()
     {
-        return $this->processUrl($this->url);
+        return $this->processUri($this->uri);
     }
 
     /**
@@ -54,7 +61,7 @@ class AbstractRequest implements RequestInterface
      */
     public function getReferer()
     {
-        return $this->processUrl($this->referer);
+        return $this->processUri($this->referer);
     }
 
     /**
@@ -79,9 +86,9 @@ class AbstractRequest implements RequestInterface
      * 获取请求方式
      * @return string
      */
-    public function getRequestMethod()
+    public function getMethod()
     {
-        return $this->requestMethod;
+        return $this->method;
     }
 
     /**
@@ -142,14 +149,14 @@ class AbstractRequest implements RequestInterface
 
     /**
      * 处理链接中的占位符
-     * @param $url
-     * @return mixed
+     * @param string $uri
+     * @return string
      */
-    protected function processUrl($url)
+    protected function processUri($uri)
     {
         return preg_replace_callback('#\{([a-zA-Z0-9_,]*)\}#i', function ($matches) {
             return isset($this->tokens[$matches[1]]) ? $this->tokens[$matches[1]] : '';
-        }, $url);
+        }, $uri);
     }
 
     /**
@@ -157,7 +164,8 @@ class AbstractRequest implements RequestInterface
      * @param Response $response
      * @return mixed
      */
-    public function parseResponse(Response $response)
+    public static function parseResponse(Response $response)
     {
+        return $response;
     }
 }

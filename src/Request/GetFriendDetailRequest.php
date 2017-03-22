@@ -11,7 +11,7 @@ use Slince\SmartQQ\Model\Birthday;
 use Slince\SmartQQ\Model\Profile;
 use Slince\SmartQQ\UrlStore;
 
-class GetFriendDetailRequest extends AbstractRequest
+class GetFriendDetailRequest extends Request
 {
     protected $url = UrlStore::GET_FRIEND_DETAIL;
 

@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\UrlStore;
 
-class GetPtwebqqRequest extends AbstractRequest
+class GetPtWebQQRequest extends Request
 {
     protected $referer = UrlStore::GET_PTWEBQQ_REFERER;
 }

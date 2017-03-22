@@ -76,5 +76,5 @@ interface RequestInterface
      * @param Response $response
      * @return mixed
      */
-    public function parseResponse(Response $response);
+    public static function parseResponse(Response $response);
 }

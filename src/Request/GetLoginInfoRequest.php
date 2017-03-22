@@ -11,7 +11,7 @@ use Slince\SmartQQ\Model\Birthday;
 use Slince\SmartQQ\Model\Profile;
 use Slince\SmartQQ\UrlStore;
 
-class GetLoginInfoRequest extends AbstractRequest
+class GetLoginInfoRequest extends Request
 {
     protected $url = UrlStore::GET_LOGIN_INFO;
 

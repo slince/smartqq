@@ -11,7 +11,7 @@ use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Model\Group;
 use Slince\SmartQQ\UrlStore;
 
-class GetGroupsRequest extends AbstractRequest
+class GetGroupsRequest extends Request
 {
     protected $url = UrlStore::GET_GROUPS;
 

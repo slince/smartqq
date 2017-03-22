@@ -13,7 +13,7 @@ use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\Model\Profile;
 use Slince\SmartQQ\UrlStore;
 
-class GetGroupDetailRequest extends AbstractRequest
+class GetGroupDetailRequest extends Request
 {
     protected $url = UrlStore::GET_GROUP_DETAIL;
 

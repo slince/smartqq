@@ -7,7 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\UrlStore;
 
-class GetUinAndPsessionidRequest extends AbstractRequest
+class GetUinAndPsessionidRequest extends Request
 {
     protected $url = UrlStore::GET_UINANDPSESSIONID;
 

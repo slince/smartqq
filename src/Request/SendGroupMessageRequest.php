@@ -8,7 +8,7 @@ namespace Slince\SmartQQ\Request;
 use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\UrlStore;
 
-class SendGroupMessageRequest extends AbstractRequest
+class SendGroupMessageRequest extends Request
 {
     protected $url = UrlStore::SEND_MESSAGE_TO_GROUP;
 

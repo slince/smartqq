@@ -37,6 +37,17 @@ class Credential
      */
     protected $uin;
 
+    public function __construct($ptWebQQ, $vfWebQQ, $pSessionId, $uin, $clientId = null)
+    {
+        $this->ptWebQQ = $ptWebQQ;
+        $this->vfWebQQ = $vfWebQQ;
+        $this->pSessionId = $pSessionId;
+        $this->uin = $uin;
+        if ($clientId) {
+            $this->clientId = $clientId;
+        }
+    }
+
     /**
      * @return string
      */
@@ -115,5 +126,31 @@ class Credential
     public function setUin($uin)
     {
         $this->uin = $uin;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'ptWebQQ' => $this->ptWebQQ,
+            'vfWebQQ' => $this->vfWebQQ,
+            'pSessionId' => $this->pSessionId,
+            'uin' => $this->uin,
+            'clientId' => $this->clientId
+        ];
+    }
+
+    /**
+     * Create from a array data
+     * @param $data
+     * @return static
+     */
+    public static function create($data)
+    {
+        return new static($data['ptWebQQ'], $data['vfWebQQ'],
+            $data['pSessionId'], $data['uin'], $data['clientId']
+        );
     }
 }

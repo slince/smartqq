@@ -12,7 +12,7 @@ use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\UrlStore;
 use GuzzleHttp\Psr7\Response;
 
-class GetUserFriendsRequest extends AbstractRequest
+class GetUserFriendsRequest extends Request
 {
 
     protected $url = UrlStore::GET_USER_FRIENDS;

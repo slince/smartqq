@@ -12,7 +12,7 @@ use Slince\SmartQQ\Model\Discus;
 use Slince\SmartQQ\Model\Member;
 use Slince\SmartQQ\UrlStore;
 
-class GetDiscusDetailRequest extends AbstractRequest
+class GetDiscusDetailRequest extends Request
 {
     protected $url = UrlStore::GET_DISCUS_DETAIL;
 

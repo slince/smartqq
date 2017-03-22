@@ -8,6 +8,8 @@ namespace Slince\SmartQQ;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
+use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Request\GetPtWebQQRequest;
 use Slince\SmartQQ\Request\GetQrCodeRequest;
 use Slince\SmartQQ\Request\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -31,6 +33,12 @@ class Client
      */
     protected $httpClient;
 
+    /**
+     * 获取ptwebqq的地址
+     * @var string
+     */
+    protected $certificationUrl;
+
     public function __construct($loginQRImage = null)
     {
         $this->loginQRImage = $loginQRImage;
@@ -47,16 +55,16 @@ class Client
     {
         $this->makeQrCodeImage();
         while (true) {
-            $status = $this->getVerifyQrCodeStatus();
+            $status = $this->verifyQrCodeStatus();
             if ($status == VerifyQrCodeRequest::STATUS_EXPIRED) {
-                $this->makeQrCodeImage($filePath);
+                $this->makeQrCodeImage();
             } elseif ($status == VerifyQrCodeRequest::STATUS_CERTIFICATION) {
                 //授权成功跳出状态检查
                 break;
             }
             sleep(1);
         }
-        $ptwebqq = $this->getPtwebqq($this->parameters->get('certificationUrl'));
+        $ptwebqq = $this->getPtWebQQ($this->certificationUrl);
         $this->parameters->set('ptwebqq', $ptwebqq);
         $vfwebqq = $this->getVfwebqq($ptwebqq);
         $this->parameters->set('vfwebqq', $vfwebqq);
@@ -64,6 +72,59 @@ class Client
         $this->parameters->set('uin', $uin);
         $this->parameters->set('psessionid', $psessionid);
     }
+
+
+    /**
+     * @param string $certificationUrl
+     * @return string
+     */
+    protected function getPtWebQQ($certificationUrl)
+    {
+        $request = new GetPtWebQQRequest();
+        $request->setUrl($certificationUrl);
+        $this->send($request);
+        foreach ($this->cookies as $cookie) {
+            if (strcasecmp($cookie->getName(), 'ptwebqq') == 0) {
+                return $cookie->getValue();
+            }
+        }
+        throw new RuntimeException("Extract parameter [ptwebqq] error");
+    }
+
+    /**
+     * @param $ptwebqq
+     * @return string
+     */
+    protected function getVfwebqq($ptwebqq)
+    {
+        $request = new GetVfwebqqRequest();
+        $request->setToken('ptwebqq', $ptwebqq);
+        $response = $this->send($request);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
+        return $jsonData['result']['vfwebqq'];
+    }
+
+    /**
+     * 获取pessionid和uin
+     * @param $ptwebqq
+     * @return array
+     */
+    protected function getUinAndPsessionid($ptwebqq)
+    {
+        $request = new GetUinAndPsessionidRequest();
+        $request->setParameters([
+            'r' => json_encode([
+                'ptwebqq' => $ptwebqq,
+                'clientid' => static::$clientId,
+                'psessionid' => '',
+                'status' => 'online'
+            ])
+        ]);
+        $response = $this->send($request);
+        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
+        return [$jsonData['result']['uin'], $jsonData['result']['psessionid']];
+    }
+
 
     /**
      * 创建登录所需的二维码
@@ -87,11 +148,12 @@ class Client
             $status = VerifyQrCodeRequest::STATUS_ACCREDITATION;
         } else {
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
-            $certificationUrl = $this->extractUrlFromVerifyResponse(strval($response->getBody()));
-            if ($certificationUrl ===  false) {
-                throw new RuntimeException("Extract Certification Url Error");
+            //找出认证url
+            if (preg_match("#'(http*+)'#U", strval($response->getBody()), $matches)) {
+                $this->certificationUrl = trim($matches[1]);
+            } else {
+                throw new RuntimeException("Can not find certification url");
             }
-            $this->parameters->set('certificationUrl', $certificationUrl);
         }
         return $status;
     }
