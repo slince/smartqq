@@ -5,7 +5,6 @@
  */
 namespace Slince\SmartQQ\Message\Response;
 
-use Slince\SmartQQ\Message\MessageInterface;
 use Slince\SmartQQ\Message\Content;
 
 class GroupMessage extends Message

@@ -8,6 +8,8 @@ namespace Slince\SmartQQ;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
+
 use Slince\SmartQQ\Entity\Discuss;
 use Slince\SmartQQ\Entity\DiscussDetail;
 use Slince\SmartQQ\Entity\Friend;
@@ -15,8 +17,8 @@ use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\Entity\GroupDetail;
 use Slince\SmartQQ\Entity\Profile;
 use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Message\Response\Message;
 use Slince\SmartQQ\Request\GetCurrentUserRequest;
-use Slince\SmartQQ\Request\GetDiscusesRequest;
 use Slince\SmartQQ\Request\GetDiscussDetailRequest;
 use Slince\SmartQQ\Request\GetDiscussesRequest;
 use Slince\SmartQQ\Request\GetFriendDetailRequest;
@@ -32,8 +34,8 @@ use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
 use Slince\SmartQQ\Request\GetVfWebQQRequest;
 use Slince\SmartQQ\Request\PollMessagesRequest;
 use Slince\SmartQQ\Request\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use Slince\SmartQQ\Request\VerifyQrCodeRequest;
+use Slince\SmartQQ\Message\Response\Message as ResponseMessage;
 
 class Client
 {
@@ -307,13 +309,13 @@ class Client
 
     /**
      * 轮询消息
-     * @return array
+     * @return ResponseMessage[]
      */
     public function pollMessages()
     {
         $request = new PollMessagesRequest($this->credential);
-        $response = $this->send($request);
-        return $request->parseResponse($response);
+        $response = $this->sendRequest($request);
+        return PollMessagesRequest::parseResponse($response);
     }
 
     /**

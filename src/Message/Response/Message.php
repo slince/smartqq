@@ -23,7 +23,7 @@ class Message extends BaseMessage
     protected $msgType = 0;
 
     /**
-     * AbstractMessage constructor.
+     * Message constructor.
      * @param Content $content 消息内容
      * @param int $time 发信时间
      * @param int $msgId 消息id
