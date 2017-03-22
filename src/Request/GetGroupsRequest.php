@@ -7,6 +7,7 @@ namespace Slince\SmartQQ\Request;
 
 use Cake\Collection\Collection;
 use GuzzleHttp\Psr7\Response;
+use Slince\SmartQQ\Client;
 use Slince\SmartQQ\EntityCollection;
 use Slince\SmartQQ\Credential;
 use Slince\SmartQQ\EntityFactory;
@@ -32,9 +33,10 @@ class GetGroupsRequest extends Request
     /**
      * 解析响应数据
      * @param Response $response
+     * @param Client $client
      * @return EntityCollection
      */
-    public static function parseResponse(Response $response)
+    public static function parseResponse(Response $response, Client $client)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
@@ -44,7 +46,9 @@ class GetGroupsRequest extends Request
                 $groupId = $groupData['gid'];
                 $groupData['id'] = $groupData['gid'];
                 $groupData['markName'] = isset($markNames[$groupId]) ? $markNames[$groupId] : '';
-                $groups[] = EntityFactory::createGroup($groupData);
+                $group = EntityFactory::createGroup($groupData);
+                $group->setClient($client);
+                $groups[] = $group;
             }
             return new EntityCollection($groups);
         }

@@ -5,51 +5,79 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use Cake\Utility\Hash;
+use Cake\Collection\Collection;
 use GuzzleHttp\Psr7\Response;
+use Slince\SmartQQ\Credential;
+use Slince\SmartQQ\Entity\GroupDetail;
+use Slince\SmartQQ\Entity\GroupMember;
+use Slince\SmartQQ\EntityCollection;
+use Slince\SmartQQ\EntityFactory;
 use Slince\SmartQQ\Exception\ResponseException;
-use Slince\SmartQQ\Model\Group;
-use Slince\SmartQQ\Model\Member;
-use Slince\SmartQQ\Model\Profile;
-use Slince\SmartQQ\UrlStore;
+use Slince\SmartQQ\Entity\Group;
 
 class GetGroupDetailRequest extends Request
 {
-    protected $url = UrlStore::GET_GROUP_DETAIL;
+    protected $url = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={groupCode}&vfwebqq={vfwebqq}&t=0.1';
 
-    protected $referer = UrlStore::GET_GROUP_DETAIL_REFERER;
+    protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 
-    public function __construct($groupCode)
+    public function __construct(Group $group, Credential $credential)
     {
-        $this->url = str_replace('{group_code}', $groupCode, $this->url);
+        $this->setTokens([
+            'groupCode' => $group->getCode(),
+            'vfwebqq' => $credential->getVfWebQQ()
+        ]);
     }
 
     /**
      * 解析响应数据
      * @param Response $response
-     * @return Group
+     * @return GroupDetail
      */
-    public function parseResponse(Response $response)
+    public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
+            //群成员的vip信息
+            $vipInfos  = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity){
+                return $entity;
+            });
+            //群成员的名片信息
+            $cards  = (new Collection($jsonData['result']['cards']))->combine('muin', 'card');
+            //群成员的简要信息
+            $flags = (new Collection($jsonData['result']['ginfo']['members']))->combine('muin', 'mflag');
+            //群基本详细信息
             $groupData = $jsonData['result']['ginfo'];
-            $vips = Hash::combine($jsonData['result']['vipinfo'], "{n}.u", "{n}");
+            $groupDetailData = [
+                'gid' => $groupData['gid'],
+                'name' => $groupData['name'],
+                'code' => $groupData['code'],
+                'owner' => $groupData['owner'],
+                'level' => $groupData['level'],
+                'createTime' => $groupData['$createTime'],
+                'flag' => $groupData['flag'],
+                'memo' => $groupData['memo'],
+                'members' => null,
+            ];
             $members = [];
             foreach ($jsonData['result']['minfo'] as $memberData) {
-                $member = new Member([
-                    'uin' => $memberData['uin'],
-                    'nickname' => $memberData['nick'],
-                    'profile' => new Profile($memberData),
-                    'isVip' => isset($vips[$memberData['uin']]) ?  $vips[$memberData['uin']]['is_vip'] : 0,
-                    'vipLevel' => isset($vips[$memberData['uin']]) ?  $vips[$memberData['uin']]['vip_level'] : 0,
+                $uin = $memberData['uin'];
+                $member  = EntityFactory::createEntity(GroupMember::class, [
+                    'flag' => isset($flags[$uin]) ? $flags[$uin] : null,
+                    'nick' => $memberData['nick'],
+                    'province' => $memberData['province'],
+                    'gender' => $memberData['gender'],
+                    'uin' => $uin,
+                    'country' => $memberData['country'],
+                    'city' => $memberData['city'],
+                    'card' => isset($cards[$uin]) ? $cards[$uin] : null,
+                    'isVip' => isset($vipInfos[$uin]) ? $vipInfos[$uin]['is_vip'] == 1 : false,
+                    'vipLevel' => isset($vipInfos[$uin]) ? $vipInfos[$uin]['vip_level'] : 0,
                 ]);
                 $members[] = $member;
             }
-            $groupData['members'] = $members;
-            $groupData['id'] = $groupData['gid'];
-            unset($groupData['gid']);
-            return new Group($groupData);
+            $groupDetailData['members'] = new EntityCollection($members);
+            return EntityFactory::createEntity(GroupDetail::class, $groupDetailData);
         }
         throw new ResponseException("Response Error");
     }

@@ -158,14 +158,4 @@ class Request implements RequestInterface
             return isset($this->tokens[$matches[1]]) ? $this->tokens[$matches[1]] : '';
         }, $uri);
     }
-
-    /**
-     * 解析响应数据
-     * @param Response $response
-     * @return mixed
-     */
-    public static function parseResponse(Response $response)
-    {
-        return $response;
-    }
 }

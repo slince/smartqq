@@ -5,7 +5,7 @@
  */
 namespace Slince\SmartQQ\Entity;
 
-class Group
+class Group extends Entity
 {
     /**
      * gid
@@ -32,6 +32,11 @@ class Group
      * @var string
      */
     protected $markName;
+
+    /**
+     * @var GroupDetail
+     */
+    protected $detail;
 
     public function __construct($id = 0, $name = '', $code = '', $flag = 0, $markName = '')
     {
@@ -120,5 +125,21 @@ class Group
     public function getMarkName()
     {
         return $this->markName;
+    }
+
+    /**
+     * @param GroupDetail $detail
+     */
+    public function setDetail(GroupDetail $detail)
+    {
+        $this->detail = $detail;
+    }
+
+    /**
+     * @return GroupDetail
+     */
+    public function getDetail()
+    {
+        return $this->detail;
     }
 }

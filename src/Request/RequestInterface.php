@@ -71,11 +71,4 @@ interface RequestInterface
      * @param $token
      */
     public function setToken($name, $token);
-
-    /**
-     * 解析响应数据
-     * @param Response $response
-     * @return mixed
-     */
-    public static function parseResponse(Response $response);
 }

@@ -36,4 +36,11 @@ class EntityFactory
         }
         return $entityInstance;
     }
+
+    public static function createEntity($entityClass, $data)
+    {
+        $entity = new $entityClass();
+        static::applyProperties($entity, $data);
+        return $entity;
+    }
 }

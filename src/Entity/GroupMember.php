@@ -8,6 +8,12 @@ namespace Slince\SmartQQ\Entity;
 class GroupMember
 {
     /**
+     * flag，作用不明
+     * @var int
+     */
+    protected $flag;
+
+    /**
      * 昵称
      * @var string
      */
@@ -203,5 +209,21 @@ class GroupMember
     public function setVipLevel($vipLevel)
     {
         $this->vipLevel = $vipLevel;
+    }
+
+    /**
+     * @param int $flag
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFlag()
+    {
+        return $this->flag;
     }
 }

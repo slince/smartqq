@@ -8,7 +8,14 @@ namespace Slince\SmartQQ;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
+use Slince\SmartQQ\Entity\Discuss;
+use Slince\SmartQQ\Entity\Group;
+use Slince\SmartQQ\Entity\GroupDetail;
 use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Request\GetDiscusesRequest;
+use Slince\SmartQQ\Request\GetDiscussDetailRequest;
+use Slince\SmartQQ\Request\GetDiscussesRequest;
+use Slince\SmartQQ\Request\GetGroupDetailRequest;
 use Slince\SmartQQ\Request\GetGroupsRequest;
 use Slince\SmartQQ\Request\GetPtWebQQRequest;
 use Slince\SmartQQ\Request\GetQrCodeRequest;
@@ -180,7 +187,37 @@ class Client
     {
         $request = new GetGroupsRequest($this->credential);
         $response = $this->sendRequest($request);
-        return GetGroupsRequest::parseResponse($response);
+        return GetGroupsRequest::parseResponse($response, $this);
+    }
+
+    /**
+     * 获取群详细信息
+     * @param Group $group
+     * @return GroupDetail
+     */
+    public function getGroupDetail(Group $group)
+    {
+        $request = new GetGroupDetailRequest($group, $this->credential);
+        $response = $this->sendRequest($request);
+        return GetGroupDetailRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取所有讨论组
+     * @return EntityCollection
+     */
+    public function getDiscusses()
+    {
+        $request = new GetDiscussesRequest($this->credential);
+        $response = $this->sendRequest($request);
+        return GetDiscussesRequest::parseResponse($response);
+    }
+
+    public function getDiscussDetail(Discuss $discuss)
+    {
+        $request = new GetDiscussDetailRequest($discuss, $this->credential);
+        $response = $this->sendRequest($request);
+        return GetDiscussDetailRequest::parseResponse($response);
     }
 
     /**
