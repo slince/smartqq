@@ -17,7 +17,7 @@ use Slince\SmartQQ\Exception\ResponseException;
 
 class GetDiscussDetailRequest extends Request
 {
-    protected $url = 'http://d1.web2.qq.com/channel/get_discu_info?did={discussId}&psessionid={psessionid}&vfwebqq={vfwebqq}&clientid=53999199&t=0.1';
+    protected $uri = 'http://d1.web2.qq.com/channel/get_discu_info?did={discussId}&psessionid={psessionid}&vfwebqq={vfwebqq}&clientid=53999199&t=0.1';
 
     protected $referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
 

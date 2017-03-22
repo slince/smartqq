@@ -14,11 +14,11 @@ use Slince\SmartQQ\UrlStore;
 
 class PollMessagesRequest extends Request
 {
-    protected $url = UrlStore::POLL_MESSAGES;
+    protected $uri = UrlStore::POLL_MESSAGES;
 
     protected $referer = UrlStore::POLL_MESSAGES_REFERER;
 
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
+    protected $method = RequestInterface::REQUEST_METHOD_POST;
 
     /**
      * 解析响应数据

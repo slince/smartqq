@@ -10,11 +10,11 @@ use Slince\SmartQQ\UrlStore;
 
 class SendGroupMessageRequest extends Request
 {
-    protected $url = UrlStore::SEND_MESSAGE_TO_GROUP;
+    protected $uri = UrlStore::SEND_MESSAGE_TO_GROUP;
 
     protected $referer = UrlStore::SEND_MESSAGE_TO_GROUP_REFERER;
 
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
+    protected $method = RequestInterface::REQUEST_METHOD_POST;
 
     /**
      * @param Response $response

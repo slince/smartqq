@@ -10,11 +10,11 @@ use Slince\SmartQQ\UrlStore;
 
 class SendDiscusMessageRequest extends Request
 {
-    protected $url = UrlStore::SEND_MESSAGE_TO_DISCUS;
+    protected $uri = UrlStore::SEND_MESSAGE_TO_DISCUS;
 
     protected $referer = UrlStore::SEND_MESSAGE_TO_DISCUS_REFERER;
 
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
+    protected $method = RequestInterface::REQUEST_METHOD_POST;
 
     /**
      * @param Response $response

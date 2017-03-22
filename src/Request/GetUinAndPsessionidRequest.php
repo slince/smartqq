@@ -11,11 +11,11 @@ use Slince\SmartQQ\UrlStore;
 
 class GetUinAndPsessionidRequest extends Request
 {
-    protected $url = UrlStore::GET_UINANDPSESSIONID;
+    protected $uri = UrlStore::GET_UINANDPSESSIONID;
 
     protected $referer = UrlStore::GET_UINANDPSESSIONID_REFERER;
 
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
+    protected $method = RequestInterface::REQUEST_METHOD_POST;
 
     public function __construct(array $data)
     {

@@ -15,7 +15,7 @@ use Slince\SmartQQ\Exception\ResponseException;
 
 class GetFriendDetailRequest extends Request
 {
-    protected $url = 'http://s.web2.qq.com/api/get_friend_info2?tuin={uin}&vfwebqq={vfwebqq}&clientid=53999199&psessionid={psessionid}&t=0.1';
+    protected $uri = 'http://s.web2.qq.com/api/get_friend_info2?tuin={uin}&vfwebqq={vfwebqq}&clientid=53999199&psessionid={psessionid}&t=0.1';
 
     protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 

@@ -10,11 +10,11 @@ use Slince\SmartQQ\UrlStore;
 
 class SendFriendMessageRequest extends Request
 {
-    protected $url = UrlStore::SEND_MESSAGE_TO_FRIEND;
+    protected $uri = UrlStore::SEND_MESSAGE_TO_FRIEND;
 
     protected $referer = UrlStore::SEND_MESSAGE_TO_FRIEND_REFERER;
 
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
+    protected $method = RequestInterface::REQUEST_METHOD_POST;
 
     /**
      * @param Response $response

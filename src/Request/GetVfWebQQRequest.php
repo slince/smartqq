@@ -11,7 +11,7 @@ use Slince\SmartQQ\UrlStore;
 
 class GetVfWebQQRequest extends Request
 {
-    protected $url = UrlStore::GET_VFWEBQQ;
+    protected $uri = UrlStore::GET_VFWEBQQ;
 
     protected $referer = UrlStore::GET_VFWEBQQ_REFERER;
 

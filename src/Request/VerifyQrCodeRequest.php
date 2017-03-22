@@ -33,7 +33,7 @@ class VerifyQrCodeRequest extends Request
      */
     const STATUS_CERTIFICATION = 4;
 
-    protected $url = UrlStore::VERIFY_QR_CODE;
+    protected $uri = UrlStore::VERIFY_QR_CODE;
 
     protected $referer = UrlStore::VERIFY_QR_CODE_REFERER;
 }

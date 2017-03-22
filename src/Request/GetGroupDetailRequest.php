@@ -17,7 +17,7 @@ use Slince\SmartQQ\Entity\Group;
 
 class GetGroupDetailRequest extends Request
 {
-    protected $url = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={groupCode}&vfwebqq={vfwebqq}&t=0.1';
+    protected $uri = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={groupCode}&vfwebqq={vfwebqq}&t=0.1';
 
     protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 

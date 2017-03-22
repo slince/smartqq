@@ -15,6 +15,7 @@ use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\Entity\GroupDetail;
 use Slince\SmartQQ\Entity\Profile;
 use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Request\GetCurrentUserRequest;
 use Slince\SmartQQ\Request\GetDiscusesRequest;
 use Slince\SmartQQ\Request\GetDiscussDetailRequest;
 use Slince\SmartQQ\Request\GetDiscussesRequest;
@@ -26,6 +27,7 @@ use Slince\SmartQQ\Request\GetGroupsRequest;
 use Slince\SmartQQ\Request\GetPtWebQQRequest;
 use Slince\SmartQQ\Request\GetQQRequest;
 use Slince\SmartQQ\Request\GetQrCodeRequest;
+use Slince\SmartQQ\Request\GetRecentListRequest;
 use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
 use Slince\SmartQQ\Request\GetVfWebQQRequest;
 use Slince\SmartQQ\Request\RequestInterface;
@@ -264,7 +266,9 @@ class Client
     {
         $request = new GetQQRequest($friend, $this->credential);
         $response = $this->sendRequest($request);
-        return GetQQRequest::parseResponse($response);
+        $qq = GetQQRequest::parseResponse($response);
+        $friend->setQq($qq);
+        return $qq;
     }
 
     /**
@@ -278,9 +282,26 @@ class Client
         return GetFriendsOnlineStatusRequest::parseResponse($response);
     }
 
-    public function getRecent()
+    /**
+     * 获取最近的会话
+     * @return EntityCollection
+     */
+    public function getRecentList()
     {
+        $request = new GetRecentListRequest($this->credential);
+        $response = $this->sendRequest($request);
+        return GetRecentListRequest::parseResponse($response);
+    }
 
+    /**
+     * 获取当前登录用户信息
+     * @return Profile
+     */
+    public function getCurrentUserInfo()
+    {
+        $request = new GetCurrentUserRequest();
+        $response = $this->sendRequest($request);
+        return GetCurrentUserRequest::parseResponse($response);
     }
 
     /**

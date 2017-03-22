@@ -6,36 +6,44 @@
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
+use Slince\SmartQQ\Credential;
+use Slince\SmartQQ\Entity\Recent;
+use Slince\SmartQQ\EntityCollection;
+use Slince\SmartQQ\EntityFactory;
 use Slince\SmartQQ\Exception\ResponseException;
-use Slince\SmartQQ\Model\Discus;
-use Slince\SmartQQ\Model\Member;
-use Slince\SmartQQ\Model\Recent;
-use Slince\SmartQQ\UrlStore;
 
 class GetRecentListRequest extends Request
 {
-    protected $url = UrlStore::GET_RECENT_LIST;
+    protected $uri = 'http://d1.web2.qq.com/channel/get_recent_list2';
 
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
+    protected $method = RequestInterface::REQUEST_METHOD_POST;
+
+    public function __construct(Credential $credential)
+    {
+        $this->setParameter('r', json_encode([
+            'vfwebqq' => $credential->getVfWebQQ(),
+            'clientid' => $credential->getClientId(),
+            'psessionid' => $credential->getPSessionId()
+        ]));
+    }
 
     /**
      * 解析响应数据
      * @param Response $response
-     * @return Discus
+     * @return EntityCollection
      */
-    public function parseResponse(Response $response)
+    public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
-            $recents = [];
+            $recentList = [];
             foreach ($jsonData['result'] as $recent) {
-                $recent = new Recent([
+                $recentList[] = EntityFactory::createEntity(Recent::class, [
                     'type' => $recent['type'],
                     'uin' => $recent['uin'],
                 ]);
-                $recents[] = new Recent($recent);
             }
-            return $recents;
+            return new EntityCollection($recentList);
         }
         throw new ResponseException("Response Error");
     }
