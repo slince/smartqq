@@ -28,6 +28,12 @@ class DiscussMember
     protected $status;
 
     /**
+     * 作用不明
+     * @var int
+     */
+    protected $ruin;
+
+    /**
      * @return int
      */
     public function getUin()
@@ -89,5 +95,21 @@ class DiscussMember
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRuin()
+    {
+        return $this->ruin;
+    }
+
+    /**
+     * @param int $ruin
+     */
+    public function setRuin($ruin)
+    {
+        $this->ruin = $ruin;
     }
 }

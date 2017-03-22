@@ -9,15 +9,22 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
 use Slince\SmartQQ\Entity\Discuss;
+use Slince\SmartQQ\Entity\DiscussDetail;
+use Slince\SmartQQ\Entity\Friend;
 use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\Entity\GroupDetail;
+use Slince\SmartQQ\Entity\Profile;
 use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Request\GetDiscusesRequest;
 use Slince\SmartQQ\Request\GetDiscussDetailRequest;
 use Slince\SmartQQ\Request\GetDiscussesRequest;
+use Slince\SmartQQ\Request\GetFriendDetailRequest;
+use Slince\SmartQQ\Request\GetFriendsOnlineStatusRequest;
+use Slince\SmartQQ\Request\GetFriendsRequest;
 use Slince\SmartQQ\Request\GetGroupDetailRequest;
 use Slince\SmartQQ\Request\GetGroupsRequest;
 use Slince\SmartQQ\Request\GetPtWebQQRequest;
+use Slince\SmartQQ\Request\GetQQRequest;
 use Slince\SmartQQ\Request\GetQrCodeRequest;
 use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
 use Slince\SmartQQ\Request\GetVfWebQQRequest;
@@ -213,11 +220,67 @@ class Client
         return GetDiscussesRequest::parseResponse($response);
     }
 
+    /**
+     * 获取讨论组详情
+     * @param Discuss $discuss
+     * @return DiscussDetail
+     */
     public function getDiscussDetail(Discuss $discuss)
     {
         $request = new GetDiscussDetailRequest($discuss, $this->credential);
         $response = $this->sendRequest($request);
         return GetDiscussDetailRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取所有的好友
+     * @return EntityCollection
+     */
+    public function getFriends()
+    {
+        $request = new GetFriendsRequest($this->credential);
+        $response = $this->sendRequest($request);
+        return GetFriendsRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取好友的详细信息
+     * @param Friend $friend
+     * @return Profile
+     */
+    public function getFriendDetail(Friend $friend)
+    {
+        $request = new GetFriendDetailRequest($friend, $this->credential);
+        $response = $this->sendRequest($request);
+        return GetFriendDetailRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取好友的QQ号
+     * @param Friend $friend
+     * @return int
+     */
+    public function getFriendQQ(Friend $friend)
+    {
+        $request = new GetQQRequest($friend, $this->credential);
+        $response = $this->sendRequest($request);
+        return GetQQRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取好友在线状态
+     * @return EntityCollection
+     */
+    public function getFriendsOnlineStatus()
+    {
+        $request = new GetFriendsOnlineStatusRequest($this->credential);
+        $response = $this->sendRequest($request);
+        return GetFriendsOnlineStatusRequest::parseResponse($response);
+    }
+
+    public function getRecent()
+    {
+
     }
 
     /**

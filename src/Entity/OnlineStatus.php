@@ -18,14 +18,31 @@ class OnlineStatus
     const OFFLINE = 'offline';
 
     /**
+     * 用户编号
+     * @var int
+     */
+    protected $uin;
+
+    /**
+     * @return int
+     */
+    public function getUin()
+    {
+        return $this->uin;
+    }
+
+    /**
+     * @param int $uin
+     */
+    public function setUin($uin)
+    {
+        $this->uin = $uin;
+    }
+
+    /**
      * @var string
      */
     protected $status;
-
-    public function __construct($status)
-    {
-        $this->status = $status;
-    }
 
     /**
      * 转换为字符串

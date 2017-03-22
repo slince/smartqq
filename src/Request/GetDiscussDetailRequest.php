@@ -33,7 +33,7 @@ class GetDiscussDetailRequest extends Request
     /**
      * 解析响应数据
      * @param Response $response
-     * @return EntityCollection
+     * @return DiscussDetail
      */
     public static function parseResponse(Response $response)
     {
@@ -59,6 +59,7 @@ class GetDiscussDetailRequest extends Request
                    'nick' => $memberData['nick'],
                    'clientType' => isset($statuses[$uin]) ? $statuses[$uin]['client_type'] : null,
                    'status' => isset($statuses[$uin]) ? $statuses[$uin]['status'] : null,
+                   'ruin' => isset($ruins[$uin]) ? $ruins[$uin] : null,
                 ]);
             }
             $discussDetailData['members'] = new EntityCollection($members);

@@ -5,35 +5,35 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use Slince\SmartQQ\UrlStore;
+use Slince\SmartQQ\Credential;
+use Slince\SmartQQ\Entity\Friend;
 use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Exception\ResponseException;
-use Slince\SmartQQ\Model\Member;
 
 class GetQQRequest extends Request
 {
-    protected $url = UrlStore::GET_QQ;
+    protected $url = 'http://s.web2.qq.com/api/get_friend_uin2?tuid={uin}&type=1&vfwebqq={vfwebqq}&t=0.1';
 
-    protected $referer = UrlStore::GET_QQ_REFERER;
+    protected $referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
 
-    public function __construct($uin)
+    public function __construct(Friend $friend, Credential $credential)
     {
-        return str_replace('{uin}', $uin, $this->url);
+        $this->setTokens([
+            'uin' => $friend->getUin(),
+            'vfwebqq' => $credential->getVfWebQQ()
+        ]);
     }
 
     /**
      * 解析响应数据
      * @param Response $response
-     * @return Member
+     * @return int
      */
-    public function parseResponse(Response $response)
+    public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
-            return new Member([
-                'uin' => $jsonData['result']['uin'],
-                'account' => $jsonData['result']['account']
-            ]);
+            return $jsonData['result']['account'];
         }
         throw new ResponseException("Response Error");
     }

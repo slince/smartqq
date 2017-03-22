@@ -14,6 +14,18 @@ class Friend
     protected $flag;
 
     /**
+     * face,作用不明
+     * @var int
+     */
+    protected $face;
+
+    /**
+     * 昵称
+     * @var string
+     */
+    protected $nick;
+
+    /**
      * 用户QQ号
      * @var int
      */
@@ -51,16 +63,6 @@ class Friend
      * @var string
      */
     protected $status;
-
-    public function __construct($uin, $qq, $markName, $isVip = 0, $vipLevel = 0, $flag = 0, Category $category = null)
-    {
-        $this->uin = $uin;
-        $this->qq = $qq;
-        $this->markName = $markName;
-        $this->isVip = $isVip;
-        $this->vipLevel = $vipLevel;
-        $this->category = $category;
-    }
 
     /**
      * @param string $markName
@@ -124,6 +126,38 @@ class Friend
     public function getFlag()
     {
         return $this->flag;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFace()
+    {
+        return $this->face;
+    }
+
+    /**
+     * @param int $face
+     */
+    public function setFace($face)
+    {
+        $this->face = $face;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNick()
+    {
+        return $this->nick;
+    }
+
+    /**
+     * @param string $nick
+     */
+    public function setNick($nick)
+    {
+        $this->nick = $nick;
     }
 
     /**
