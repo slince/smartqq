@@ -5,39 +5,48 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use Cake\Utility\Hash;
+use Cake\Collection\Collection;
 use GuzzleHttp\Psr7\Response;
+use Slince\SmartQQ\EntityCollection;
+use Slince\SmartQQ\Credential;
+use Slince\SmartQQ\EntityFactory;
 use Slince\SmartQQ\Exception\ResponseException;
-use Slince\SmartQQ\Model\Group;
-use Slince\SmartQQ\UrlStore;
+use Slince\SmartQQ\Utils;
 
 class GetGroupsRequest extends Request
 {
-    protected $url = UrlStore::GET_GROUPS;
+    protected $url = 'http://s.web2.qq.com/api/get_group_name_list_mask2';
 
-    protected $referer = UrlStore::GET_GROUPS_REFERER;
+    protected $referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
 
-    protected $requestMethod = RequestInterface::REQUEST_METHOD_POST;
+    protected $method = RequestInterface::REQUEST_METHOD_POST;
+
+    public function __construct(Credential $credential)
+    {
+        $this->setParameter('r', [
+            'vfwebqq' => $credential->getPtWebQQ(),
+            'hash' => Utils::hash($credential->getUin(), $credential->getPtWebQQ()),
+        ]);
+    }
 
     /**
      * 解析响应数据
      * @param Response $response
-     * @return Group[]
+     * @return EntityCollection
      */
-    public function parseResponse(Response $response)
+    public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
-            $names = Hash::combine($jsonData['result']['gnamelist'], "{n}.gid", "{n}");
-            $marknames = Hash::combine($jsonData['result']['gmarklist'], "{n}.uin", "{n}");
+            $markNames = (new Collection($jsonData['result']['gmarklist']))->combine('uin', 'markname');
             $groups = [];
-            foreach ($names as $gid => $groupData) {
-                $groupData['markname'] = isset($marknames[$gid]) ? $marknames[$gid] : '';
+            foreach ($jsonData['result']['gnamelist'] as $groupData) {
+                $groupId = $groupData['gid'];
                 $groupData['id'] = $groupData['gid'];
-                unset($groupData['gid']);
-                $groups[] = new Group($groupData);
+                $groupData['markName'] = isset($markNames[$groupId]) ? $markNames[$groupId] : '';
+                $groups[] = EntityFactory::createGroup($groupData);
             }
-            return $groups;
+            return new EntityCollection($groups);
         }
         throw new ResponseException("Response Error");
     }

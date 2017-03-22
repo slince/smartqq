@@ -9,8 +9,11 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
 use Slince\SmartQQ\Exception\RuntimeException;
+use Slince\SmartQQ\Request\GetGroupsRequest;
 use Slince\SmartQQ\Request\GetPtWebQQRequest;
 use Slince\SmartQQ\Request\GetQrCodeRequest;
+use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
+use Slince\SmartQQ\Request\GetVfWebQQRequest;
 use Slince\SmartQQ\Request\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slince\SmartQQ\Request\VerifyQrCodeRequest;
@@ -23,15 +26,16 @@ class Client
     protected $credential;
 
     /**
+     * 客户端id(固定值)
+     * @var int
+     */
+    protected static $clientId = 5399199;
+
+    /**
      * 保存登录二维码的位置
      * @var string
      */
     protected $loginQRImage;
-
-    /**
-     * @var HttpClient
-     */
-    protected $httpClient;
 
     /**
      * 获取ptwebqq的地址
@@ -39,103 +43,67 @@ class Client
      */
     protected $certificationUrl;
 
-    public function __construct($loginQRImage = null)
+    /**
+     * @var HttpClient
+     */
+    protected $httpClient;
+
+    /**
+     * @var CookieJar
+     */
+    protected $cookies;
+
+    public function __construct(Credential $credential = null)
     {
-        $this->loginQRImage = $loginQRImage;
+        $this->cookies = new CookieJar();
         $this->httpClient = new HttpClient([
-            'cookies' => new CookieJar(),
+            'cookies' => $this->cookies,
             'verify' => false
         ]);
+        $this->credential = $credential;
     }
 
     /**
-     * 登录，创建凭证
+     * 开启登录流程自行获取凭证
+     * @param string $loginQRImage 二维码图片位置
+     * @return Credential
      */
-    public function login()
+    public function login($loginQRImage)
     {
-        $this->makeQrCodeImage();
+        $this->makeQrCodeImage($loginQRImage);
         while (true) {
             $status = $this->verifyQrCodeStatus();
             if ($status == VerifyQrCodeRequest::STATUS_EXPIRED) {
-                $this->makeQrCodeImage();
+                $this->makeQrCodeImage($loginQRImage);
             } elseif ($status == VerifyQrCodeRequest::STATUS_CERTIFICATION) {
                 //授权成功跳出状态检查
                 break;
             }
             sleep(1);
         }
-        $ptwebqq = $this->getPtWebQQ($this->certificationUrl);
-        $this->parameters->set('ptwebqq', $ptwebqq);
-        $vfwebqq = $this->getVfwebqq($ptwebqq);
-        $this->parameters->set('vfwebqq', $vfwebqq);
-        list($uin, $psessionid) = $this->getUinAndPsessionid($ptwebqq);
-        $this->parameters->set('uin', $uin);
-        $this->parameters->set('psessionid', $psessionid);
-    }
-
-
-    /**
-     * @param string $certificationUrl
-     * @return string
-     */
-    protected function getPtWebQQ($certificationUrl)
-    {
-        $request = new GetPtWebQQRequest();
-        $request->setUrl($certificationUrl);
-        $this->send($request);
-        foreach ($this->cookies as $cookie) {
-            if (strcasecmp($cookie->getName(), 'ptwebqq') == 0) {
-                return $cookie->getValue();
-            }
-        }
-        throw new RuntimeException("Extract parameter [ptwebqq] error");
-    }
-
-    /**
-     * @param $ptwebqq
-     * @return string
-     */
-    protected function getVfwebqq($ptwebqq)
-    {
-        $request = new GetVfwebqqRequest();
-        $request->setToken('ptwebqq', $ptwebqq);
-        $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return $jsonData['result']['vfwebqq'];
-    }
-
-    /**
-     * 获取pessionid和uin
-     * @param $ptwebqq
-     * @return array
-     */
-    protected function getUinAndPsessionid($ptwebqq)
-    {
-        $request = new GetUinAndPsessionidRequest();
-        $request->setParameters([
-            'r' => json_encode([
-                'ptwebqq' => $ptwebqq,
-                'clientid' => static::$clientId,
-                'psessionid' => '',
-                'status' => 'online'
-            ])
-        ]);
-        $response = $this->send($request);
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return [$jsonData['result']['uin'], $jsonData['result']['psessionid']];
+        $ptWebQQ = $this->getPtWebQQ($this->certificationUrl);
+        $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
+        list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
+        $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin, static::$clientId);
+        return $this->credential;
     }
 
 
     /**
      * 创建登录所需的二维码
+     * @param string $loginQRImage
      * @return void
      */
-    protected function makeQrCodeImage()
+    protected function makeQrCodeImage($loginQRImage)
     {
         $response = $this->sendRequest(new GetQrCodeRequest());
-        Utils::getFilesystem()->dumpFile($this->loginQRImage, $response->getBody());
+        Utils::getFilesystem()->dumpFile($loginQRImage, $response->getBody());
     }
 
+    /**
+     * 验证二维码状态
+     * @return int
+     */
     protected function verifyQrCodeStatus()
     {
         $request = new VerifyQrCodeRequest();
@@ -158,12 +126,68 @@ class Client
         return $status;
     }
 
+    /**
+     * 获取ptwebqq的参数值
+     * @param string $certificationUrl
+     * @return string
+     */
+    protected function getPtWebQQ($certificationUrl)
+    {
+        $request = new GetPtWebQQRequest();
+        $request->setUrl($certificationUrl);
+        $this->sendRequest($request);
+        foreach ($this->cookies as $cookie) {
+            if (strcasecmp($cookie->getName(), 'ptwebqq') == 0) {
+                return $cookie->getValue();
+            }
+        }
+        throw new RuntimeException("Extract parameter [ptwebqq] error");
+    }
+
+    /**
+     * @param string $ptWebQQ
+     * @return string
+     */
+    protected function getVfWebQQ($ptWebQQ)
+    {
+        $request = new GetVfWebQQRequest($ptWebQQ);
+        $response = $this->sendRequest($request);
+        return GetVfWebQQRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取pessionid和uin
+     * @param string $ptWebQQ
+     * @return array
+     */
+    protected function getUinAndPSessionId($ptWebQQ)
+    {
+        $request = new GetUinAndPsessionidRequest([
+            'ptwebqq' => $ptWebQQ,
+            'clientid' => static::$clientId,
+            'psessionid' => '',
+            'status' => 'online'
+        ]);
+        $response = $this->sendRequest($request);
+        return GetUinAndPsessionidRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取所有的群
+     * @return EntityCollection
+     */
+    public function getGroups()
+    {
+        $request = new GetGroupsRequest($this->credential);
+        $response = $this->sendRequest($request);
+        return GetGroupsRequest::parseResponse($response);
+    }
 
     /**
      * @param RequestInterface $request
      * @return mixed|ResponseInterface
      */
-    public function sendRequest(RequestInterface $request)
+    protected function sendRequest(RequestInterface $request)
     {
         $options = [];
         if ($parameters = $request->getParameters()) {
