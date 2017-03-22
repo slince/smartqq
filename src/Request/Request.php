@@ -39,13 +39,6 @@ class Request implements RequestInterface
      */
     protected $tokens = [];
 
-    public function __construct($uri = null, $method = RequestInterface::REQUEST_METHOD_GET, $parameters = [])
-    {
-        $this->uri = $uri;
-        $this->method = $method;
-        $this->parameters = $parameters;
-    }
-
     /**
      * 获取请求地址
      * @return string

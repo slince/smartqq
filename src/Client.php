@@ -30,6 +30,7 @@ use Slince\SmartQQ\Request\GetQrCodeRequest;
 use Slince\SmartQQ\Request\GetRecentListRequest;
 use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
 use Slince\SmartQQ\Request\GetVfWebQQRequest;
+use Slince\SmartQQ\Request\PollMessagesRequest;
 use Slince\SmartQQ\Request\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slince\SmartQQ\Request\VerifyQrCodeRequest;
@@ -302,6 +303,17 @@ class Client
         $request = new GetCurrentUserRequest();
         $response = $this->sendRequest($request);
         return GetCurrentUserRequest::parseResponse($response);
+    }
+
+    /**
+     * 轮询消息
+     * @return array
+     */
+    public function pollMessages()
+    {
+        $request = new PollMessagesRequest($this->credential);
+        $response = $this->send($request);
+        return $request->parseResponse($response);
     }
 
     /**

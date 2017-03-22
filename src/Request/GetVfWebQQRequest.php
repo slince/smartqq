@@ -7,18 +7,16 @@ namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Exception\RuntimeException;
-use Slince\SmartQQ\UrlStore;
 
 class GetVfWebQQRequest extends Request
 {
-    protected $uri = UrlStore::GET_VFWEBQQ;
+    protected $uri = 'http://s.web2.qq.com/api/getvfwebqq?ptwebqq={ptwebqq}&clientid=53999199&psessionid=&t=0.1';
 
-    protected $referer = UrlStore::GET_VFWEBQQ_REFERER;
+    protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 
     public function __construct($ptWebQQ)
     {
         $this->setToken('ptwebqq', $ptWebQQ);
-        parent::__construct();
     }
 
     /**

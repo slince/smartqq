@@ -5,9 +5,7 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use Slince\SmartQQ\UrlStore;
-
 class GetPtWebQQRequest extends Request
 {
-    protected $referer = UrlStore::GET_PTWEBQQ_REFERER;
+    protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 }

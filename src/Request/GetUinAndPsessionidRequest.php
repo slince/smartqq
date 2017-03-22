@@ -7,13 +7,12 @@ namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Exception\RuntimeException;
-use Slince\SmartQQ\UrlStore;
 
 class GetUinAndPsessionidRequest extends Request
 {
-    protected $uri = UrlStore::GET_UINANDPSESSIONID;
+    protected $uri = 'http://d1.web2.qq.com/channel/login2';
 
-    protected $referer = UrlStore::GET_UINANDPSESSIONID_REFERER;
+    protected $referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
 
     protected $method = RequestInterface::REQUEST_METHOD_POST;
 
