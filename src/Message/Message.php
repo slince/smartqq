@@ -5,7 +5,7 @@
  */
 namespace Slince\SmartQQ\Message;
 
-abstract class Message implements MessageInterface
+class Message implements MessageInterface
 {
     /**
      * @var Content

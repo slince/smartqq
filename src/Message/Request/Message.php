@@ -17,18 +17,6 @@ class Message extends BaseMessage
     protected $face;
 
     /**
-     * 客户端id
-     * @var int
-     */
-    protected $clientId;
-
-    /**
-     * 捕获的session id
-     * @var int
-     */
-    protected $pSessionId;
-
-    /**
      * 请求message的id
      * @var int
      */
@@ -37,22 +25,6 @@ class Message extends BaseMessage
     public function __construct(Content $content)
     {
         parent::__construct($content, static::$msgId ++);
-    }
-
-    /**
-     * @param int $clientId
-     */
-    public function setClientId($clientId)
-    {
-        $this->clientId = $clientId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getClientId()
-    {
-        return $this->clientId;
     }
 
     /**
@@ -69,21 +41,5 @@ class Message extends BaseMessage
     public function getFace()
     {
         return $this->face;
-    }
-
-    /**
-     * @param int $pSessionId
-     */
-    public function setPSessionId($pSessionId)
-    {
-        $this->pSessionId = $pSessionId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPSessionId()
-    {
-        return $this->pSessionId;
     }
 }

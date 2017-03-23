@@ -17,7 +17,9 @@ use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\Entity\GroupDetail;
 use Slince\SmartQQ\Entity\Profile;
 use Slince\SmartQQ\Exception\RuntimeException;
-use Slince\SmartQQ\Message\Response\Message;
+use Slince\SmartQQ\Message\Request\FriendMessage;
+use Slince\SmartQQ\Message\Request\GroupMessage;
+use Slince\SmartQQ\Request\RequestInterface;
 use Slince\SmartQQ\Request\GetCurrentUserRequest;
 use Slince\SmartQQ\Request\GetDiscussDetailRequest;
 use Slince\SmartQQ\Request\GetDiscussesRequest;
@@ -33,8 +35,13 @@ use Slince\SmartQQ\Request\GetRecentListRequest;
 use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
 use Slince\SmartQQ\Request\GetVfWebQQRequest;
 use Slince\SmartQQ\Request\PollMessagesRequest;
-use Slince\SmartQQ\Request\RequestInterface;
+use Slince\SmartQQ\Request\SendDiscusMessageRequest;
+use Slince\SmartQQ\Request\SendFriendMessageRequest;
+use Slince\SmartQQ\Request\SendGroupMessageRequest;
+use Slince\SmartQQ\Request\SendMessageRequest;
 use Slince\SmartQQ\Request\VerifyQrCodeRequest;
+
+use Slince\SmartQQ\Message\Request\Message as RequestMessage;
 use Slince\SmartQQ\Message\Response\Message as ResponseMessage;
 
 class Client
@@ -316,6 +323,24 @@ class Client
         $request = new PollMessagesRequest($this->credential);
         $response = $this->sendRequest($request);
         return PollMessagesRequest::parseResponse($response);
+    }
+
+    /**
+     * 发送消息，包括好友消息，群消息，讨论组消息
+     * @param RequestMessage $message
+     * @return bool
+     */
+    public function sendMessage(RequestMessage $message)
+    {
+        if ($message instanceof FriendMessage) {
+            $request = new SendFriendMessageRequest($message, $this->credential);
+        } elseif ($message instanceof GroupMessage) {
+            $request = new SendGroupMessageRequest($message, $this->credential);
+        } else {
+            $request = new SendDiscusMessageRequest($message, $this->credential);
+        }
+        $response = $this->sendRequest($request);
+        return SendMessageRequest::parseResponse($response);
     }
 
     /**

@@ -5,24 +5,20 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\UrlStore;
+use Slince\SmartQQ\Credential;
+use Slince\SmartQQ\Message\Request\GroupMessage;
 
-class SendGroupMessageRequest extends Request
+class SendGroupMessageRequest extends SendMessageRequest
 {
-    protected $uri = UrlStore::SEND_MESSAGE_TO_GROUP;
+    protected $uri =  'http://d1.web2.qq.com/channel/send_qun_msg2';
 
-    protected $referer = UrlStore::SEND_MESSAGE_TO_GROUP_REFERER;
+    protected $referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
 
-    protected $method = RequestInterface::REQUEST_METHOD_POST;
-
-    /**
-     * @param Response $response
-     * @return bool
-     */
-    public function parseResponse(Response $response)
+    public function __construct(GroupMessage $message, Credential $credential)
     {
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return isset($jsonData['errCode']) && $jsonData['errCode'] === 0;
+        $parameters = array_merge([
+            'group_uin' => $message->getGroup()->getId()
+        ],$this->makeMessageParameter($message, $credential));
+        $this->setParameter('r', \GuzzleHttp\json_encode($parameters));
     }
 }

@@ -24,10 +24,25 @@ class Content
      * @param string $content 消息内容正文
      * @param Font $font 消息内容字体
      */
-    public function __construct($content, Font $font)
+    public function __construct($content, Font $font = null)
     {
         $this->content = $content;
         $this->font = $font;
+    }
+
+    /**
+     * 魔术方法
+     * @return string
+     */
+    public function __toString()
+    {
+        return \GuzzleHttp\json_encode([
+            $this->getContent(),
+            [
+                'font',
+                $this->getFont() ?: Font::createDefault()
+            ]
+        ]);
     }
 
     /**

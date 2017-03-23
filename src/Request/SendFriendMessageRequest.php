@@ -5,24 +5,20 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\UrlStore;
+use Slince\SmartQQ\Credential;
+use Slince\SmartQQ\Message\Request\FriendMessage;
 
-class SendFriendMessageRequest extends Request
+class SendFriendMessageRequest extends SendMessageRequest
 {
-    protected $uri = UrlStore::SEND_MESSAGE_TO_FRIEND;
+    protected $uri = 'http://d1.web2.qq.com/channel/send_buddy_msg2';
 
-    protected $referer = UrlStore::SEND_MESSAGE_TO_FRIEND_REFERER;
+    protected $referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
 
-    protected $method = RequestInterface::REQUEST_METHOD_POST;
-
-    /**
-     * @param Response $response
-     * @return bool
-     */
-    public function parseResponse(Response $response)
+    public function __construct(FriendMessage $message, Credential $credential)
     {
-        $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        return isset($jsonData['errCode']) && $jsonData['errCode'] === 0;
+        $parameters = array_merge([
+            'to' => $message->getToUser()->getUin()
+        ],$this->makeMessageParameter($message, $credential));
+        $this->setParameter('r', \GuzzleHttp\json_encode($parameters));
     }
 }
