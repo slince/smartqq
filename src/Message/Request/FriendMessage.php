@@ -5,59 +5,35 @@
  */
 namespace Slince\SmartQQ\Message\Request;
 
-use Slince\SmartQQ\Entity\DiscussMember;
-use Slince\SmartQQ\Entity\Friend;
-use Slince\SmartQQ\Entity\GroupMember;
+use Slince\SmartQQ\Entity\User;
 use Slince\SmartQQ\Message\Content;
 
 class FriendMessage extends Message
 {
     /**
-     * 用户编号
-     * @var int
+     * @var User
      */
-    protected $to;
+    protected $user;
 
-    /**
-     * @var Friend|GroupMember|DiscussMember
-     */
-    protected $toUser;
-
-    /**
-     * @return int
-     */
-    public function getTo()
+    public function __construct(User $user, Content $content)
     {
-        return $this->to;
-    }
-
-    /**
-     * @param int $to
-     */
-    public function setTo($to)
-    {
-        $this->to = $to;
-    }
-
-    /**
-     * @return DiscussMember|Friend|GroupMember
-     */
-    public function getToUser()
-    {
-        return $this->toUser;
-    }
-
-    /**
-     * @param DiscussMember|Friend|GroupMember $toUser
-     */
-    public function setToUser($toUser)
-    {
-        $this->toUser = $toUser;
-    }
-
-    public function __construct($to, Content $content)
-    {
-        $this->to = $to;
+        $this->user = $user;
         parent::__construct($content);
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 }

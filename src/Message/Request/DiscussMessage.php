@@ -11,19 +11,13 @@ use Slince\SmartQQ\Message\Content;
 class DiscussMessage extends Message
 {
     /**
-     * 讨论组编号
-     * @var int
-     */
-    protected $discussId;
-
-    /**
      * @var Discuss
      */
     protected $discuss;
 
-    public function __construct($discussId, Content $content)
+    public function __construct(Discuss $discuss, Content $content)
     {
-        $this->discussId = $discussId;
+        $this->discuss = $discuss;
         parent::__construct($content);
     }
 

@@ -50,4 +50,37 @@ class Utils
         }
         return $hash;
     }
+
+    /**
+     * 生成ptqrtoken的哈希函数
+     * @param string $string
+     * @return int
+     */
+    public static function hash33($string)
+    {
+        $e = 0;
+        $n = strlen($string);
+        for ($i = 0; $n > $i; ++ $i) {
+            $e += ($e << 5) + static::charCodeAt($string, $i);
+        }
+        return 2147483647 & $e;
+    }
+
+    /**
+     * 计算字符的unicode，类似js中charCodeAt
+     * [Link](http://www.phpjiayuan.com/90/225.html)
+     * @param string $str
+     * @param int $index
+     * @return null|number
+     */
+    public static function charCodeAt($str, $index)
+    {
+        $char = mb_substr($str, $index, 1, 'UTF-8');
+        if (mb_check_encoding($char, 'UTF-8')) {
+            $ret = mb_convert_encoding($char, 'UTF-32BE', 'UTF-8');
+            return hexdec(bin2hex($ret));
+        } else {
+            return null;
+        }
+    }
 }

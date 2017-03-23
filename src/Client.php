@@ -16,6 +16,7 @@ use Slince\SmartQQ\Entity\Friend;
 use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\Entity\GroupDetail;
 use Slince\SmartQQ\Entity\Profile;
+use Slince\SmartQQ\Exception\InvalidArgumentException;
 use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Message\Request\FriendMessage;
 use Slince\SmartQQ\Message\Request\GroupMessage;
@@ -96,9 +97,10 @@ class Client
      */
     public function login($loginQRImage)
     {
-        $this->makeQrCodeImage($loginQRImage);
+        $qrSign = $this->makeQrCodeImage($loginQRImage);
+        $ptQrToken = Utils::hash33($qrSign);
         while (true) {
-            $status = $this->verifyQrCodeStatus();
+            $status = $this->verifyQrCodeStatus($ptQrToken);
             if ($status == VerifyQrCodeRequest::STATUS_EXPIRED) {
                 $this->makeQrCodeImage($loginQRImage);
             } elseif ($status == VerifyQrCodeRequest::STATUS_CERTIFICATION) {
@@ -110,7 +112,7 @@ class Client
         $ptWebQQ = $this->getPtWebQQ($this->certificationUrl);
         $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
         list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
-        $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin, static::$clientId);
+        $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin);
         return $this->credential;
     }
 
@@ -118,21 +120,28 @@ class Client
     /**
      * 创建登录所需的二维码
      * @param string $loginQRImage
-     * @return void
+     * @return string
      */
     protected function makeQrCodeImage($loginQRImage)
     {
         $response = $this->sendRequest(new GetQrCodeRequest());
         Utils::getFilesystem()->dumpFile($loginQRImage, $response->getBody());
+        foreach ($this->cookies as $cookie) {
+            if (strcasecmp($cookie->getName(), 'qrsig') == 0) {
+                return $cookie->getValue();
+            }
+        }
+        throw new RuntimeException("Can not find parameter [qrsig]");
     }
 
     /**
      * 验证二维码状态
+     * @param int $ptQrToken qr token
      * @return int
      */
-    protected function verifyQrCodeStatus()
+    protected function verifyQrCodeStatus($ptQrToken)
     {
-        $request = new VerifyQrCodeRequest();
+        $request = new VerifyQrCodeRequest($ptQrToken);
         $response = $this->sendRequest($request);
         if (strpos($response->getBody(), '未失效') !== false) {
             $status = VerifyQrCodeRequest::STATUS_UNEXPIRED;
@@ -142,6 +151,7 @@ class Client
             $status = VerifyQrCodeRequest::STATUS_ACCREDITATION;
         } else {
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
+            echo strval($response->getBody());exit;
             //找出认证url
             if (preg_match("#'(http*+)'#U", strval($response->getBody()), $matches)) {
                 $this->certificationUrl = trim($matches[1]);
@@ -167,7 +177,7 @@ class Client
                 return $cookie->getValue();
             }
         }
-        throw new RuntimeException("Extract parameter [ptwebqq] error");
+        throw new RuntimeException("Can not find parameter [ptwebqq]");
     }
 
     /**
@@ -199,12 +209,31 @@ class Client
     }
 
     /**
+     * @param Credential $credential
+     */
+    public function setCredential(Credential $credential)
+    {
+        $this->credential = $credential;
+    }
+
+    /**
+     * @return Credential
+     */
+    public function getCredential()
+    {
+        if (!$this->getCredential()) {
+            throw new InvalidArgumentException("Please login first or set a credential");
+        }
+        return $this->credential;
+    }
+
+    /**
      * 获取所有的群
      * @return EntityCollection
      */
     public function getGroups()
     {
-        $request = new GetGroupsRequest($this->credential);
+        $request = new GetGroupsRequest($this->getCredential());
         $response = $this->sendRequest($request);
         return GetGroupsRequest::parseResponse($response, $this);
     }
@@ -216,7 +245,7 @@ class Client
      */
     public function getGroupDetail(Group $group)
     {
-        $request = new GetGroupDetailRequest($group, $this->credential);
+        $request = new GetGroupDetailRequest($group, $this->getCredential());
         $response = $this->sendRequest($request);
         return GetGroupDetailRequest::parseResponse($response);
     }
@@ -227,7 +256,7 @@ class Client
      */
     public function getDiscusses()
     {
-        $request = new GetDiscussesRequest($this->credential);
+        $request = new GetDiscussesRequest($this->getCredential());
         $response = $this->sendRequest($request);
         return GetDiscussesRequest::parseResponse($response);
     }
@@ -239,7 +268,7 @@ class Client
      */
     public function getDiscussDetail(Discuss $discuss)
     {
-        $request = new GetDiscussDetailRequest($discuss, $this->credential);
+        $request = new GetDiscussDetailRequest($discuss, $this->getCredential());
         $response = $this->sendRequest($request);
         return GetDiscussDetailRequest::parseResponse($response);
     }
@@ -250,7 +279,7 @@ class Client
      */
     public function getFriends()
     {
-        $request = new GetFriendsRequest($this->credential);
+        $request = new GetFriendsRequest($this->getCredential());
         $response = $this->sendRequest($request);
         return GetFriendsRequest::parseResponse($response);
     }
@@ -262,7 +291,7 @@ class Client
      */
     public function getFriendDetail(Friend $friend)
     {
-        $request = new GetFriendDetailRequest($friend, $this->credential);
+        $request = new GetFriendDetailRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
         return GetFriendDetailRequest::parseResponse($response);
     }
@@ -274,7 +303,7 @@ class Client
      */
     public function getFriendQQ(Friend $friend)
     {
-        $request = new GetQQRequest($friend, $this->credential);
+        $request = new GetQQRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
         $qq = GetQQRequest::parseResponse($response);
         $friend->setQq($qq);
@@ -287,7 +316,7 @@ class Client
      */
     public function getFriendsOnlineStatus()
     {
-        $request = new GetFriendsOnlineStatusRequest($this->credential);
+        $request = new GetFriendsOnlineStatusRequest($this->getCredential());
         $response = $this->sendRequest($request);
         return GetFriendsOnlineStatusRequest::parseResponse($response);
     }
@@ -298,7 +327,7 @@ class Client
      */
     public function getRecentList()
     {
-        $request = new GetRecentListRequest($this->credential);
+        $request = new GetRecentListRequest($this->getCredential());
         $response = $this->sendRequest($request);
         return GetRecentListRequest::parseResponse($response);
     }
@@ -320,7 +349,7 @@ class Client
      */
     public function pollMessages()
     {
-        $request = new PollMessagesRequest($this->credential);
+        $request = new PollMessagesRequest($this->getCredential());
         $response = $this->sendRequest($request);
         return PollMessagesRequest::parseResponse($response);
     }
@@ -333,11 +362,11 @@ class Client
     public function sendMessage(RequestMessage $message)
     {
         if ($message instanceof FriendMessage) {
-            $request = new SendFriendMessageRequest($message, $this->credential);
+            $request = new SendFriendMessageRequest($message, $this->getCredential());
         } elseif ($message instanceof GroupMessage) {
-            $request = new SendGroupMessageRequest($message, $this->credential);
+            $request = new SendGroupMessageRequest($message, $this->getCredential());
         } else {
-            $request = new SendDiscusMessageRequest($message, $this->credential);
+            $request = new SendDiscusMessageRequest($message, $this->getCredential());
         }
         $response = $this->sendRequest($request);
         return SendMessageRequest::parseResponse($response);

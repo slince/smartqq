@@ -5,7 +5,7 @@
  */
 namespace Slince\SmartQQ\Entity;
 
-class GroupMember
+class GroupMember extends User
 {
     /**
      * flag，作用不明
@@ -30,12 +30,6 @@ class GroupMember
      * @var string
      */
     protected $gender;
-
-    /**
-     * 编号
-     * @var int
-     */
-    protected $uin;
 
     /**
      * 国家
@@ -113,22 +107,6 @@ class GroupMember
     public function setGender($gender)
     {
         $this->gender = $gender;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUin()
-    {
-        return $this->uin;
-    }
-
-    /**
-     * @param int $uin
-     */
-    public function setUin($uin)
-    {
-        $this->uin = $uin;
     }
 
     /**

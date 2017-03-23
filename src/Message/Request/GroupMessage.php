@@ -11,36 +11,14 @@ use Slince\SmartQQ\Message\Content;
 class GroupMessage extends Message
 {
     /**
-     * 群编号
-     * @var int
-     */
-    protected $groupUin;
-
-    /**
      * @var Group
      */
     protected $group;
 
-    public function __construct($groupUin, Content $content)
+    public function __construct(Group $group, Content $content)
     {
-        $this->groupUin = $groupUin;
+        $this->group = $group;
         parent::__construct($content);
-    }
-
-    /**
-     * @return int
-     */
-    public function getGroupUin()
-    {
-        return $this->groupUin;
-    }
-
-    /**
-     * @param int $groupUin
-     */
-    public function setGroupUin($groupUin)
-    {
-        $this->groupUin = $groupUin;
     }
 
     /**

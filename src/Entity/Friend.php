@@ -5,7 +5,7 @@
  */
 namespace Slince\SmartQQ\Entity;
 
-class Friend
+class Friend extends User
 {
     /**
      * flag,作用不明
@@ -30,12 +30,6 @@ class Friend
      * @var int
      */
     protected $qq;
-
-    /**
-     * 用户编号
-     * @var int
-     */
-    protected $uin;
 
     /**
      * 是否是VIP
@@ -78,14 +72,6 @@ class Friend
     public function getMarkName()
     {
         return $this->markName;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUin()
-    {
-        return $this->uin;
     }
 
     /**
@@ -158,14 +144,6 @@ class Friend
     public function setNick($nick)
     {
         $this->nick = $nick;
-    }
-
-    /**
-     * @param int $uin
-     */
-    public function setUin($uin)
-    {
-        $this->uin = $uin;
     }
 
     /**

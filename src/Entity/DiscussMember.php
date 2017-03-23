@@ -5,13 +5,8 @@
  */
 namespace Slince\SmartQQ\Entity;
 
-class DiscussMember
+class DiscussMember extends User
 {
-    /**
-     * @var int
-     */
-    protected $uin;
-
     /**
      * @var string
      */
@@ -32,22 +27,6 @@ class DiscussMember
      * @var int
      */
     protected $ruin;
-
-    /**
-     * @return int
-     */
-    public function getUin()
-    {
-        return $this->uin;
-    }
-
-    /**
-     * @param int $uin
-     */
-    public function setUin($uin)
-    {
-        $this->uin = $uin;
-    }
 
     /**
      * @return string

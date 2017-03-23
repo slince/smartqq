@@ -5,6 +5,11 @@
  */
 namespace Slince\SmartQQ;
 
+/**
+ * Class UrlStore
+ * @deprecated
+ * @package Slince\SmartQQ
+ */
 final class UrlStore
 {
     /**
