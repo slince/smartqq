@@ -58,12 +58,12 @@ class Request implements RequestInterface
     }
 
     /**
-     * 设置url
-     * @param string $url
+     * 设置uri
+     * @param string $uri
      */
-    public function setUrl($url)
+    public function setUri($uri)
     {
-        $this->url = $url;
+        $this->uri = $uri;
     }
 
     /**

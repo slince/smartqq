@@ -85,7 +85,8 @@ class Client
         $this->cookies = new CookieJar();
         $this->httpClient = new HttpClient([
             'cookies' => $this->cookies,
-            'verify' => false
+            'verify' => false,
+            'proxy' => '127.0.0.1:8888'
         ]);
         $this->credential = $credential;
     }
@@ -109,9 +110,14 @@ class Client
             }
             sleep(1);
         }
+        var_dump(__LINE__, $this->certificationUrl);
+
         $ptWebQQ = $this->getPtWebQQ($this->certificationUrl);
+        var_dump(__LINE__, $ptWebQQ);
         $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
+        var_dump(__LINE__, $vfWebQQ);
         list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
+        var_dump(__LINE__, $uin, $pSessionId);
         $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin);
         return $this->credential;
     }
@@ -151,9 +157,8 @@ class Client
             $status = VerifyQrCodeRequest::STATUS_ACCREDITATION;
         } else {
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
-            echo strval($response->getBody());exit;
             //找出认证url
-            if (preg_match("#'(http*+)'#U", strval($response->getBody()), $matches)) {
+            if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
                 $this->certificationUrl = trim($matches[1]);
             } else {
                 throw new RuntimeException("Can not find certification url");
@@ -170,7 +175,7 @@ class Client
     protected function getPtWebQQ($certificationUrl)
     {
         $request = new GetPtWebQQRequest();
-        $request->setUrl($certificationUrl);
+        $request->setUri($certificationUrl);
         $this->sendRequest($request);
         foreach ($this->cookies as $cookie) {
             if (strcasecmp($cookie->getName(), 'ptwebqq') == 0) {
