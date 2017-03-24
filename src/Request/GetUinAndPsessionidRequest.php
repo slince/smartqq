@@ -19,8 +19,6 @@ class GetUinAndPsessionidRequest extends Request
     public function __construct(array $data)
     {
         $this->setParameter('r', json_encode($data));
-        var_dump(__LINE__);
-        print_r($data);
     }
 
     /**
@@ -29,7 +27,6 @@ class GetUinAndPsessionidRequest extends Request
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        var_dump(strval($response->getBody()));
         if (!isset($jsonData['result']['uin'])) {
             throw new RuntimeException("Can not find argument [uin] and [psessionid]");
         }

@@ -56,13 +56,7 @@ class Client
      * 客户端id(固定值)
      * @var int
      */
-    protected static $clientId = 5399199;
-
-    /**
-     * 保存登录二维码的位置
-     * @var string
-     */
-    protected $loginQRImage;
+    protected static $clientId = 53999199;
 
     /**
      * 获取ptwebqq的地址
@@ -103,21 +97,17 @@ class Client
         while (true) {
             $status = $this->verifyQrCodeStatus($ptQrToken);
             if ($status == VerifyQrCodeRequest::STATUS_EXPIRED) {
-                $this->makeQrCodeImage($loginQRImage);
+                $qrSign = $this->makeQrCodeImage($loginQRImage);
+                $ptQrToken = Utils::hash33($qrSign);
             } elseif ($status == VerifyQrCodeRequest::STATUS_CERTIFICATION) {
                 //授权成功跳出状态检查
                 break;
             }
             sleep(1);
         }
-        var_dump(__LINE__, $this->certificationUrl);
-
         $ptWebQQ = $this->getPtWebQQ($this->certificationUrl);
-        var_dump(__LINE__, $ptWebQQ);
         $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
-        var_dump(__LINE__, $vfWebQQ);
         list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
-        var_dump(__LINE__, $uin, $pSessionId);
         $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin);
         return $this->credential;
     }
@@ -158,13 +148,34 @@ class Client
         } else {
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
             //找出认证url
-            if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
-                $this->certificationUrl = trim($matches[1]);
-            } else {
-                throw new RuntimeException("Can not find certification url");
+//            if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
+//                $this->certificationUrl = trim($matches[1]);
+//            } else {
+//                throw new RuntimeException("Can not find certification url");
+//            }
+
+            $certificationUrl = $this->extractUrlFromVerifyResponse(strval($response->getBody()));
+            if ($certificationUrl ===  false) {
+                throw new RuntimeException("Extract Certification Url Error");
             }
+            $this->certificationUrl = $certificationUrl;
         }
         return $status;
+    }
+
+    /**
+     * 从验证结果中提取下一步登录所需要的参数
+     * @param $response
+     * @return bool
+     */
+    protected function extractUrlFromVerifyResponse($response)
+    {
+        foreach (explode(',', $response) as $fragment) {
+            if (strpos($fragment, 'http') !== false) {
+                return trim($fragment, "'");
+            }
+        }
+        return false;
     }
 
     /**
@@ -226,7 +237,7 @@ class Client
      */
     public function getCredential()
     {
-        if (!$this->getCredential()) {
+        if (!$this->credential) {
             throw new InvalidArgumentException("Please login first or set a credential");
         }
         return $this->credential;

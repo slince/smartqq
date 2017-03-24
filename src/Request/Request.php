@@ -5,8 +5,6 @@
  */
 namespace Slince\SmartQQ\Request;
 
-use GuzzleHttp\Psr7\Response;
-
 class Request implements RequestInterface
 {
     /**
@@ -16,16 +14,16 @@ class Request implements RequestInterface
     protected $uri;
 
     /**
-     * 请求方式
-     * @var string
-     */
-    protected $method = RequestInterface::REQUEST_METHOD_GET;
-
-    /**
      * referer
      * @var string
      */
     protected $referer;
+
+    /**
+     * 请求方式
+     * @var string
+     */
+    protected $method = RequestInterface::REQUEST_METHOD_GET;
 
     /**
      * 请求参数
