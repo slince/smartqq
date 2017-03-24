@@ -26,7 +26,7 @@ class GetFriendsRequest extends Request
 
     public function __construct(Credential $credential)
     {
-        $this->setParameter('r', json_encode([
+        $this->setParameter('r', \GuzzleHttp\json_encode([
             'vfwebqq' => $credential->getVfWebQQ(),
             'hash' => Utils::hash($credential->getUin(), $credential->getPtWebQQ()),
         ]));
@@ -44,19 +44,19 @@ class GetFriendsRequest extends Request
             //好友基本信息
             $friendDatas = (new Collection($jsonData['result']['friends']))->combine('uin', function($entity){
                 return $entity;
-            });
+            })->toArray();
             //markNames
             $markNames = (new Collection($jsonData['result']['marknames']))->combine('uin', function($entity){
                 return $entity;
-            });
+            })->toArray();
             //分类
             $categories = (new Collection($jsonData['result']['categories']))->combine('index', function($entity){
                 return $entity;
-            });
+            })->toArray();
             //vip信息
             $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity){
                 return $entity;
-            });
+            })->toArray();
             $friends = [];
             foreach ($jsonData['result']['info'] as $friendData) {
                 $uin = $friendData['uin'];
@@ -72,7 +72,9 @@ class GetFriendsRequest extends Request
                 $category = null;
                 if (isset($friendDatas[$uin])) {
                     $categoryIndex = $friendDatas[$uin]['categories'];
-                    if (isset($categories[$categoryIndex])) {
+                    if ($categoryIndex == 0) {
+                        $category = Category::createMyFriendCategory();
+                    } else {
                         $category = EntityFactory::createEntity(Category::class, [
                             'index' => $categories[$categoryIndex]['index'],
                             'name' => $categories[$categoryIndex]['name'],

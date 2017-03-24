@@ -41,11 +41,12 @@ class GetGroupDetailRequest extends Request
             //群成员的vip信息
             $vipInfos  = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity){
                 return $entity;
-            });
+            })->toArray();
             //群成员的名片信息
-            $cards  = (new Collection($jsonData['result']['cards']))->combine('muin', 'card');
+            $cards = (new Collection($jsonData['result']['cards']))->combine('muin', 'card')->toArray();
             //群成员的简要信息
-            $flags = (new Collection($jsonData['result']['ginfo']['members']))->combine('muin', 'mflag');
+            $flags = (new Collection($jsonData['result']['ginfo']['members']))->combine('muin', 'mflag')
+                ->toArray();
             //群基本详细信息
             $groupData = $jsonData['result']['ginfo'];
             $groupDetailData = [

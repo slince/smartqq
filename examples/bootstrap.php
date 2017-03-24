@@ -2,14 +2,17 @@
 /**
  * 案例演示
  */
+use Slince\SmartQQ\Credential;
+use GuzzleHttp\Cookie\CookieJar;
+
 include __DIR__ . '/../vendor/autoload.php';
 
-use Slince\SmartQQ\Credential;
 date_default_timezone_set('Prc');
 
 //二维码图片
 define('LOGIN_QR_IMAGE', getcwd() . '/smartqq-login-qr.png');
 
+//登录凭证信息保存
 define('CREDENTIAL_JSON', getcwd() . '/credential.json');
 
 /**
@@ -23,15 +26,16 @@ function printPrettyScreen($data)
 }
 
 /**
+ * 获取登录凭证
  * @return Credential
  */
 function getCredential()
 {
-    $credentialParameters = json_decode(file_get_contents(CREDENTIAL_JSON), true);
+    @$credentialParameters = json_decode(file_get_contents(CREDENTIAL_JSON), true);
     if (!$credentialParameters) {
         exit("Please execute login first");
     }
-    return Credential::create($credentialParameters);
+    return Credential::fromArray($credentialParameters);
 }
 
 /**

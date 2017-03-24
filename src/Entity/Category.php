@@ -82,4 +82,13 @@ class Category
     {
         return $this->sort;
     }
+
+    /**
+     * 创建我的好友默认分类
+     * @return Category
+     */
+    public static function createMyFriendCategory()
+    {
+        return new static('我的好友', 0, 0);
+    }
 }

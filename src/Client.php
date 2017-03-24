@@ -74,15 +74,18 @@ class Client
      */
     protected $cookies;
 
-    public function __construct(Credential $credential = null)
+    public function __construct(Credential $credential = null, HttpClient $httpClient = null)
     {
-        $this->cookies = new CookieJar();
-        $this->httpClient = new HttpClient([
-            'cookies' => $this->cookies,
-            'verify' => false,
-            'proxy' => '127.0.0.1:8888'
-        ]);
-        $this->credential = $credential;
+        if (!is_null($credential)) {
+            $this->setCredential($credential);
+        }
+        if (is_null($httpClient)) {
+            $httpClient = new HttpClient([
+                'verify' => false,
+                'proxy' => '127.0.0.1:8888'
+            ]);
+        }
+        $this->httpClient = $httpClient;
     }
 
     /**
@@ -92,6 +95,8 @@ class Client
      */
     public function login($loginQRImage)
     {
+        //如果登录则重置cookie
+        $this->cookies = new CookieJar();
         $qrSign = $this->makeQrCodeImage($loginQRImage);
         $ptQrToken = Utils::hash33($qrSign);
         while (true) {
@@ -108,7 +113,7 @@ class Client
         $ptWebQQ = $this->getPtWebQQ($this->certificationUrl);
         $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
         list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
-        $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin);
+        $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin, static::$clientId, $this->cookies);
         return $this->credential;
     }
 
@@ -148,34 +153,13 @@ class Client
         } else {
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
             //找出认证url
-//            if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
-//                $this->certificationUrl = trim($matches[1]);
-//            } else {
-//                throw new RuntimeException("Can not find certification url");
-//            }
-
-            $certificationUrl = $this->extractUrlFromVerifyResponse(strval($response->getBody()));
-            if ($certificationUrl ===  false) {
-                throw new RuntimeException("Extract Certification Url Error");
+            if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
+                $this->certificationUrl = trim($matches[1]);
+            } else {
+                throw new RuntimeException("Can not find certification url");
             }
-            $this->certificationUrl = $certificationUrl;
         }
         return $status;
-    }
-
-    /**
-     * 从验证结果中提取下一步登录所需要的参数
-     * @param $response
-     * @return bool
-     */
-    protected function extractUrlFromVerifyResponse($response)
-    {
-        foreach (explode(',', $response) as $fragment) {
-            if (strpos($fragment, 'http') !== false) {
-                return trim($fragment, "'");
-            }
-        }
-        return false;
     }
 
     /**
@@ -229,6 +213,7 @@ class Client
      */
     public function setCredential(Credential $credential)
     {
+        $this->cookies = $credential->getCookies();
         $this->credential = $credential;
     }
 
@@ -241,6 +226,22 @@ class Client
             throw new InvalidArgumentException("Please login first or set a credential");
         }
         return $this->credential;
+    }
+
+    /**
+     * @param HttpClient $httpClient
+     */
+    public function setHttpClient($httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
+    /**
+     * @return HttpClient
+     */
+    public function getHttpClient()
+    {
+        return $this->httpClient;
     }
 
     /**
@@ -394,7 +395,9 @@ class Client
      */
     protected function sendRequest(RequestInterface $request)
     {
-        $options = [];
+        $options = [
+            'cookies' => $this->cookies
+        ];
         if ($parameters = $request->getParameters()) {
             if ($request->getMethod() == RequestInterface::REQUEST_METHOD_GET) {
                 $options['query'] = $parameters;

@@ -42,9 +42,10 @@ class GetDiscussDetailRequest extends Request
             //成员在线状态
             $statuses = (new Collection($jsonData['result']['mem_status']))->combine('uin', function($entity){
                 return $entity;
-            });
+            })->toArray();
             //成员基本信息
-            $ruins = (new Collection($jsonData['result']['info']['mem_list']))->combine('mem_uin', 'ruin');
+            $ruins = (new Collection($jsonData['result']['info']['mem_list']))->combine('mem_uin', 'ruin')
+                ->toArray();
             //讨论组基本详情
             $discussData = $jsonData['result']['info'];
             $discussDetailData = [

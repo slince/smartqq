@@ -24,10 +24,10 @@ class GetGroupsRequest extends Request
 
     public function __construct(Credential $credential)
     {
-        $this->setParameter('r', [
+        $this->setParameter('r', \GuzzleHttp\json_encode([
             'vfwebqq' => $credential->getPtWebQQ(),
             'hash' => Utils::hash($credential->getUin(), $credential->getPtWebQQ()),
-        ]);
+        ]));
     }
 
     /**
@@ -40,7 +40,8 @@ class GetGroupsRequest extends Request
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
-            $markNames = (new Collection($jsonData['result']['gmarklist']))->combine('uin', 'markname');
+            $markNames = (new Collection($jsonData['result']['gmarklist']))->combine('uin', 'markname')
+                ->toArray();
             $groups = [];
             foreach ($jsonData['result']['gnamelist'] as $groupData) {
                 $groupId = $groupData['gid'];
