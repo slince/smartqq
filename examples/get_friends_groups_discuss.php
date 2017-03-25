@@ -20,7 +20,7 @@ $friends = $smartQQ->getFriends();
  * 注意QQ号需要单独发起请求查询QQ号，故如果需要按照QQ号筛选，需要做好心里准备
  * smartqq会多次发起请求
  */
-$friend = $friends->firstByAttribute('nick', '流浪星');
+$friend = $friends->firstByAttribute('nick', '张三');
 
 //获取好友的详细信息
 $profile = $smartQQ->getFriendDetail($friend);
@@ -38,7 +38,7 @@ printR($profile);
 $groups = $smartQQ->getGroups();
 
 //2、筛选出指定的群
-$group = $groups->firstByAttribute('name', 'sheinside商城');
+$group = $groups->firstByAttribute('name', '少年群');
 
 //3、获取群的详细信息
 //$groupDetail = $smartQQ->getGroupDetail($group);

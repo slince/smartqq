@@ -45,7 +45,7 @@ printR($result ? 'Send Success' : 'Send Error');
 ## 给讨论组成员发消息
 $discussMember = $smartQQ->getDiscussDetail($discuss)
     ->getMembers()
-    ->firstByAttribute('nick', '清延°');
+    ->firstByAttribute('nick', '张三');
 $message = new FriendMessage($discussMember,  '你好');
 $result = $smartQQ->sendMessage($message);
 printR($result ? 'Send Success' : 'Send Error');
