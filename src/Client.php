@@ -361,7 +361,9 @@ class Client
     }
 
     /**
-     * 轮询消息
+     * 轮询消息,
+     * client并不会组装信息，只是将接口返回的信息完整抽象并返回
+     * 如果需要查询信息对应的数据，如发送人、发送群，请自行获取
      * @return ResponseMessage[]
      */
     public function pollMessages()

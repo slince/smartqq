@@ -37,6 +37,14 @@ class Message extends BaseMessage
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->content->getContent();
+    }
+
+    /**
      * @param int $msgType
      */
     public function setMsgType($msgType)
