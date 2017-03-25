@@ -14,26 +14,20 @@ use Slince\SmartQQ\EntityCollection;
 use Slince\SmartQQ\EntityFactory;
 use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Entity\Group;
+use Slince\SmartQQ\Utils;
 
 class GetGroupDetailRequest extends Request
 {
-    protected $uri = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={groupCode}&vfwebqq={vfwebqq}&t={t}';
+    protected $uri = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={groupcode}&vfwebqq={vfwebqq}&t=0.1';
 
     protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 
     public function __construct(Group $group, Credential $credential)
     {
         $this->setTokens([
-            'groupCode' => $group->getCode(),
+            'groupcode' => $group->getId(),
             'vfwebqq' => $credential->getVfWebQQ(),
-            't' => $this->getMillisecond()
         ]);
-    }
-
-    public function getMillisecond()
-    {
-        list($s1, $s2) = explode(' ', microtime());
-        return (float)sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
     }
 
     /**

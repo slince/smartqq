@@ -10,7 +10,7 @@ use Slince\SmartQQ\Entity\Profile;
 
 class GetCurrentUserRequest extends Request
 {
-    protected $uri = 'http://s.web2.qq.com/api/get_self_info2&t=0.1';
+    protected $uri = 'http://s.web2.qq.com/api/get_self_info2?t=0.1';
 
     protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 

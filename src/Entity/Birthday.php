@@ -76,4 +76,13 @@ class Birthday
     {
         return $this->day;
     }
+
+    /**
+     * 创建生日
+     * @return Birthday
+     */
+    public static function createFromArray($data)
+    {
+        return new static($data['year'], $data['month'], $data['day']);
+    }
 }

@@ -25,7 +25,7 @@ class GetGroupsRequest extends Request
     public function __construct(Credential $credential)
     {
         $this->setParameter('r', \GuzzleHttp\json_encode([
-            'vfwebqq' => $credential->getPtWebQQ(),
+            'vfwebqq' => $credential->getVfWebQQ(),
             'hash' => Utils::hash($credential->getUin(), $credential->getPtWebQQ()),
         ]));
     }

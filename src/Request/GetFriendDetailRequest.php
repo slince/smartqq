@@ -40,7 +40,7 @@ class GetFriendDetailRequest extends Request
             $profileData = $jsonData['result'];
             return EntityFactory::createEntity(Profile::class, [
                 'face' => $profileData['face'],
-                'birthday' => EntityFactory::createEntity(Birthday::class, $profileData['birthday']),
+                'birthday' => Birthday::createFromArray($profileData['birthday']),
                 'occupation' => $profileData['occupation'],
                 'phone' => $profileData['phone'],
                 'allow' => $profileData['allow'],
@@ -49,7 +49,7 @@ class GetFriendDetailRequest extends Request
                 'constel' => $profileData['constel'],
                 'blood' => $profileData['blood'],
                 'homepage' => $profileData['homepage'],
-                'stat' => $profileData['stat'],
+                'stat' => isset($profileData['stat']) ? $profileData['stat'] : null,
                 'vipInfo' => $profileData['vip_info'],
                 'country' => $profileData['country'],
                 'city' => $profileData['city'],

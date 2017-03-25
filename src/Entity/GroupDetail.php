@@ -5,6 +5,8 @@
  */
 namespace Slince\SmartQQ\Entity;
 
+use Slince\SmartQQ\EntityCollection;
+
 class GroupDetail
 {
     /**
@@ -56,7 +58,7 @@ class GroupDetail
     protected $memo;
 
     /**
-     * @var GroupMember[]
+     * @var EntityCollection
      */
     protected $members;
 
@@ -189,7 +191,7 @@ class GroupDetail
     }
 
     /**
-     * @return GroupMember[]
+     * @return EntityCollection
      */
     public function getMembers()
     {
@@ -197,7 +199,7 @@ class GroupDetail
     }
 
     /**
-     * @param GroupMember[] $members
+     * @param EntityCollection $members
      */
     public function setMembers($members)
     {

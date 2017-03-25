@@ -20,7 +20,7 @@ class GetRecentListRequest extends Request
 
     public function __construct(Credential $credential)
     {
-        $this->setParameter('r', json_encode([
+        $this->setParameter('r', \GuzzleHttp\json_encode([
             'vfwebqq' => $credential->getVfWebQQ(),
             'clientid' => $credential->getClientId(),
             'psessionid' => $credential->getPSessionId()

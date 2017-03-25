@@ -5,6 +5,8 @@
  */
 namespace Slince\SmartQQ\Entity;
 
+use Slince\SmartQQ\EntityCollection;
+
 class DiscussDetail
 {
     /**
@@ -18,7 +20,7 @@ class DiscussDetail
     protected $name;
 
     /**
-     * @var DiscussMember[]
+     * @var EntityCollection
      */
     protected $members;
 
@@ -55,7 +57,7 @@ class DiscussDetail
     }
 
     /**
-     * @return DiscussMember[]
+     * @return EntityCollection
      */
     public function getMembers()
     {
@@ -63,7 +65,7 @@ class DiscussDetail
     }
 
     /**
-     * @param DiscussMember[] $members
+     * @param EntityCollection $members
      */
     public function setMembers($members)
     {

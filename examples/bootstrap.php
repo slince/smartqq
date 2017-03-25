@@ -21,8 +21,18 @@ define('CREDENTIAL_JSON', getcwd() . '/credential.json');
  */
 function printPrettyScreen($data)
 {
-    print_r($data);
+//    printR($data);
     @file_put_contents(getcwd() . '/result.log', print_r($data, true) . "\r\n", FILE_APPEND);
+}
+
+/**
+ * 有效输出
+ * @param $data
+ */
+function printR($data)
+{
+    //windows中文cmd使用的是gbk编码故需要转换
+    echo mb_convert_encoding(print_r($data, true), 'gbk', 'utf-8');
 }
 
 /**
