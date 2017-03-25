@@ -40,6 +40,7 @@ class GetFriendsRequest extends Request
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
+        //有时候获取好友接口retcode=100003时也可以获取数据，但数据不完整故当做无效返回
         if ($jsonData && $jsonData['retcode'] == 0) {
             //好友基本信息
             $friendDatas = (new Collection($jsonData['result']['friends']))->combine('uin', function($entity){
@@ -75,11 +76,10 @@ class GetFriendsRequest extends Request
                     if ($categoryIndex == 0) {
                         $category = Category::createMyFriendCategory();
                     } else {
-                        $category = EntityFactory::createEntity(Category::class, [
-                            'index' => $categories[$categoryIndex]['index'],
-                            'name' => $categories[$categoryIndex]['name'],
-                            'sort' => $categories[$categoryIndex]['sort'],
-                        ]);
+                        $category = new Category($categories[$categoryIndex]['name'],
+                            $categories[$categoryIndex]['index'],
+                            $categories[$categoryIndex]['sort']
+                        );
                     }
                 }
                 $friend['category'] = $category;

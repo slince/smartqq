@@ -17,7 +17,7 @@ use Slince\SmartQQ\Entity\Group;
 
 class GetGroupDetailRequest extends Request
 {
-    protected $uri = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={groupCode}&vfwebqq={vfwebqq}&t=0.1';
+    protected $uri = 'http://s.web2.qq.com/api/get_group_info_ext2?gcode={groupCode}&vfwebqq={vfwebqq}&t={t}';
 
     protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
 
@@ -25,8 +25,15 @@ class GetGroupDetailRequest extends Request
     {
         $this->setTokens([
             'groupCode' => $group->getCode(),
-            'vfwebqq' => $credential->getVfWebQQ()
+            'vfwebqq' => $credential->getVfWebQQ(),
+            't' => $this->getMillisecond()
         ]);
+    }
+
+    public function getMillisecond()
+    {
+        list($s1, $s2) = explode(' ', microtime());
+        return (float)sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
     }
 
     /**

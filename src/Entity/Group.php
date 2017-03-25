@@ -5,7 +5,7 @@
  */
 namespace Slince\SmartQQ\Entity;
 
-class Group extends Entity
+class Group
 {
     /**
      * gid

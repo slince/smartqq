@@ -48,7 +48,6 @@ class GetGroupsRequest extends Request
                 $groupData['id'] = $groupData['gid'];
                 $groupData['markName'] = isset($markNames[$groupId]) ? $markNames[$groupId] : '';
                 $group = EntityFactory::createGroup($groupData);
-                $group->setClient($client);
                 $groups[] = $group;
             }
             return new EntityCollection($groups);
