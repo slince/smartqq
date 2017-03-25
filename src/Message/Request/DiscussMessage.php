@@ -15,7 +15,7 @@ class DiscussMessage extends Message
      */
     protected $discuss;
 
-    public function __construct(Discuss $discuss, Content $content)
+    public function __construct(Discuss $discuss, $content)
     {
         $this->discuss = $discuss;
         parent::__construct($content);

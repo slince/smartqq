@@ -15,7 +15,7 @@ class GroupMessage extends Message
      */
     protected $group;
 
-    public function __construct(Group $group, Content $content)
+    public function __construct(Group $group, $content)
     {
         $this->group = $group;
         parent::__construct($content);

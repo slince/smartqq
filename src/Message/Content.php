@@ -36,11 +36,12 @@ class Content
      */
     public function __toString()
     {
+        $font = $this->getFont() ?: Font::createDefault();
         return \GuzzleHttp\json_encode([
             $this->getContent(),
             [
                 'font',
-                $this->getFont() ?: Font::createDefault()
+                $font->toArray()
             ]
         ]);
     }

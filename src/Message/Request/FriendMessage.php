@@ -15,7 +15,7 @@ class FriendMessage extends Message
      */
     protected $user;
 
-    public function __construct(User $user, Content $content)
+    public function __construct(User $user, $content)
     {
         $this->user = $user;
         parent::__construct($content);

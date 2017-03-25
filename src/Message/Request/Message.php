@@ -7,6 +7,7 @@ namespace Slince\SmartQQ\Message\Request;
 
 use Slince\SmartQQ\Message\Message as BaseMessage;
 use Slince\SmartQQ\Message\Content;
+use Slince\SmartQQ\Utils;
 
 class Message extends BaseMessage
 {
@@ -14,17 +15,14 @@ class Message extends BaseMessage
      * 具体不明
      * @var int
      */
-    protected $face;
+    protected $face = 522;
 
-    /**
-     * 请求message的id
-     * @var int
-     */
-    public static $msgId = 65890001;
-
-    public function __construct(Content $content)
+    public function __construct($content)
     {
-        parent::__construct($content, static::$msgId ++);
+        if (is_string($content)) {
+            $content = new Content($content);
+        }
+        parent::__construct($content, Utils::makeMsgId());
     }
 
     /**

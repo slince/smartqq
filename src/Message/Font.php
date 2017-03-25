@@ -104,6 +104,20 @@ class Font
     }
 
     /**
+     * 转换成数组
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'name' => $this->name,
+            'size' => $this->size,
+            'style' => $this->style,
+            'color' => $this->color
+        ];
+    }
+
+    /**
      * 创建一个默认字体
      * @return static
      */
