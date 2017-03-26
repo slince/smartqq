@@ -20,16 +20,18 @@ $friends = $smartQQ->getFriends();
  * 注意QQ号需要单独发起请求查询QQ号，故如果需要按照QQ号筛选，需要做好心里准备
  * smartqq会多次发起请求
  */
-$friend = $friends->firstByAttribute('nick', '张三');
+$friend = $friends->firstByAttribute('nick', '清延°');
 
-//获取好友的详细信息
+//3、获取好友的详细信息
 $profile = $smartQQ->getFriendDetail($friend);
 
+//4、获取好友的真实QQ号
+$qq = $smartQQ->getFriendQQ($friend);
 //3、输出结果
 printPrettyScreen($friends->toArray());
 printR($friend);
 printR($profile);
-
+printR($qq);
 
 
 ## 群信息
@@ -38,11 +40,11 @@ printR($profile);
 $groups = $smartQQ->getGroups();
 
 //2、筛选出指定的群
-$group = $groups->firstByAttribute('name', '少年群');
+$group = $groups->firstByAttribute('name', 'Symfony.cn');
 
 //3、获取群的详细信息
-//$groupDetail = $smartQQ->getGroupDetail($group);
-//printR($groupDetail);
+$groupDetail = $smartQQ->getGroupDetail($group);
+printR($groupDetail);
 // 输出
 printPrettyScreen($groups->toArray());
 printR($group);
