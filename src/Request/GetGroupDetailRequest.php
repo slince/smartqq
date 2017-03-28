@@ -25,7 +25,7 @@ class GetGroupDetailRequest extends Request
     public function __construct(Group $group, Credential $credential)
     {
         $this->setTokens([
-            'groupcode' => $group->getId(),
+            'groupcode' => $group->getCode(),
             'vfwebqq' => $credential->getVfWebQQ(),
         ]);
     }
@@ -56,7 +56,7 @@ class GetGroupDetailRequest extends Request
                 'code' => $groupData['code'],
                 'owner' => $groupData['owner'],
                 'level' => $groupData['level'],
-                'createTime' => $groupData['$createTime'],
+                'createTime' => $groupData['createtime'],
                 'flag' => $groupData['flag'],
                 'memo' => $groupData['memo'],
                 'members' => null,

@@ -44,11 +44,11 @@ $group = $groups->firstByAttribute('name', 'Symfony.cn');
 
 //3、获取群的详细信息
 $groupDetail = $smartQQ->getGroupDetail($group);
-printR($groupDetail);
 // 输出
 printPrettyScreen($groups->toArray());
 printR($group);
-
+printR($group);
+printR($groupDetail);
 
 ## 讨论组
 
