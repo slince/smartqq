@@ -1,7 +1,7 @@
 # SmartQQ协议
 
-SmartQQ(WebQQ) API的PHP实现，通过对原生web api的请求以及返回值的分析，重新进行了整理；解决了原生接口杂乱的请求规则
-与混乱的数据返回；使得开发者可以更多关注自己的业务。
+SmartQQ(WebQQ) API的PHP实现，通过对原生web api的请求以及返回值的分析，重新进行了整理；
+解决了原生接口杂乱的请求规则与混乱的数据返回；使得开发者可以更多关注自己的业务。
 
 灵感来自于[Java SmartQQ](https://github.com/ScienJus/smartqq)，感谢原作者对SmartQQ的详尽解释。
 
@@ -154,3 +154,5 @@ $messages = $smartQQ->pollMessages();
 - 关于103错误，多是由于webqq多点登录引起的，如果遇到错误，先到[http://w.qq.com/](http://w.qq.com/)确认能够收发消息，然后退出登录
 
 - 关于登录凭证的时效性，smartqq是基于web接口的，对cookie有要求，登录成功之后如果长时间没有操作，cookie将会失效；此时需要重新登录
+
+- 本组件只是对原生的请求与数据进行了整理并进行了合理的抽象，并没有过多的进行业务层级的封装
