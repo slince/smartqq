@@ -22,7 +22,7 @@
     "require": {
         "php": ">=5.5.9",
         "guzzlehttp/guzzle": "~6.2",
-        "symfony/filesystem": "^2.7|^3.2",
+        "symfony/filesystem": "^2.7|^3.0",
         "cakephp/collection": "^3.4"
     },
     "require-dev": {
