@@ -1,15 +1,21 @@
 # SmartQQ协议
 
-SmartQQ(WebQQ) API的PHP实现，灵感来自于[Java SmartQQ](https://github.com/ScienJus/smartqq)，感谢原作者对SmartQQ的详尽解释。
+SmartQQ(WebQQ) API的PHP实现，通过对原生web api的请求以及返回值的分析，重新进行了整理；解决了原生接口杂乱的请求规则
+与混乱的数据返回；使得开发者可以更多关注自己的业务。
+
+灵感来自于[Java SmartQQ](https://github.com/ScienJus/smartqq)，感谢原作者对SmartQQ的详尽解释。
 
 ## 安装
+
 ```
-composer require slince/smartqq *@dev
+composer require slince/smartqq
 ```
 
 ## 使用
 
-### 登录，由于SmartQQ抛弃了用户名密码的登录方式，所以只能采用二维码登录
+### 登录
+登录是获取授权的必备步骤，由于SmartQQ抛弃了用户名密码的登录方式，所以只能采用二维码登录
+
 ```
 use Slince\SmartQQ\Client;
 
@@ -19,16 +25,20 @@ $smartQQ->login('/path/to/qrcode.png'); //参数为保存二维码的位置
 ```
 如果成功的话你会在`/path/to/qrcode.png`下发现二维码，拿出手机扫一扫即可登录；注意在登录成功之前程序会阻塞直到确认成功；
 成功之后你可以通过下面方式保存登录凭证，下次则可以绕过登录
+
 ```
 $credential = $smartQQ->getCredential();
 $credentialParameters = $credential->toArray();
+```
+持久化登录凭证，用于下次查询；通过下面方式还原一个凭证对象；需要注意的是此次凭证并不会长久有效，如果该凭证长时间没有被用来
+发起查询，则很可能会失效
 
-//...
-
+```
 //还原凭证对象
 $credential = Credential::fromArray($credentialParameters);
 $smartQQ = new Client($credential);
 ```
+
 ### 查询好友、群以及讨论组
 
 #### 好友相关
