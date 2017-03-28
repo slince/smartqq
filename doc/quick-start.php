@@ -38,6 +38,10 @@ $discus = $smartQQ->getDiscusDetail($discuses[0]->id);
 logResult("DiscusDetail:\r\n");
 logResult($discus);
 
+
+$recentList = $smartQQ->getRecentList();
+var_dump($recentList);
+exit;
 try {
 //获取最近消息
     $recents = $smartQQ->getRecentList();

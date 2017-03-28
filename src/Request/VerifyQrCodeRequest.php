@@ -36,4 +36,9 @@ class VerifyQrCodeRequest extends AbstractRequest
     protected $url = UrlStore::VERIFY_QR_CODE;
 
     protected $referer = UrlStore::VERIFY_QR_CODE_REFERER;
+
+    public function __construct($ptQrToken)
+    {
+        $this->setToken('ptqrtoken', $ptQrToken);
+    }
 }

@@ -73,7 +73,9 @@ class SmartQQ
         $this->filesystem = new Filesystem();
         $this->cookies = new CookieJar();
         $this->httpClient = new Client([
-            'cookies' => $this->cookies
+            'cookies' => $this->cookies,
+            'verify' => false,
+            'proxy' => '127.0.0.1:8888'
         ]);
         $this->parameters = new ArrayCache();
     }
@@ -85,11 +87,13 @@ class SmartQQ
      */
     public function login($filePath)
     {
-        $this->makeQrCodeImage($filePath);
+        $qrSign = $this->makeQrCodeImage($filePath);
+        $ptQrToken = Utils::hash33($qrSign);
         while (true) {
-            $status = $this->getVerifyQrCodeStatus();
+            $status = $this->getVerifyQrCodeStatus($ptQrToken);
             if ($status == VerifyQrCodeRequest::STATUS_EXPIRED) {
-                $this->makeQrCodeImage($filePath);
+                $qrSign = $this->makeQrCodeImage($filePath);
+                $ptQrToken = Utils::hash33($qrSign);
             } elseif ($status == VerifyQrCodeRequest::STATUS_CERTIFICATION) {
                 //授权成功跳出状态检查
                 break;
@@ -107,20 +111,27 @@ class SmartQQ
 
     /**
      * @param $filePath
+     * @return string
      */
     protected function makeQrCodeImage($filePath)
     {
         $response = $this->send(new GetQrCodeRequest());
         $this->filesystem->dumpFile($filePath, $response->getBody());
+        foreach ($this->cookies as $cookie) {
+            if (strcasecmp($cookie->getName(), 'qrsig') == 0) {
+                return $cookie->getValue();
+            }
+        }
+        throw new RuntimeException("Can not find parameter [qrsig]");
     }
 
     /**
      * 获取QR Code认证结果
      * @return int
      */
-    protected function getVerifyQrCodeStatus()
+    protected function getVerifyQrCodeStatus($ptQrToken)
     {
-        $request = new VerifyQrCodeRequest();
+        $request = new VerifyQrCodeRequest($ptQrToken);
         $response = $this->send($request);
         if (strpos($response->getBody(), '未失效') !== false) {
             $status = VerifyQrCodeRequest::STATUS_UNEXPIRED;
