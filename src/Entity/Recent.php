@@ -17,13 +17,25 @@ class Recent
      * 群会话
      * @var int
      */
-    const TYPE_GROUP = 2;
+    const TYPE_GROUP = 1;
 
     /**
      * 讨论组会话
      * @var int
      */
-    const TYPE_DISCUSS = 3;
+    const TYPE_DISCUSS = 2;
+
+    /**
+     * 会话类型
+     * @var int
+     */
+    protected $type;
+
+    /**
+     * 对方编号
+     * @var int
+     */
+    protected $uin;
 
     /**
      * @return int
@@ -58,14 +70,29 @@ class Recent
     }
 
     /**
-     * 会话类型
-     * @var int
+     * 是否是好友会话
+     * @return bool
      */
-    protected $type;
+    public function isFriendType()
+    {
+        return $this->type == static::TYPE_FRIEND;
+    }
 
     /**
-     * 对方编号
-     * @var int
+     * 是否是群会话
+     * @return bool
      */
-    protected $uin;
+    public function isGroupType()
+    {
+        return $this->type == static::TYPE_GROUP;
+    }
+
+    /**
+     * 是否是讨论组会话
+     * @return bool
+     */
+    public function isDiscussType()
+    {
+        return $this->type == static::TYPE_DISCUSS;
+    }
 }

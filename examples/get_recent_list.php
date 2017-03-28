@@ -10,17 +10,6 @@ include __DIR__ . '/bootstrap.php';
 //创建smartQQ客户端
 $smartQQ = new Client(getCredential());
 
-$discusses = $smartQQ->getDiscusses();
-
-$user = $smartQQ->getCurrentUserInfo();
-
-$groups = $smartQQ->getGroups();
-
-
-$friends = $smartQQ->getFriends();
-
-$status = $smartQQ->getFriendsOnlineStatus();
-
 //获取当前登录的用户
 $recentList = $smartQQ->getRecentList();
 

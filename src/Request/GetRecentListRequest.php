@@ -16,6 +16,8 @@ class GetRecentListRequest extends Request
 {
     protected $uri = 'http://d1.web2.qq.com/channel/get_recent_list2';
 
+    protected $referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2';
+
     protected $method = RequestInterface::REQUEST_METHOD_POST;
 
     public function __construct(Credential $credential)
