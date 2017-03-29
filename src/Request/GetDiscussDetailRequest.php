@@ -49,7 +49,7 @@ class GetDiscussDetailRequest extends Request
             //讨论组基本详情
             $discussData = $jsonData['result']['info'];
             $discussDetailData = [
-                'id' => $discussData['did'],
+                'did' => $discussData['did'],
                 'name' => $discussData['discu_name'],
             ];
             $members = [];

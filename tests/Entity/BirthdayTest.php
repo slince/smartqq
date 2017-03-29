@@ -6,7 +6,7 @@ use Slince\SmartQQ\Entity\Birthday;
 
 class BirthdayTest extends TestCase
 {
-    public function testGet()
+    public function testGetter()
     {
         $birthday = new Birthday(2017, 03, 28);
         $this->assertEquals(2017, $birthday->getYear());
@@ -14,7 +14,7 @@ class BirthdayTest extends TestCase
         $this->assertEquals(28, $birthday->getDay());
     }
 
-    public function testSet()
+    public function testSetter()
     {
         $birthday = new Birthday(2017, 03, 28);
         $birthday->setYear(2018);

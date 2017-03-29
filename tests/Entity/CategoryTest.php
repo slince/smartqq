@@ -6,7 +6,7 @@ use Slince\SmartQQ\Entity\Category;
 
 class CategoryTest extends TestCase
 {
-    public function testGet()
+    public function testGetter()
     {
         $category = new Category('foo', 1, 2);
         $this->assertEquals('foo', $category->getName());
@@ -14,7 +14,7 @@ class CategoryTest extends TestCase
         $this->assertEquals(2, $category->getSort());
     }
 
-    public function testSet()
+    public function testSetter()
     {
         $category = new Category('foo', 1, 2);
         $category->setName('bar');
