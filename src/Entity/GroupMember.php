@@ -160,7 +160,7 @@ class GroupMember extends User
     /**
      * @return string
      */
-    public function getIsVip()
+    public function isVip()
     {
         return $this->isVip;
     }
