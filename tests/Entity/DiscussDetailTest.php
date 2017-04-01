@@ -1,7 +1,6 @@
 <?php
 namespace Slince\SmartQQ\Tests\Entity;
 
-
 use PHPUnit\Framework\TestCase;
 use Slince\SmartQQ\Entity\DiscussDetail;
 use Slince\SmartQQ\EntityCollection;

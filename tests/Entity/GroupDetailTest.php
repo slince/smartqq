@@ -1,10 +1,11 @@
 <?php
 namespace Slince\SmartQQ\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Slince\SmartQQ\Entity\GroupDetail;
 use Slince\SmartQQ\EntityCollection;
 
-class GroupDetailTest extends UserTestCase
+class GroupDetailTest extends TestCase
 {
     public function testSetter()
     {
