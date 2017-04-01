@@ -10,7 +10,7 @@ class Discuss
     /**
      * @var int
      */
-    protected $did;
+    protected $id;
 
     /**
      * @var string
@@ -20,17 +20,17 @@ class Discuss
     /**
      * @return int
      */
-    public function getDid()
+    public function getId()
     {
-        return $this->did;
+        return $this->id;
     }
 
     /**
-     * @param int $did
+     * @param int $id
      */
-    public function setDid($did)
+    public function setId($id)
     {
-        $this->did = $did;
+        $this->id = $id;
     }
 
     /**

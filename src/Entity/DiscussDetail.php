@@ -12,7 +12,7 @@ class DiscussDetail
     /**
      * @var int
      */
-    protected $id;
+    protected $did;
 
     /**
      * @var string
@@ -27,17 +27,17 @@ class DiscussDetail
     /**
      * @return mixed
      */
-    public function getId()
+    public function getDid()
     {
-        return $this->id;
+        return $this->did;
     }
 
     /**
-     * @param mixed $id
+     * @param mixed $did
      */
-    public function setId($id)
+    public function setDid($did)
     {
-        $this->id = $id;
+        $this->did = $did;
     }
 
     /**

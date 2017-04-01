@@ -9,11 +9,11 @@ class DiscussTest extends TestCase
     public function testSetter()
     {
         $discuss = new Discuss();
-        $this->assertNull($discuss->getDid());
+        $this->assertNull($discuss->getId());
         $this->assertNull($discuss->getName());
         $discuss->setName('foo');
-        $discuss->setDid(1);
+        $discuss->setId(1);
         $this->assertEquals('foo', $discuss->getName());
-        $this->assertEquals(1, $discuss->getDid());
+        $this->assertEquals(1, $discuss->getId());
     }
 }
