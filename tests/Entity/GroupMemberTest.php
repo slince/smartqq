@@ -19,14 +19,24 @@ class GroupMemberTest extends UserTestCase
         $this->assertNull($member->isVip());
         $this->assertNull($member->getVipLevel());
 
+        $member->setFlag(20);
         $member->setNick('foo');
-        $member->setStatus('online');
-        $member->setClientType(1);
-        $member->setRuin(123);
+        $member->setProvince('foo');
+        $member->setGender('male');
+        $member->setCountry('zh');
+        $member->setCity('foo');
+        $member->setCard('bar');
+        $member->setIsVip(true);
+        $member->setVipLevel(6);
 
+        $this->assertEquals(20, $member->getFlag());
         $this->assertEquals('foo', $member->getNick());
-        $this->assertEquals('online', $member->getStatus());
-        $this->assertEquals(1, $member->getClientType());
-        $this->assertEquals(123, $member->getRuin());
+        $this->assertEquals('foo', $member->getProvince());
+        $this->assertEquals('male', $member->getGender());
+        $this->assertEquals('zh', $member->getCountry());
+        $this->assertEquals('foo', $member->getCity());
+        $this->assertEquals('bar', $member->getCard());
+        $this->assertTrue($member->isVip());
+        $this->assertEquals(6, $member->getVipLevel());
     }
 }

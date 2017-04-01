@@ -79,9 +79,10 @@ class Birthday
 
     /**
      * 创建生日
+     * @param array $data
      * @return Birthday
      */
-    public static function createFromArray($data)
+    public static function createFromArray(array $data)
     {
         return new static($data['year'], $data['month'], $data['day']);
     }

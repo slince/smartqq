@@ -7,11 +7,16 @@ class UserTestCase extends TestCase
 {
     public function testUin()
     {
-        $className = str_replace(
-            strstr(get_class($this), 'Test', true),
-            'Tests/',
-            ''
-        );
+		if (!preg_match('#/(\w+)Test$#', get_class($this), $matches)) {
+			return false;
+		}
+		
+		
+		var_dump($matches);
+		
+		
+		
+		var_dump(strstr(get_class($this), 'Tests', true));
         $user = new $className();
         $this->assertNull($user->getUin());
         $user->serUin(123);

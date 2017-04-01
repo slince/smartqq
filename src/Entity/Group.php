@@ -33,15 +33,6 @@ class Group
      */
     protected $markName;
 
-    public function __construct($id = 0, $name = '', $code = '', $flag = 0, $markName = '')
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->code = $code;
-        $this->flag = $flag;
-        $this->markName = $markName;
-    }
-
     /**
      * @param int $id
      */
