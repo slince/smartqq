@@ -5,19 +5,33 @@
  */
 namespace Slince\SmartQQ;
 
-use Slince\SmartQQ\Entity\Group;
-
 class EntityFactory
 {
+
     /**
-     * @param $groupData
-     * @return Group
+     * 创建多个实体对象
+     * @param $entityClass
+     * @param $dataArray
+     * @return array
      */
-    public static function createGroup($groupData)
+    public static function createEntities($entityClass, $dataArray)
     {
-        $group = new Group();
-        static::applyProperties($group, $groupData);
-        return $group;
+        return array_map(function($data) use ($entityClass){
+            return static::createEntity($entityClass, $data);
+        }, $dataArray);
+    }
+
+    /**
+     * 创建实体对象
+     * @param $entityClass
+     * @param $data
+     * @return Object
+     */
+    public static function createEntity($entityClass, $data)
+    {
+        $entity = new $entityClass();
+        static::applyProperties($entity, $data);
+        return $entity;
     }
 
     /**
@@ -35,12 +49,5 @@ class EntityFactory
             }
         }
         return $entityInstance;
-    }
-
-    public static function createEntity($entityClass, $data)
-    {
-        $entity = new $entityClass();
-        static::applyProperties($entity, $data);
-        return $entity;
     }
 }

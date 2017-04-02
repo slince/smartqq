@@ -8,6 +8,7 @@ namespace Slince\SmartQQ\Request;
 use Cake\Collection\Collection;
 use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Client;
+use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\EntityCollection;
 use Slince\SmartQQ\Credential;
 use Slince\SmartQQ\EntityFactory;
@@ -47,7 +48,7 @@ class GetGroupsRequest extends Request
                 $groupId = $groupData['gid'];
                 $groupData['id'] = $groupData['gid'];
                 $groupData['markName'] = isset($markNames[$groupId]) ? $markNames[$groupId] : '';
-                $group = EntityFactory::createGroup($groupData);
+                $group = EntityFactory::createEntity(Group::class, $groupData);
                 $groups[] = $group;
             }
             return new EntityCollection($groups);

@@ -38,7 +38,7 @@ class Utils
             0, $uin >> 24 & 0xff ^ 0x45,
             0, $uin >> 16 & 0xff ^ 0x43,
             0, $uin >>  8 & 0xff ^ 0x4f,
-            0, $uin       & 0xff ^ 0x4b,
+            0, $uin & 0xff ^ 0x4b,
         );
         for ($i = 0; $i < 64; ++$i) {
             $x[($i & 3) << 1] ^= ord(substr($ptWebQQ, $i, 1));
