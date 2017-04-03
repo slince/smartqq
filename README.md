@@ -4,6 +4,7 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/slince/smartqq.svg?style=flat-square)](https://codecov.io/github/slince/smartqq)
 [![Total Downloads](https://img.shields.io/packagist/dt/slince/smartqq.svg?style=flat-square)](https://packagist.org/packages/slince/smartqq)
 [![Latest Stable Version](https://img.shields.io/packagist/v/slince/smartqq.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/smartqq)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/slince/smartqq.svg?style=flat-square)](https://scrutinizer-ci.com/g/slince/smartqq/?branch=master)
 
 SmartQQ(WebQQ) API的PHP实现，通过对原生web api的请求以及返回值的分析，重新进行了整理；
 解决了原生接口杂乱的请求规则与混乱的数据返回；使得开发者可以更多关注自己的业务。
