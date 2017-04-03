@@ -117,7 +117,6 @@ class Client
         return $this->credential;
     }
 
-
     /**
      * 创建登录所需的二维码
      * @param string $loginQRImage
@@ -127,7 +126,7 @@ class Client
     {
         $response = $this->sendRequest(new GetQrCodeRequest());
         Utils::getFilesystem()->dumpFile($loginQRImage, $response->getBody());
-        foreach ($this->cookies as $cookie) {
+        foreach ($this->getCookies() as $cookie) {
             if (strcasecmp($cookie->getName(), 'qrsig') == 0) {
                 return $cookie->getValue();
             }
@@ -172,7 +171,7 @@ class Client
         $request = new GetPtWebQQRequest();
         $request->setUri($certificationUrl);
         $this->sendRequest($request);
-        foreach ($this->cookies as $cookie) {
+        foreach ($this->getCookies() as $cookie) {
             if (strcasecmp($cookie->getName(), 'ptwebqq') == 0) {
                 return $cookie->getValue();
             }
@@ -226,6 +225,14 @@ class Client
             throw new InvalidArgumentException("Please login first or set a credential");
         }
         return $this->credential;
+    }
+
+    /**
+     * @return CookieJar
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
     }
 
     /**
@@ -398,7 +405,7 @@ class Client
     protected function sendRequest(RequestInterface $request)
     {
         $options = [
-            'cookies' => $this->cookies
+            'cookies' => $this->getCookies()
         ];
         if ($parameters = $request->getParameters()) {
             if ($request->getMethod() == RequestInterface::REQUEST_METHOD_GET) {

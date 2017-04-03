@@ -1,0 +1,15 @@
+Connection:Close
+Content-Type:text/html
+Date:Mon, 03 Apr 2017 12:33:15 GMT
+Location:http://w.qq.com/proxy.html?login2qq=1&webqq_type=10
+P3P:CP="CAO PSA OUR"
+Server:Tencent Login Server/2.0.0
+Set-Cookie:uin=o123456; PATH=/; DOMAIN=qq.com;
+Set-Cookie:skey=@Z86pBPzDt; PATH=/; DOMAIN=qq.com;
+Set-Cookie:pt2gguin=o123456; EXPIRES=Fri, 02-Jan-2020 00:00:00 GMT; PATH=/; DOMAIN=qq.com;
+Set-Cookie:p_skey=bwQ3WTKqguiZIWBqwu376YwaQN9uO3vneCGtHnvdS62C4_; PATH=/; DOMAIN=web2.qq.com; ;
+Set-Cookie:pt4_token=3ckZcOQ-PpZOqjd2OFE9c9rwEx110tOYF7E6UAfN6VA_; PATH=/; DOMAIN=web2.qq.com;
+Set-Cookie:p_uin=; EXPIRES=Fri, 02-Jan-1970 00:00:00 GMT; PATH=/; DOMAIN=qq.com;
+Set-Cookie:p_skey=; EXPIRES=Fri, 02-Jan-1970 00:00:00 GMT; PATH=/; DOMAIN=qq.com;
+Set-Cookie:pt4_token=; EXPIRES=Fri, 02-Jan-1970 00:00:00 GMT; PATH=/; DOMAIN=qq.com;
+Set-Cookie:p_uin=o123456; PATH=/; DOMAIN=web2.qq.com;
