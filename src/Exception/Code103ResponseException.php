@@ -5,10 +5,10 @@
  */
 namespace Slince\SmartQQ\Exception;
 
-class Code103ResponseException extends RuntimeException
+class Code103ResponseException extends ResponseException
 {
-    public function __construct()
+    public function __construct($response = null)
     {
-        parent::__construct("Please Login Smartqq And Logout", 103);
+        parent::__construct(103, $response, "Please Login Smartqq And Logout");
     }
 }

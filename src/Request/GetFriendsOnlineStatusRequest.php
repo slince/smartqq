@@ -45,6 +45,6 @@ class GetFriendsOnlineStatusRequest extends Request
             }
             return new EntityCollection($onlineStatuses);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }

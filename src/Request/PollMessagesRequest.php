@@ -50,9 +50,9 @@ class PollMessagesRequest extends Request
             }
             return $messages;
         } elseif ($jsonData['retcode'] == 103) {
-            throw new Code103ResponseException();
+            throw new Code103ResponseException($response);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 
     protected static function makeResponseMessage($type, $messageData)

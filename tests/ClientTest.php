@@ -9,7 +9,9 @@ use Slince\SmartQQ\Entity\Discuss;
 use Slince\SmartQQ\Entity\Friend;
 use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\EntityFactory;
+use Slince\SmartQQ\Exception\Code103ResponseException;
 use Slince\SmartQQ\Exception\InvalidArgumentException;
+use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Message\Response\DiscussMessage;
 use Slince\SmartQQ\Message\Response\FriendMessage;
 use Slince\SmartQQ\Message\Response\GroupMessage;
@@ -318,6 +320,18 @@ class ClientTest extends TestCase
         $this->assertNotEmpty($messages[2]->getFromUin());
         $this->assertNotEmpty($messages[2]->getDiscussId());
         $this->assertNotEmpty($messages[2]->getSendUin());
+    }
+
+    public function test103CodeResponse()
+    {
+        $this->setExpectedException(Code103ResponseException::class);
+        $this->createClientMock('103_response.txt')->pollMessages();
+    }
+
+    public function testResponseException()
+    {
+        $this->setExpectedException(ResponseException::class);
+        $this->createClientMock('response_exception.txt')->pollMessages();
     }
 
     /**

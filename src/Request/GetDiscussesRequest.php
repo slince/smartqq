@@ -44,6 +44,6 @@ class GetDiscussesRequest extends Request
             }
             return new EntityCollection($discusses);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }

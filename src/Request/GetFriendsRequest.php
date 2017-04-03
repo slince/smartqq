@@ -86,6 +86,6 @@ class GetFriendsRequest extends Request
             }
             return new EntityCollection($friends);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }

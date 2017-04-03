@@ -62,6 +62,6 @@ class GetFriendDetailRequest extends Request
                 'mobile' => $profileData['mobile'],
             ]);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }

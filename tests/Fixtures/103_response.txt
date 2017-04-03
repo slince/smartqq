@@ -1,0 +1,87 @@
+{
+    "result": [
+        {
+            "poll_type": "message",
+            "value": {
+                "content": [
+                    [
+                        "font",
+                        {
+                            "color": "000000",
+                            "name": "微软雅黑",
+                            "size": 10,
+                            "style": [
+                                0,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "好啊"
+                ],
+                "from_uin": 3785096088,
+                "msg_id": 25477,
+                "msg_type": 0,
+                "time": 1450686775,
+                "to_uin": 931996776
+            }
+        },
+        {
+            "poll_type": "group_message",
+            "value": {
+                "content": [
+                    [
+                        "font",
+                        {
+                            "color": "000000",
+                            "name": "微软雅黑",
+                            "size": 10,
+                            "style": [
+                                0,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "好啊"
+                ],
+                "from_uin": 2323421101,
+                "group_code": 2323421101,
+                "msg_id": 50873,
+                "msg_type": 0,
+                "send_uin": 3680220215,
+                "time": 1450687625,
+                "to_uin": 931996776
+            }
+        },
+        {
+            "poll_type": "discu_message",
+            "value": {
+                "content": [
+                    [
+                        "font",
+                        {
+                            "color": "000000",
+                            "name": "微软雅黑",
+                            "size": 10,
+                            "style": [
+                                0,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "好啊"
+                ],
+                "from_uin": 2322423201,
+                "did": 2322423201,
+                "msg_id": 50873,
+                "msg_type": 0,
+                "send_uin": 3680220215,
+                "time": 1450687625,
+                "to_uin": 931996776
+            }
+        }
+    ],
+    "retcode": 103
+}

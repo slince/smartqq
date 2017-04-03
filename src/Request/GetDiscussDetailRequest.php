@@ -66,6 +66,6 @@ class GetDiscussDetailRequest extends Request
             $discussDetailData['members'] = new EntityCollection($members);
             return EntityFactory::createEntity(DiscussDetail::class, $discussDetailData);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }

@@ -81,6 +81,6 @@ class GetGroupDetailRequest extends Request
             $groupDetailData['members'] = new EntityCollection($members);
             return EntityFactory::createEntity(GroupDetail::class, $groupDetailData);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }

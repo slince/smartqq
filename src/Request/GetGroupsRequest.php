@@ -53,6 +53,6 @@ class GetGroupsRequest extends Request
             }
             return new EntityCollection($groups);
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }

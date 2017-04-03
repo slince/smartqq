@@ -35,6 +35,6 @@ class GetQQRequest extends Request
         if ($jsonData && $jsonData['retcode'] == 0) {
             return $jsonData['result']['account'];
         }
-        throw new ResponseException("Response Error");
+        throw new ResponseException($jsonData['retcode'], $response);
     }
 }
