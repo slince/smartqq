@@ -18,11 +18,9 @@ use Slince\SmartQQ\Message\Response\GroupMessage;
 
 class ClientTest extends TestCase
 {
-    static $loginImageFile = __DIR__ . '/login.png';
-
     public function setUp()
     {
-        @unlink(static::$loginImageFile);
+        @unlink(static::getQrImagePath());
     }
 
     /**
@@ -63,7 +61,7 @@ class ClientTest extends TestCase
             ->method('getCookies')
             ->willReturn($cookies);
 
-        $credential = $client->login(static::$loginImageFile);
+        $credential = $client->login(static::getQrImagePath());
         $this->assertEquals($credential, $client->getCredential());
         $this->assertInstanceOf(Credential::class, $client->getCredential());
         $this->assertNotEmpty($credential->getUin());
@@ -391,8 +389,13 @@ class ClientTest extends TestCase
         return \GuzzleHttp\json_decode($rawContent, true);
     }
 
+    protected static function getQrImagePath()
+    {
+        return __DIR__ . '/login.png';
+    }
+
     public function tearDown()
     {
-        @unlink(static::$loginImageFile);
+        @unlink(static::getQrImagePath());
     }
 }
