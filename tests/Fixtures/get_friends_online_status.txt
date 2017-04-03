@@ -1,0 +1,10 @@
+{
+    "result": [
+        {
+            "client_type": 1,
+            "status": "online",
+            "uin": 3017767504
+        }
+    ],
+    "retcode": 0
+}

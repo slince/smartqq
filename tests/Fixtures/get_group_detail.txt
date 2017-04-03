@@ -1,0 +1,55 @@
+{
+    "retcode": 0,
+    "result": {
+        "stats": [
+            {
+                "client_type": 1,
+                "uin": 3623536468,
+                "stat": 50
+            }
+        ],
+        "minfo": [
+            {
+                "nick": "昵称",
+                "province": "北京",
+                "gender": "male",
+                "uin": 3623536468,
+                "country": "中国",
+                "city": "南京"
+            }
+        ],
+        "ginfo": {
+            "face": 0,
+            "memo": "群公告！",
+            "class": 25,
+            "fingermemo": "",
+            "code": 591539174,
+            "createtime": 1231435199,
+            "flag": 721421329,
+            "level": 4,
+            "name": "群名称",
+            "gid": 2419762790,
+            "owner": 3509557797,
+            "members": [
+                {
+                    "muin": 3623536468,
+                    "mflag": 192
+                }
+            ],
+            "option": 2
+        },
+        "cards": [
+            {
+                "muin": 3623536468,
+                "card": "群名片"
+            }
+        ],
+        "vipinfo": [
+            {
+                "vip_level": 6,
+                "u": 3623536468,
+                "is_vip": 1
+            }
+        ]
+    }
+}

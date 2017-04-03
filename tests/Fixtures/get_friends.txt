@@ -1,0 +1,41 @@
+{
+    "retcode": 0,
+    "result": {
+        "friends": [
+            {
+                "flag": 4,
+                "uin": 41837138855,
+                "categories": 1
+            }
+        ],
+        "marknames": [
+            {
+                "uin": 41837138855,
+                "markname": "备注",
+                "type": 0
+            }
+        ],
+        "categories": [
+            {
+                "index": 1,
+                "sort": 2,
+                "name": "同学"
+            }
+        ],
+        "vipinfo": [
+            {
+                "vip_level": 6,
+                "u": 41837138855,
+                "is_vip": 1
+            }
+        ],
+        "info": [
+            {
+                "face": 603,
+                "flag": 4751942,
+                "nick": "昵称",
+                "uin": 41837138855
+            }
+        ]
+    }
+}

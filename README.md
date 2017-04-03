@@ -1,5 +1,10 @@
 # SmartQQ协议
 
+[![Build Status](https://img.shields.io/travis/slince/smartqq/master.svg?style=flat-square)](https://travis-ci.org/slince/smartqq)
+[![Coverage Status](https://img.shields.io/codecov/c/github/slince/smartqq.svg?style=flat-square)](https://codecov.io/github/slince/smartqq)
+[![Total Downloads](https://img.shields.io/packagist/dt/slince/smartqq.svg?style=flat-square)](https://packagist.org/packages/slince/smartqq)
+[![Latest Stable Version](https://img.shields.io/packagist/v/slince/smartqq.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/smartqq)
+
 SmartQQ(WebQQ) API的PHP实现，通过对原生web api的请求以及返回值的分析，重新进行了整理；
 解决了原生接口杂乱的请求规则与混乱的数据返回；使得开发者可以更多关注自己的业务。
 
@@ -23,15 +28,13 @@ $smartQQ = new Client();
 
 $smartQQ->login('/path/to/qrcode.png'); //参数为保存二维码的位置
 ```
-如果成功的话你会在`/path/to/qrcode.png`下发现二维码，拿出手机扫一扫即可登录；注意在登录成功之前程序会阻塞直到确认成功；
-成功之后你可以通过下面方式保存登录凭证，下次则可以绕过登录
+如果成功的话你会在`/path/to/qrcode.png`下发现二维码，使用手机扫描即可登录；注意：程序会阻塞直到确认成功；成功之后你可以通过下面方式持久化登录凭证，用于下次查询。
 
 ```
 $credential = $smartQQ->getCredential();
 $credentialParameters = $credential->toArray();
 ```
-持久化登录凭证，用于下次查询；通过下面方式还原一个凭证对象；需要注意的是此次凭证并不会长久有效，如果该凭证长时间没有被用来
-发起查询，则很可能会失效
+通过下面方式还原一个凭证对象；需要注意的是此次凭证并不会长久有效，如果该凭证长时间没有被用来发起查询，则很可能会失效
 
 ```
 //还原凭证对象

@@ -3,6 +3,7 @@ namespace Slince\SmartQQ\Tests\Entity;
 
 use Slince\SmartQQ\Entity\Category;
 use Slince\SmartQQ\Entity\Friend;
+use Slince\SmartQQ\Entity\OnlineStatus;
 
 class FriendTest extends UserTestCase
 {
@@ -17,7 +18,6 @@ class FriendTest extends UserTestCase
         $this->assertNull($friend->getVipLevel());
         $this->assertNull($friend->getCategory());
         $this->assertNull($friend->getMarkName());
-        $this->assertNull($friend->getStatus());
 
         $friend->setFlag(123);
         $friend->setFace(123);
@@ -27,7 +27,6 @@ class FriendTest extends UserTestCase
         $friend->setVipLevel(6);
         $friend->setCategory(Category::createMyFriendCategory());
         $friend->setMarkName('bar');
-        $friend->setStatus('online');
 
         $this->assertEquals('123', $friend->getFlag());
         $this->assertEquals('123', $friend->getFace());
@@ -36,6 +35,5 @@ class FriendTest extends UserTestCase
         $this->assertTrue($friend->isVip());
         $this->assertInstanceOf(Category::class, $friend->getCategory());
         $this->assertEquals('bar', $friend->getMarkName());
-        $this->assertEquals('online', $friend->getStatus());
     }
 }

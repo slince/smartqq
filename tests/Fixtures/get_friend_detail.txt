@@ -1,0 +1,30 @@
+{
+    "retcode": 0,
+    "result": {
+        "face": 603,
+        "birthday": {
+            "month": 8,
+            "year": 1895,
+            "day": 15
+        },
+        "occupation": "其他",
+        "phone": "110",
+        "allow": 1,
+        "college": "aaa",
+        "uin": 1382902354,
+        "constel": 7,
+        "blood": 5,
+        "homepage": "木有",
+        "stat": 20,
+        "vip_info": 6,
+        "country": "乍得",
+        "city": "南京",
+        "personal": "这是简介",
+        "nick": "ABCD",
+        "shengxiao": 11,
+        "email": "352323245@qq.com",
+        "province": "JiangSu",
+        "gender": "female",
+        "mobile": "139********"
+    }
+}

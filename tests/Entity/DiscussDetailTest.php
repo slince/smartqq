@@ -9,15 +9,15 @@ class DiscussDetailTest extends TestCase
 {
     public function testSetter()
     {
-        $discuss = new DiscussDetail();
-        $this->assertNull($discuss->getDid());
-        $this->assertNull($discuss->getName());
-        $this->assertNull($discuss->getMembers());
-        $discuss->setDid(1);
-        $discuss->setName('foo');
-        $discuss->setMembers(new EntityCollection([]));
-        $this->assertEquals(1, $discuss->getDid());
-        $this->assertEquals('foo', $discuss->getName());
-        $this->assertNotNull($discuss->getMembers());
+        $detail = new DiscussDetail();
+        $this->assertNull($detail->getDid());
+        $this->assertNull($detail->getName());
+        $this->assertNull($detail->getMembers());
+        $detail->setDid(1);
+        $detail->setName('foo');
+        $detail->setMembers(new EntityCollection([]));
+        $this->assertEquals(1, $detail->getDid());
+        $this->assertEquals('foo', $detail->getName());
+        $this->assertNotNull($detail->getMembers());
     }
 }

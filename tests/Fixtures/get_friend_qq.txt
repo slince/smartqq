@@ -1,0 +1,8 @@
+{
+    "retcode": 0,
+    "result": {
+        "uiuin": "",
+        "account": 3524125,
+        "uin": 1382902354
+    }
+}

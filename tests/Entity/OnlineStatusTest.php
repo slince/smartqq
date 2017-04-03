@@ -12,10 +12,15 @@ class OnlineStatusTest extends TestCase
         $onlineStatus = new OnlineStatus();
         $this->assertNull($onlineStatus->getStatus());
         $this->assertNull($onlineStatus->getUin());
+        $this->assertNull($onlineStatus->getClientType());
+
         $onlineStatus->setStatus(OnlineStatus::ONLINE);
         $onlineStatus->setUin(123);
+        $onlineStatus->setClientType(1);
+
         $this->assertEquals(123, $onlineStatus->getUin());
         $this->assertEquals(OnlineStatus::ONLINE, $onlineStatus->getStatus());
+        $this->assertEquals(1, $onlineStatus->getClientType());
     }
 
     public function testToString()

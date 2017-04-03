@@ -20,6 +20,12 @@ class OnlineStatus
     const OFFLINE = 'offline';
 
     /**
+     * 在线类型
+     * @var int
+     */
+    protected $clientType;
+
+    /**
      * 用户编号
      * @var int
      */
@@ -71,5 +77,21 @@ class OnlineStatus
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getClientType()
+    {
+        return $this->clientType;
+    }
+
+    /**
+     * @param int $clientType
+     */
+    public function setClientType($clientType)
+    {
+        $this->clientType = $clientType;
     }
 }

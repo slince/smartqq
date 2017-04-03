@@ -1,0 +1,28 @@
+{
+    "result": {
+        "info": {
+            "did": 236426547,
+            "discu_name": "啊啊啊啊",
+            "mem_list": [
+                {
+                    "mem_uin": 3466696377,
+                    "ruin": 3466696377
+                }
+            ]
+        },
+        "mem_info": [
+            {
+                "nick": "Hey",
+                "uin": 3466696377
+            }
+        ],
+        "mem_status": [
+            {
+                "client_type": 7,
+                "status": "online",
+                "uin": 3466696377
+            }
+        ]
+    },
+    "retcode": 0
+}

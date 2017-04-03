@@ -54,11 +54,6 @@ class Friend extends User
     protected $markName;
 
     /**
-     * @var string
-     */
-    protected $status;
-
-    /**
      * @param string $markName
      */
     public function setMarkName($markName)
@@ -184,21 +179,5 @@ class Friend extends User
     public function setCategory($category)
     {
         $this->category = $category;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
     }
 }

@@ -38,6 +38,7 @@ class GetFriendsOnlineStatusRequest extends Request
             $onlineStatuses = [];
             foreach ($jsonData['result'] as $status) {
                 $onlineStatuses[] = EntityFactory::createEntity(OnlineStatus::class, [
+                    'clientType' => $status['client_type'],
                     'uin' => $status['uin'],
                     'status' => $status['status'],
                 ]);
