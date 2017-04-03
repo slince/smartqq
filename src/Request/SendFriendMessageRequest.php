@@ -18,7 +18,7 @@ class SendFriendMessageRequest extends SendMessageRequest
     {
         $parameters = array_merge([
             'to' => $message->getUser()->getUin()
-        ],$this->makeMessageParameter($message, $credential));
+        ], $this->makeMessageParameter($message, $credential));
         $this->setParameter('r', \GuzzleHttp\json_encode($parameters));
     }
 }

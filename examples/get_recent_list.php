@@ -1,7 +1,6 @@
 <?php
 /**
  * 获取最新的会话记录,
- * 还有缺陷
  */
 use Slince\SmartQQ\Client;
 

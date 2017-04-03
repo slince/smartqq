@@ -40,7 +40,7 @@ class GetGroupDetailRequest extends Request
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
             //群成员的vip信息
-            $vipInfos  = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity){
+            $vipInfos  = (new Collection($jsonData['result']['vipinfo']))->combine('u', function ($entity) {
                 return $entity;
             })->toArray();
             //群成员的名片信息

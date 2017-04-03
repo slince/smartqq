@@ -17,7 +17,6 @@ use Slince\SmartQQ\Utils;
 
 class GetFriendsRequest extends Request
 {
-
     protected $uri = 'http://s.web2.qq.com/api/get_user_friends2';
 
     protected $referer = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1';
@@ -43,19 +42,19 @@ class GetFriendsRequest extends Request
         //有时候获取好友接口retcode=100003时也可以获取数据，但数据不完整故当做无效返回
         if ($jsonData && $jsonData['retcode'] == 0) {
             //好友基本信息
-            $friendDatas = (new Collection($jsonData['result']['friends']))->combine('uin', function($entity){
+            $friendDatas = (new Collection($jsonData['result']['friends']))->combine('uin', function ($entity) {
                 return $entity;
             })->toArray();
             //markNames
-            $markNames = (new Collection($jsonData['result']['marknames']))->combine('uin', function($entity){
+            $markNames = (new Collection($jsonData['result']['marknames']))->combine('uin', function ($entity) {
                 return $entity;
             })->toArray();
             //分类
-            $categories = (new Collection($jsonData['result']['categories']))->combine('index', function($entity){
+            $categories = (new Collection($jsonData['result']['categories']))->combine('index', function ($entity) {
                 return $entity;
             })->toArray();
             //vip信息
-            $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity){
+            $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function ($entity) {
                 return $entity;
             })->toArray();
             $friends = [];

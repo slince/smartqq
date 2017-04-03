@@ -7,5 +7,4 @@ namespace Slince\SmartQQ\Exception;
 
 class ResponseException extends RuntimeException
 {
-
 }

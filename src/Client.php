@@ -81,7 +81,8 @@ class Client
         }
         if (is_null($httpClient)) {
             $httpClient = new HttpClient([
-                'verify' => false
+                'verify' => false,
+                'proxy' => '127.0.0.1:8888'
             ]);
         }
         $this->httpClient = $httpClient;

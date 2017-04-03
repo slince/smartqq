@@ -17,7 +17,7 @@ class EntityCollection extends Collection
      */
     public function firstByAttribute($attributeName, $attributeValue)
     {
-        $callback = function($entity) use ($attributeName, $attributeValue){
+        $callback = function ($entity) use ($attributeName, $attributeValue) {
             $method = 'get' . ucfirst($attributeName);
             return $entity->$method() == $attributeValue;
         };

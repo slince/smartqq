@@ -18,7 +18,7 @@ class SendGroupMessageRequest extends SendMessageRequest
     {
         $parameters = array_merge([
             'group_uin' => $message->getGroup()->getId()
-        ],$this->makeMessageParameter($message, $credential));
+        ], $this->makeMessageParameter($message, $credential));
         $this->setParameter('r', \GuzzleHttp\json_encode($parameters));
     }
 }

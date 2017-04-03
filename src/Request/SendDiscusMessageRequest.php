@@ -18,7 +18,7 @@ class SendDiscusMessageRequest extends SendMessageRequest
     {
         $parameters = array_merge([
             'did' => $message->getDiscuss()->getId()
-        ],$this->makeMessageParameter($message, $credential));
+        ], $this->makeMessageParameter($message, $credential));
         $this->setParameter('r', \GuzzleHttp\json_encode($parameters));
     }
 }
