@@ -21,8 +21,8 @@ class UtilsTest extends TestCase
 
     public function testHash33()
     {
-        $string = 'foo';
-        $this->assertEquals(114852, Utils::hash33($string));
+        $string = 'Qjy*mWVaseiG-qeonlAXEtSvIMfHFWHB*0QN*Axsf6AZ*xWL6uDJ*WEGSl0YJhJM';
+        $this->assertEquals(1264130581, Utils::hash33($string));
     }
 
     public function testCharCodeAt()
