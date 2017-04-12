@@ -10,6 +10,12 @@ class ProfileTest extends TestCase
     public function testSetter()
     {
         $profile = new Profile();
+
+        $this->assertNull($profile->getUin());
+        $this->assertNull($profile->getAllow());
+        $this->assertNull($profile->getAccount());
+        $this->assertNull($profile->getLnick());
+        $this->assertNull($profile->getEmail());
         $this->assertNull($profile->getBirthday());
         $this->assertNull($profile->getOccupation());
         $this->assertNull($profile->getPhone());
@@ -28,6 +34,11 @@ class ProfileTest extends TestCase
         $this->assertNull($profile->getGender());
         $this->assertNull($profile->getMobile());
 
+        $profile->setUin(1234567);
+        $profile->setAllow(1);
+        $profile->setAccount(123456);
+        $profile->setEmail('foo@foo.com');
+        $profile->setLnick('foo lnick');
         $profile->setBirthday(new Birthday(2017, 03, 28));
         $profile->setOccupation('foo');
         $profile->setPhone('123-12345');
@@ -46,6 +57,11 @@ class ProfileTest extends TestCase
         $profile->setGender('male');
         $profile->setMobile('12345678901');
 
+        $this->assertEquals(1234567, $profile->getUin());
+        $this->assertEquals(1, $profile->getAllow());
+        $this->assertEquals(123456, $profile->getAccount());
+        $this->assertEquals('foo@foo.com', $profile->getEmail());
+        $this->assertEquals('foo lnick', $profile->getLnick());
         $this->assertInstanceOf(Birthday::class, $profile->getBirthday());
         $this->assertEquals('foo', $profile->getOccupation());
         $this->assertEquals('123-12345', $profile->getPhone());

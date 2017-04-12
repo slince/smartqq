@@ -222,6 +222,12 @@ class ClientTest extends TestCase
     public function testGetFriendDetail(Friend $friend)
     {
         $profile = $this->createClientMock('get_friend_detail.txt')->getFriendDetail($friend);
+        $this->assertNotEmpty($profile->getUin());
+        $this->assertNotEmpty($profile->getEmail());
+        $this->assertNotEmpty($profile->getAccount());
+        $this->assertNotEmpty($profile->getLnick());
+        $this->assertNotEmpty($profile->getAllow());
+
         $this->assertNotEmpty($profile->getBirthday());
         $this->assertNotEmpty($profile->getOccupation());
         $this->assertNotEmpty($profile->getPhone());

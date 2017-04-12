@@ -5,8 +5,31 @@
  */
 namespace Slince\SmartQQ\Entity;
 
-class Profile
+class Profile extends User
 {
+    /**
+     * @var int
+     */
+    protected $allow;
+
+    /**
+     * QQ号
+     * @var int
+     */
+    protected $account;
+
+    /**
+     * 邮箱
+     * @var string
+     */
+    protected $email;
+
+    /**
+     * 个性签名
+     * @var string
+     */
+    protected $lnick;
+
     /**
      * 生日
      * @var Birthday
@@ -106,6 +129,70 @@ class Profile
      * @var string
      */
     protected $mobile;
+
+    /**
+     * @return int
+     */
+    public function getAllow()
+    {
+        return $this->allow;
+    }
+
+    /**
+     * @param int $allow
+     */
+    public function setAllow($allow)
+    {
+        $this->allow = $allow;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
+
+    /**
+     * @param int $account
+     */
+    public function setAccount($account)
+    {
+        $this->account = $account;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLnick()
+    {
+        return $this->lnick;
+    }
+
+    /**
+     * @param string $lnick
+     */
+    public function setLnick($lnick)
+    {
+        $this->lnick = $lnick;
+    }
 
     /**
      * @param Birthday $birthday

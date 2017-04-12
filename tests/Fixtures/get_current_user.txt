@@ -1,6 +1,8 @@
 {
     "retcode": 0,
     "result": {
+        "account": 1045538901,
+        "lnick": "风起时",
         "face": 603,
         "birthday": {
             "month": 8,

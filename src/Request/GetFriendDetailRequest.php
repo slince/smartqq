@@ -39,6 +39,8 @@ class GetFriendDetailRequest extends Request
         if ($jsonData && $jsonData['retcode'] == 0) {
             $profileData = $jsonData['result'];
             return EntityFactory::createEntity(Profile::class, [
+                'account' => $profileData['account'],
+                'lnick' => $profileData['lnick'],
                 'face' => $profileData['face'],
                 'birthday' => Birthday::createFromArray($profileData['birthday']),
                 'occupation' => $profileData['occupation'],
