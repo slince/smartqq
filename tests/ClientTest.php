@@ -283,6 +283,12 @@ class ClientTest extends TestCase
     public function testGetCurrentUser()
     {
         $profile = $this->createClientMock('get_current_user.txt')->getCurrentUserInfo();
+        $this->assertNotEmpty($profile->getUin());
+        $this->assertNotEmpty($profile->getEmail());
+        $this->assertNotEmpty($profile->getAccount());
+        $this->assertNotEmpty($profile->getLnick());
+        $this->assertNotEmpty($profile->getAllow());
+
         $this->assertNotEmpty($profile->getBirthday());
         $this->assertNotEmpty($profile->getOccupation());
         $this->assertNotEmpty($profile->getPhone());
