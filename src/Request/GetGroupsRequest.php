@@ -34,10 +34,9 @@ class GetGroupsRequest extends Request
     /**
      * 解析响应数据
      * @param Response $response
-     * @param Client $client
      * @return EntityCollection
      */
-    public static function parseResponse(Response $response, Client $client)
+    public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {

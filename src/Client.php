@@ -257,7 +257,7 @@ class Client
     {
         $request = new GetGroupsRequest($this->getCredential());
         $response = $this->sendRequest($request);
-        return GetGroupsRequest::parseResponse($response, $this);
+        return GetGroupsRequest::parseResponse($response);
     }
 
     /**
