@@ -8,7 +8,7 @@ namespace Slince\SmartQQ;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Response;
 use Slince\SmartQQ\Entity\Discuss;
 use Slince\SmartQQ\Entity\DiscussDetail;
 use Slince\SmartQQ\Entity\Friend;
@@ -410,7 +410,7 @@ class Client
 
     /**
      * @param RequestInterface $request
-     * @return ResponseInterface
+     * @return Response
      */
     protected function sendRequest(RequestInterface $request)
     {
