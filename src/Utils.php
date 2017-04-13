@@ -37,7 +37,7 @@ class Utils
         $x = array(
             0, $uin >> 24 & 0xff ^ 0x45,
             0, $uin >> 16 & 0xff ^ 0x43,
-            0, $uin >>  8 & 0xff ^ 0x4f,
+            0, $uin >> 8 & 0xff ^ 0x4f,
             0, $uin & 0xff ^ 0x4b,
         );
         for ($i = 0; $i < 64; ++$i) {
@@ -61,7 +61,7 @@ class Utils
         $e = 0;
         $n = strlen($string);
         for ($i = 0; $n > $i; ++$i) {
-            $e = static::uint32val($e);
+            $e = static::toUint32val($e);
             $e += ($e << 5) + static::charCodeAt($string, $i);
         }
         return 2147483647 & $e;
@@ -73,7 +73,7 @@ class Utils
      * @param mixed $var
      * @return float|int|string
      */
-    public static function uint32val($var)
+    public static function toUint32val($var)
     {
         if (is_string($var)) {
             if (PHP_INT_MAX > 2147483647) {

@@ -258,6 +258,15 @@ class ClientTest extends TestCase
         $this->assertNotEmpty($friend->getQq());
     }
 
+    /**
+     * @depends testGetFriends
+     * @param Friend $friend
+     */
+    public function testGetFriendLnick(Friend $friend)
+    {
+        $lnick = $this->createClientMock('get_friend_lnick.txt')->getFriendLnick($friend);
+        $this->assertNotEmpty($lnick);
+    }
 
     public function testGetFriendOnlineStatus()
     {

@@ -9,7 +9,6 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
-
 use Slince\SmartQQ\Entity\Discuss;
 use Slince\SmartQQ\Entity\DiscussDetail;
 use Slince\SmartQQ\Entity\Friend;
@@ -20,6 +19,9 @@ use Slince\SmartQQ\Exception\InvalidArgumentException;
 use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Message\Request\FriendMessage;
 use Slince\SmartQQ\Message\Request\GroupMessage;
+use Slince\SmartQQ\Message\Request\Message as RequestMessage;
+use Slince\SmartQQ\Message\Response\Message as ResponseMessage;
+use Slince\SmartQQ\Request\GetLnickRequest;
 use Slince\SmartQQ\Request\RequestInterface;
 use Slince\SmartQQ\Request\GetCurrentUserRequest;
 use Slince\SmartQQ\Request\GetDiscussDetailRequest;
@@ -41,9 +43,6 @@ use Slince\SmartQQ\Request\SendFriendMessageRequest;
 use Slince\SmartQQ\Request\SendGroupMessageRequest;
 use Slince\SmartQQ\Request\SendMessageRequest;
 use Slince\SmartQQ\Request\VerifyQrCodeRequest;
-
-use Slince\SmartQQ\Message\Request\Message as RequestMessage;
-use Slince\SmartQQ\Message\Response\Message as ResponseMessage;
 
 class Client
 {
@@ -334,6 +333,18 @@ class Client
     }
 
     /**
+     * 获取好友的个性签名
+     * @param Friend $friend
+     * @return string
+     */
+    public function getFriendLnick(Friend $friend)
+    {
+        $request = new GetLnickRequest($friend, $this->getCredential());
+        $response = $this->sendRequest($request);
+        return GetLnickRequest::parseResponse($response, $friend);
+    }
+
+    /**
      * 获取好友在线状态
      * @return EntityCollection
      */
@@ -399,7 +410,7 @@ class Client
 
     /**
      * @param RequestInterface $request
-     * @return mixed|ResponseInterface
+     * @return ResponseInterface
      */
     protected function sendRequest(RequestInterface $request)
     {

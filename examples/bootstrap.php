@@ -3,7 +3,6 @@
  * 案例演示
  */
 use Slince\SmartQQ\Credential;
-use GuzzleHttp\Cookie\CookieJar;
 
 include __DIR__ . '/../vendor/autoload.php';
 
@@ -32,7 +31,8 @@ function printPrettyScreen($data)
 function printR($data)
 {
     //windows中文cmd使用的是gbk编码故需要转换
-    echo mb_convert_encoding(print_r($data, true), 'gbk', 'utf-8');
+    print_r($data);
+//    echo mb_convert_encoding(print_r($data, true), 'gbk', 'utf-8');
 }
 
 /**

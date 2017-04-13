@@ -51,7 +51,7 @@ while (true) {
                     date('H:i:s'),
                     $message
                 );
-            } else {
+            } elseif ($message instanceof DiscussMessage) {
                 $discuss = $discusses->firstByAttribute('id', $message->getFromUin());
                 $sender = getDiscussDetails($discuss)->getMembers()->firstByAttribute('uin', $message->getSendUin());
                 $content = sprintf("讨论组[%s] [%s]-- %s: \r\n %s",
@@ -60,6 +60,8 @@ while (true) {
                     date('H:i:s'),
                     $message
                 );
+            } else {
+                continue;
             }
             printR($content);
             echo str_repeat(PHP_EOL, 2);

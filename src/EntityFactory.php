@@ -16,7 +16,7 @@ class EntityFactory
      */
     public static function createEntities($entityClass, $dataArray)
     {
-        return array_map(function ($data) use ($entityClass) {
+        return array_map(function($data) use ($entityClass) {
             return static::createEntity($entityClass, $data);
         }, $dataArray);
     }

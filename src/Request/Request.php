@@ -102,8 +102,8 @@ class Request implements RequestInterface
 
     /**
      * 设置请求参数
-     * @param $name
-     * @param $parameter
+     * @param string $name
+     * @param string $parameter
      */
     public function setParameter($name, $parameter)
     {
@@ -130,8 +130,8 @@ class Request implements RequestInterface
 
     /**
      * 设置链接中的指定占位符
-     * @param $name
-     * @param $token
+     * @param string $name
+     * @param string $token
      */
     public function setToken($name, $token)
     {
