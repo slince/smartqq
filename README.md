@@ -2,7 +2,6 @@
 
 [![Build Status](https://img.shields.io/travis/slince/smartqq/master.svg?style=flat-square)](https://travis-ci.org/slince/smartqq)
 [![Coverage Status](https://img.shields.io/codecov/c/github/slince/smartqq.svg?style=flat-square)](https://codecov.io/github/slince/smartqq)
-[![Total Downloads](https://img.shields.io/packagist/dt/slince/smartqq.svg?style=flat-square)](https://packagist.org/packages/slince/smartqq)
 [![Latest Stable Version](https://img.shields.io/packagist/v/slince/smartqq.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/smartqq)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/slince/smartqq.svg?style=flat-square)](https://scrutinizer-ci.com/g/slince/smartqq/?branch=master)
 
