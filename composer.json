@@ -1,6 +1,7 @@
 {
     "name": "slince/smartqq",
-    "description": "SmartQQ Api",
+    "description": "The wrapper for smartqq api using php",
+    "keywords": ["smartqq", "webqq", "qq", "php-smartqq", "php-webqq", "php-qq"],
     "type": "library",
     "license": "MIT",
     "authors": [
