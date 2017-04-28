@@ -24,7 +24,7 @@
         "php": ">=5.5.9",
         "guzzlehttp/guzzle": "~6.0",
         "symfony/filesystem": "^2.7|^3.0",
-        "cakephp/collection": "^3.4"
+        "cakephp/collection": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.0"
