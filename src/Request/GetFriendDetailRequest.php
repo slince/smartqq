@@ -38,9 +38,10 @@ class GetFriendDetailRequest extends Request
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && $jsonData['retcode'] == 0) {
             $profileData = $jsonData['result'];
+            //注意获取好友详情接口并不返回account和lnick
             return EntityFactory::createEntity(Profile::class, [
-                'account' => $profileData['account'],
-                'lnick' => $profileData['lnick'],
+                'account' => isset($profileData['account']) ? $profileData['account'] : null,
+                'lnick' => isset($profileData['lnick']) ? $profileData['lnick'] : null,
                 'face' => $profileData['face'],
                 'birthday' => Birthday::createFromArray($profileData['birthday']),
                 'occupation' => $profileData['occupation'],
