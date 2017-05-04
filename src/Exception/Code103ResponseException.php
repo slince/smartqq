@@ -9,6 +9,7 @@ class Code103ResponseException extends ResponseException
 {
     public function __construct($response = null)
     {
-        parent::__construct(103, $response, "Please Login Smartqq And Logout");
+        $message = 'Please visit http://w.qq.com, confirm that you can send and receive messages and then exit';
+        parent::__construct(103, $response, $message);
     }
 }
