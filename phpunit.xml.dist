@@ -13,10 +13,8 @@
 
     <filter>
         <whitelist>
-            <directory>./</directory>
+            <directory suffix=".php">./src</directory>
             <exclude>
-                <directory>./tests</directory>
-                <directory>./vendor</directory>
                 <directory>./src/Request</directory>
             </exclude>
         </whitelist>

@@ -12,7 +12,7 @@ SmartQQ(WebQQ) API的PHP实现，通过对原生web api的请求以及返回值�
 
 ## 安装
 
-```
+```bash
 composer require slince/smartqq
 ```
 
@@ -21,7 +21,7 @@ composer require slince/smartqq
 ### 登录
 登录是获取授权的必备步骤，由于SmartQQ抛弃了用户名密码的登录方式，所以只能采用二维码登录
 
-```
+```php
 use Slince\SmartQQ\Client;
 
 $smartQQ = new Client();
@@ -30,13 +30,14 @@ $smartQQ->login('/path/to/qrcode.png'); //参数为保存二维码的位置
 ```
 如果成功的话你会在`/path/to/qrcode.png`下发现二维码，使用手机扫描即可登录；注意：程序会阻塞直到确认成功；成功之后你可以通过下面方式持久化登录凭证，用于下次查询。
 
-```
+```php
 $credential = $smartQQ->getCredential();
 $credentialParameters = $credential->toArray();
 ```
+
 通过下面方式还原一个凭证对象；需要注意的是此次凭证并不会长久有效，如果该凭证长时间没有被用来发起查询，则很可能会失效
 
-```
+```php
 //还原凭证对象
 $credential = Credential::fromArray($credentialParameters);
 $smartQQ = new Client($credential);
@@ -47,7 +48,8 @@ $smartQQ = new Client($credential);
 #### 好友相关
 
 - 查询所有好友
-```
+
+```php
 $friends = $smartQQ->getFriends();
 
 //找出昵称为张三的好友
@@ -61,7 +63,7 @@ $girls = $friends->filter(function(Friend $friend){
 
 - 查询好友详细资料
 
-```
+```php
 //上例，找出张三的资料
 $profile = $smartQQ->getFriendDetail($zhangSan);
 ```
@@ -69,7 +71,8 @@ $profile = $smartQQ->getFriendDetail($zhangSan);
 #### 群相关
 
 - 查询所有群
-```
+
+```php
 $groups = $smartQQ->getGroups();
 
 //找出名称为“少年”的群
@@ -80,7 +83,8 @@ $shaoNianGroup = $groups->firstByAttribute('name', '少年');
 #### 讨论组相关
 
 - 查询所有讨论组
-```
+
+```php
 $discusses = $smartQQ->getDiscusses();
 
 //找出名称为“少年”的讨论组
@@ -91,7 +95,8 @@ $shaoNianDiscuss = $discusses->firstByAttribute('name', '少年');
 - 查询讨论组的详细资料，比如群成员信息等
 
 接上例，查询讨论组“少年”的详细资料
-```
+
+```php
 $shaoNianDetail = $smartQQ->getDiscussDetail($shaoNianDiscuss);
 
 //所有群成员，支持筛选
@@ -102,7 +107,7 @@ $members = $shaoNianDetail->getMembers();
 
 #### 给好友发送消息
 
-```
+```php
 //1、找到好友
 $friend = $friends->firstByAttribute('nick', '秋易');
 //2、生成消息
@@ -112,7 +117,8 @@ var_dump($result);
 ```
 
 #### 给群发送消息
-```
+
+```php
 //1、找到群
 $group = $groups->firstByAttribute('name', 'msu');
 //2、生成消息
@@ -122,7 +128,8 @@ var_dump($result);
 ```
 
 #### 发送讨论组消息
-```
+
+```php
 //1、找到讨论组
 $discuss = $discusses->firstByAttribute('name', '他是个少年');
 //2、生成消息
@@ -132,7 +139,8 @@ var_dump($result);
 ```
 
 #### 给讨论组成员发消息
-```
+
+```php
 $discussMember = $smartQQ->getDiscussDetail($discuss)
     ->getMembers()
     ->firstByAttribute('nick', '张三');
@@ -143,12 +151,10 @@ var_dump($result);
 
 ### 接收消息
 
-```
+```php
 $messages = $smartQQ->pollMessages();
-
 ```
 关于消息的处理请参照examples
-
 
 详细使用案例以及更多其它案例请参考[examples](./examples)
 
