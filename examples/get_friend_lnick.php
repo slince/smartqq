@@ -1,6 +1,6 @@
 <?php
 /**
- * 获取当前登录用户的信息
+ * 获取好友昵称
  */
 use Slince\SmartQQ\Client;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * 获取最新的会话记录
+ * 发送消息
  */
 use Slince\SmartQQ\Client;
 use Slince\SmartQQ\Message\Request\FriendMessage;

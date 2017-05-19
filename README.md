@@ -19,6 +19,7 @@ composer require slince/smartqq
 ## 使用
 
 ### 登录
+
 登录是获取授权的必备步骤，由于SmartQQ抛弃了用户名密码的登录方式，所以只能采用二维码登录
 
 ```php
@@ -92,6 +93,7 @@ $shaoNianDiscuss = $discusses->firstByAttribute('name', '少年');
 ```
 > 一样，也支持自定义筛选
 
+
 - 查询讨论组的详细资料，比如群成员信息等
 
 接上例，查询讨论组“少年”的详细资料
@@ -99,7 +101,7 @@ $shaoNianDiscuss = $discusses->firstByAttribute('name', '少年');
 ```php
 $shaoNianDetail = $smartQQ->getDiscussDetail($shaoNianDiscuss);
 
-//所有群成员，支持筛选
+//所有群成员，支持自定义筛选
 $members = $shaoNianDetail->getMembers();
 ```
 
@@ -110,6 +112,7 @@ $members = $shaoNianDetail->getMembers();
 ```php
 //1、找到好友
 $friend = $friends->firstByAttribute('nick', '秋易');
+
 //2、生成消息
 $message = new FriendMessage($friend, new Content('你好'));
 $result = $smartQQ->sendMessage($message);
@@ -156,12 +159,15 @@ $messages = $smartQQ->pollMessages();
 ```
 关于消息的处理请参照examples
 
+
 详细使用案例以及更多其它案例请参考[examples](./examples)
 
 ## 其它
 
-- 关于103错误，多是由于webqq多点登录引起的，如果遇到错误，先到[http://w.qq.com/](http://w.qq.com/)确认能够收发消息，然后退出登录
+- 关于103错误，多是由于webqq多点登录引起的，如果遇到错误，先到[http://w.qq.com/](http://w.qq.com/)确认能够收发消息，然后退出登录。
 
-- 关于登录凭证的时效性，smartqq是基于web接口的，对cookie有要求，登录成功之后如果长时间没有操作，cookie将会失效；此时需要重新登录
+- 关于登录凭证的时效性，smartqq是基于web接口的，对cookie有要求，登录成功之后如果长时间没有操作，cookie将会失效；此时需要重新登录。
 
-- 本组件只是对原生的请求与数据进行了整理并进行了合理的抽象，并没有过多的进行业务层级的封装
+- 本组件只是对原生的请求与数据进行了整理并进行了合理的抽象，并没有过多的进行业务层级的封装。
+
+- SmartQQ接口一直在调整，如果api无法使用请直接提[issue](https://github.com/slince/smartqq/issues/new)，或者给我发邮件。
