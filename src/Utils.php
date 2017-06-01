@@ -61,7 +61,10 @@ class Utils
         $e = 0;
         $n = strlen($string);
         for ($i = 0; $n > $i; ++$i) {
-            $e = static::toUint32val($e);
+            //64位php才进行32位转换
+            if (PHP_INT_MAX > 2147483647) {
+                $e = static::toUint32val($e);
+            }
             $e += ($e << 5) + static::charCodeAt($string, $i);
         }
         return 2147483647 & $e;
