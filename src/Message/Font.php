@@ -7,30 +7,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Message;
 
 class Font
 {
     /**
-     * 名称
+     * 名称.
+     *
      * @var string
      */
     protected $name;
 
     /**
-     * 颜色
+     * 颜色.
+     *
      * @var string
      */
     protected $color;
 
     /**
-     * 字号
+     * 字号.
+     *
      * @var string
      */
     protected $size;
 
     /**
-     * 风格，具体不知效果
+     * 风格，具体不知效果.
+     *
      * @var string
      */
     protected $style;
@@ -108,7 +113,8 @@ class Font
     }
 
     /**
-     * 转换成数组
+     * 转换成数组.
+     *
      * @return array
      */
     public function toArray()
@@ -117,12 +123,13 @@ class Font
             'name' => $this->name,
             'size' => $this->size,
             'style' => $this->style,
-            'color' => $this->color
+            'color' => $this->color,
         ];
     }
 
     /**
-     * 创建一个默认字体
+     * 创建一个默认字体.
+     *
      * @return static
      */
     public static function createDefault()

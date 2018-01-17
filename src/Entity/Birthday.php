@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 class Birthday
@@ -82,8 +83,10 @@ class Birthday
     }
 
     /**
-     * 创建生日
+     * 创建生日.
+     *
      * @param array $data
+     *
      * @return Birthday
      */
     public static function createFromArray(array $data)

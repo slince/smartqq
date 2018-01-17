@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\Credential;
@@ -21,7 +22,7 @@ class SendGroupMessageRequest extends SendMessageRequest
     public function __construct(GroupMessage $message, Credential $credential)
     {
         $parameters = array_merge([
-            'group_uin' => $message->getGroup()->getId()
+            'group_uin' => $message->getGroup()->getId(),
         ], $this->makeMessageParameter($message, $credential));
         $this->setParameter('r', \GuzzleHttp\json_encode($parameters));
     }

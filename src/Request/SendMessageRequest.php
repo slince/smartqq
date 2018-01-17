@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
@@ -20,16 +21,17 @@ class SendMessageRequest extends Request
     public function makeMessageParameter(Message $message, Credential $credential)
     {
         return [
-            'content' => (string)$message->getContent(),
+            'content' => (string) $message->getContent(),
             'face' => $message->getFace(),
             'clientid' => $credential->getClientId(),
             'msg_id' => $message->getMsgId(),
-            'psessionid' => $credential->getPSessionId()
+            'psessionid' => $credential->getPSessionId(),
         ];
     }
 
     /**
      * @param Response $response
+     *
      * @return bool
      */
     public static function parseResponse(Response $response)

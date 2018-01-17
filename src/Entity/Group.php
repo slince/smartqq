@@ -7,12 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 class Group
 {
     /**
-     * gid
+     * gid.
+     *
      * @var int
      */
     protected $id;

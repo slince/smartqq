@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Exception;
 
 class ResponseException extends RuntimeException
@@ -18,7 +19,7 @@ class ResponseException extends RuntimeException
         if (!is_null($response)) {
             $this->response = $response;
         }
-        $message = $message ?: "The response is incorrect";
+        $message = $message ?: 'The response is incorrect';
         parent::__construct($message, $code);
     }
 
@@ -30,9 +31,6 @@ class ResponseException extends RuntimeException
         $this->response = $response;
     }
 
-    /**
-     * @return null
-     */
     public function getResponse()
     {
         return $this->response;

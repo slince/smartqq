@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\Credential;
@@ -24,19 +25,21 @@ class GetQQRequest extends Request
     {
         $this->setTokens([
             'uin' => $friend->getUin(),
-            'vfwebqq' => $credential->getVfWebQQ()
+            'vfwebqq' => $credential->getVfWebQQ(),
         ]);
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return int
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             return $jsonData['result']['account'];
         }
         throw new ResponseException($jsonData['retcode'], $response);

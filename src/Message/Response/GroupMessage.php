@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Message\Response;
 
 use Slince\SmartQQ\Message\Content;
@@ -14,25 +15,29 @@ use Slince\SmartQQ\Message\Content;
 class GroupMessage extends Message
 {
     /**
-     * 接收用户编号，也是QQ号
+     * 接收用户编号，也是QQ号.
+     *
      * @var int
      */
     protected $toUin;
-    
+
     /**
-     * 群编号，非群号
+     * 群编号，非群号.
+     *
      * @var int
      */
     protected $fromUin;
 
     /**
-     * 群编号，非群号,同fromUin
+     * 群编号，非群号,同fromUin.
+     *
      * @var int
      */
     protected $groupCode;
 
     /**
-     * 发信用户编号，非QQ号
+     * 发信用户编号，非QQ号.
+     *
      * @var int
      */
     protected $sendUin;

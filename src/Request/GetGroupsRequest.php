@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Cake\Collection\Collection;
 use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Client;
 use Slince\SmartQQ\Entity\Group;
 use Slince\SmartQQ\EntityCollection;
 use Slince\SmartQQ\Credential;
@@ -36,14 +36,16 @@ class GetGroupsRequest extends Request
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return EntityCollection
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             $markNames = (new Collection($jsonData['result']['gmarklist']))->combine('uin', 'markname')
                 ->toArray();
             $groups = [];
@@ -54,6 +56,7 @@ class GetGroupsRequest extends Request
                 $group = EntityFactory::createEntity(Group::class, $groupData);
                 $groups[] = $group;
             }
+
             return new EntityCollection($groups);
         }
         throw new ResponseException($jsonData['retcode'], $response);

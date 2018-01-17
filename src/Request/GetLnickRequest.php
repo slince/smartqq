@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Cake\Collection\Collection;
@@ -25,23 +26,26 @@ class GetLnickRequest extends Request
     {
         $this->setTokens([
             'uin' => $friend->getUin(),
-            'vfwebqq' => $credential->getVfWebQQ()
+            'vfwebqq' => $credential->getVfWebQQ(),
         ]);
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
-     * @param Friend $friend
+     * @param Friend   $friend
+     *
      * @return int
      */
     public static function parseResponse(Response $response, Friend $friend)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             $info = (new Collection($jsonData['result']))->filter(function($info) use($friend){
                 return $info['uin'] == $friend->getUin();
             })->first();
+
             return $info ? $info['lnick'] : null;
         }
         throw new ResponseException($jsonData['retcode'], $response);

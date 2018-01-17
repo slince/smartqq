@@ -7,36 +7,42 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 class Recent
 {
     /**
-     * 好友会话
+     * 好友会话.
+     *
      * @var int
      */
     const TYPE_FRIEND = 0;
 
     /**
-     * 群会话
+     * 群会话.
+     *
      * @var int
      */
     const TYPE_GROUP = 1;
 
     /**
-     * 讨论组会话
+     * 讨论组会话.
+     *
      * @var int
      */
     const TYPE_DISCUSS = 2;
 
     /**
-     * 会话类型
+     * 会话类型.
+     *
      * @var int
      */
     protected $type;
 
     /**
-     * 对方编号
+     * 对方编号.
+     *
      * @var int
      */
     protected $uin;
@@ -74,7 +80,8 @@ class Recent
     }
 
     /**
-     * 是否是好友会话
+     * 是否是好友会话.
+     *
      * @return bool
      */
     public function isFriendType()
@@ -83,7 +90,8 @@ class Recent
     }
 
     /**
-     * 是否是群会话
+     * 是否是群会话.
+     *
      * @return bool
      */
     public function isGroupType()
@@ -92,7 +100,8 @@ class Recent
     }
 
     /**
-     * 是否是讨论组会话
+     * 是否是讨论组会话.
+     *
      * @return bool
      */
     public function isDiscussType()

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 use Slince\SmartQQ\EntityCollection;
@@ -14,49 +15,57 @@ use Slince\SmartQQ\EntityCollection;
 class GroupDetail
 {
     /**
-     * 组id
+     * 组id.
+     *
      * @var int
      */
     protected $gid;
 
     /**
-     * 群名称
+     * 群名称.
+     *
      * @var string
      */
     protected $name;
 
     /**
-     * code
+     * code.
+     *
      * @var string
      */
     protected $code;
 
     /**
-     * 创建者的编号
+     * 创建者的编号.
+     *
      * @var int
      */
     protected $owner;
 
     /**
-     * 群等级
+     * 群等级.
+     *
      * @var int
      */
     protected $level;
 
     /**
-     * 创建时间
+     * 创建时间.
+     *
      * @var int
      */
     protected $createTime;
 
     /**
-     * flag
+     * flag.
+     *
      * @var int
      */
     protected $flag;
 
     /**
-     * 群公告
+     * 群公告.
+     *
      * @var string
      */
     protected $memo;

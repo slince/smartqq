@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 use Slince\SmartQQ\Exception\InvalidArgumentException;
@@ -24,13 +25,15 @@ class OnlineStatus
     const OFFLINE = 'offline';
 
     /**
-     * 在线类型
+     * 在线类型.
+     *
      * @var int
      */
     protected $clientType;
 
     /**
-     * 用户编号
+     * 用户编号.
+     *
      * @var int
      */
     protected $uin;
@@ -57,7 +60,7 @@ class OnlineStatus
     }
 
     /**
-     * 转换为字符串
+     * 转换为字符串.
      */
     public function __toString()
     {

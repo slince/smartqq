@@ -7,60 +7,70 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 class GroupMember extends User
 {
     /**
-     * flag，作用不明
+     * flag，作用不明.
+     *
      * @var int
      */
     protected $flag;
 
     /**
-     * 昵称
+     * 昵称.
+     *
      * @var string
      */
     protected $nick;
 
     /**
      * 省
+     *
      * @var string
      */
     protected $province;
 
     /**
-     * 性别
+     * 性别.
+     *
      * @var string
      */
     protected $gender;
 
     /**
-     * 国家
+     * 国家.
+     *
      * @var string
      */
     protected $country;
 
     /**
      * 城市
+     *
      * @var string
      */
     protected $city;
 
     /**
-     * 群名片
+     * 群名片.
+     *
      * @var string
      */
     protected $card;
 
     /**
-     * 是否是vip
+     * 是否是vip.
+     *
      * @var string
      */
     protected $isVip;
 
     /**
-     * vip等级
+     * vip等级.
+     *
      * @var int
      */
     protected $vipLevel;

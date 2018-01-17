@@ -73,7 +73,7 @@ class ClientTest extends TestCase
     public function testGetCredential()
     {
         $client = new Client();
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $client->getCredential();
     }
 
@@ -341,13 +341,13 @@ class ClientTest extends TestCase
 
     public function test103CodeResponse()
     {
-        $this->setExpectedException(Code103ResponseException::class);
+        $this->expectException(Code103ResponseException::class);
         $this->createClientMock('103_response.txt')->pollMessages();
     }
 
     public function testResponseException()
     {
-        $this->setExpectedException(ResponseException::class);
+        $this->expectException(ResponseException::class);
         $this->createClientMock('response_exception.txt')->pollMessages();
     }
 

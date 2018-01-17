@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Cake\Collection\Collection;
@@ -18,7 +19,6 @@ use Slince\SmartQQ\EntityCollection;
 use Slince\SmartQQ\EntityFactory;
 use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Entity\Group;
-use Slince\SmartQQ\Utils;
 
 class GetGroupDetailRequest extends Request
 {
@@ -35,16 +35,18 @@ class GetGroupDetailRequest extends Request
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return GroupDetail
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             //群成员的vip信息
-            $vipInfos  = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity) {
+            $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity) {
                 return $entity;
             })->toArray();
             //群成员的名片信息
@@ -68,7 +70,7 @@ class GetGroupDetailRequest extends Request
             $members = [];
             foreach ($jsonData['result']['minfo'] as $memberData) {
                 $uin = $memberData['uin'];
-                $member  = EntityFactory::createEntity(GroupMember::class, [
+                $member = EntityFactory::createEntity(GroupMember::class, [
                     'flag' => isset($flags[$uin]) ? $flags[$uin] : null,
                     'nick' => $memberData['nick'],
                     'province' => $memberData['province'],
@@ -83,6 +85,7 @@ class GetGroupDetailRequest extends Request
                 $members[] = $member;
             }
             $groupDetailData['members'] = new EntityCollection($members);
+
             return EntityFactory::createEntity(GroupDetail::class, $groupDetailData);
         }
         throw new ResponseException($jsonData['retcode'], $response);

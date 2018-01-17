@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
@@ -26,19 +27,21 @@ class GetDiscussesRequest extends Request
     {
         $this->setTokens([
             'psessionid' => $credential->getPSessionId(),
-            'vfwebqq' => $credential->getVfWebQQ()
+            'vfwebqq' => $credential->getVfWebQQ(),
         ]);
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return EntityCollection
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             $discusses = [];
             foreach ($jsonData['result']['dnamelist'] as $discussData) {
                 $discusses[] = EntityFactory::createEntity(Discuss::class, [
@@ -46,6 +49,7 @@ class GetDiscussesRequest extends Request
                      'name' => $discussData['name'],
                 ]);
             }
+
             return new EntityCollection($discusses);
         }
         throw new ResponseException($jsonData['retcode'], $response);

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Cake\Collection\Collection;
@@ -35,14 +36,16 @@ class GetDiscussDetailRequest extends Request
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return DiscussDetail
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             //成员在线状态
             $statuses = (new Collection($jsonData['result']['mem_status']))->combine('uin', function($entity) {
                 return $entity;
@@ -68,6 +71,7 @@ class GetDiscussDetailRequest extends Request
                 ]);
             }
             $discussDetailData['members'] = new EntityCollection($members);
+
             return EntityFactory::createEntity(DiscussDetail::class, $discussDetailData);
         }
         throw new ResponseException($jsonData['retcode'], $response);

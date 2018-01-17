@@ -7,42 +7,49 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 class Request implements RequestInterface
 {
     /**
      * 请求地址
+     *
      * @var string
      */
     protected $uri;
 
     /**
-     * referer
+     * referer.
+     *
      * @var string
      */
     protected $referer;
 
     /**
-     * 请求方式
+     * 请求方式.
+     *
      * @var string
      */
     protected $method = RequestInterface::REQUEST_METHOD_GET;
 
     /**
-     * 请求参数
+     * 请求参数.
+     *
      * @var array
      */
     protected $parameters = [];
 
     /**
-     * 处理占位符
+     * 处理占位符.
+     *
      * @var array
      */
     protected $tokens = [];
 
     /**
      * 获取请求地址
+     *
      * @return string
      */
     public function getUri()
@@ -51,7 +58,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 获取referer
+     * 获取referer.
+     *
      * @return string
      */
     public function getReferer()
@@ -60,7 +68,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 设置uri
+     * 设置uri.
+     *
      * @param string $uri
      */
     public function setUri($uri)
@@ -69,7 +78,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 设置referer
+     * 设置referer.
+     *
      * @param string $referer
      */
     public function setReferer($referer)
@@ -78,7 +88,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 获取请求方式
+     * 获取请求方式.
+     *
      * @return string
      */
     public function getMethod()
@@ -87,7 +98,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 获取请求参数
+     * 获取请求参数.
+     *
      * @return string
      */
     public function getParameters()
@@ -96,7 +108,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 设置参数
+     * 设置参数.
+     *
      * @param array $parameters
      */
     public function setParameters(array $parameters)
@@ -105,7 +118,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 设置请求参数
+     * 设置请求参数.
+     *
      * @param string $name
      * @param string $parameter
      */
@@ -115,7 +129,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 设置链接中的占位符
+     * 设置链接中的占位符.
+     *
      * @param array $tokens
      */
     public function setTokens($tokens)
@@ -124,7 +139,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 获取所有的token
+     * 获取所有的token.
+     *
      * @return array
      */
     public function getTokens()
@@ -133,7 +149,8 @@ class Request implements RequestInterface
     }
 
     /**
-     * 设置链接中的指定占位符
+     * 设置链接中的指定占位符.
+     *
      * @param string $name
      * @param string $token
      */
@@ -143,8 +160,10 @@ class Request implements RequestInterface
     }
 
     /**
-     * 处理链接中的占位符
+     * 处理链接中的占位符.
+     *
      * @param string $uri
+     *
      * @return string
      */
     protected function processUri($uri)

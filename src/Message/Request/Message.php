@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Message\Request;
 
 use Slince\SmartQQ\Message\Message as BaseMessage;
@@ -16,7 +17,8 @@ use Slince\SmartQQ\Utils;
 class Message extends BaseMessage
 {
     /**
-     * 具体不明
+     * 具体不明.
+     *
      * @var int
      */
     protected $face = 522;

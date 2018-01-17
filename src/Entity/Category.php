@@ -7,27 +7,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 /**
- * QQ好友分组
+ * QQ好友分组.
  */
 class Category
 {
     /**
-     * 分组名称
+     * 分组名称.
+     *
      * @var string
      */
     protected $name;
 
     /**
-     * 编号,作用不明
+     * 编号,作用不明.
+     *
      * @var int
      */
     protected $index;
 
     /**
-     * 顺序
+     * 顺序.
+     *
      * @var int
      */
     protected $sort;
@@ -88,7 +92,8 @@ class Category
     }
 
     /**
-     * 创建我的好友默认分类
+     * 创建我的好友默认分类.
+     *
      * @return Category
      */
     public static function createMyFriendCategory()

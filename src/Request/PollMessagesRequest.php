@@ -1,8 +1,10 @@
 <?php
 /**
- * SmartQQ Library
+ * SmartQQ Library.
+ *
  * @author Tao <taosikai@yeah.net>
  */
+
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
@@ -31,25 +33,28 @@ class PollMessagesRequest extends Request
             'ptwebqq' => '',
             'clientid' => $credential->getClientId(),
             'psessionid' => $credential->getPSessionId(),
-            'key' => ''
+            'key' => '',
         ]));
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return Message[]
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             $messages = [];
             foreach ($jsonData['result'] as $messageData) {
                 $messages[] = static::makeResponseMessage($messageData['poll_type'], $messageData);
             }
+
             return $messages;
-        } elseif ($jsonData['retcode'] == 103) {
+        } elseif (103 == $jsonData['retcode']) {
             throw new Code103ResponseException($response);
         }
         throw new ResponseException($jsonData['retcode'], $response);
@@ -102,9 +107,10 @@ class PollMessagesRequest extends Request
                 );
                 break;
             default:
-                throw new RuntimeException(sprintf("Unknown message type [%s]", $type));
+                throw new RuntimeException(sprintf('Unknown message type [%s]', $type));
                 break;
         }
+
         return $message;
     }
 }

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
@@ -32,8 +33,9 @@ class GetUinAndPsessionidRequest extends Request
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if (!isset($jsonData['result']['uin'])) {
-            throw new RuntimeException("Can not find argument [uin] and [psessionid]");
+            throw new RuntimeException('Can not find argument [uin] and [psessionid]');
         }
+
         return [$jsonData['result']['uin'], $jsonData['result']['psessionid']];
     }
 }

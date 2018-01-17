@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ;
 
 use GuzzleHttp\Cookie\CookieJar;
@@ -15,37 +16,43 @@ use GuzzleHttp\Cookie\SetCookie;
 class Credential
 {
     /**
-     * 鉴权参数ptwebqq，存储在cookie中
+     * 鉴权参数ptwebqq，存储在cookie中.
+     *
      * @var string
      */
     protected $ptWebQQ;
 
     /**
-     * 鉴权参数vfwebqq
+     * 鉴权参数vfwebqq.
+     *
      * @var string
      */
     protected $vfWebQQ;
 
     /**
-     * 鉴权参数pSessionId
+     * 鉴权参数pSessionId.
+     *
      * @var string
      */
     protected $pSessionId;
 
     /**
-     * 客户端id
+     * 客户端id.
+     *
      * @var int
      */
     protected $clientId;
 
     /**
-     * 当前登录的用户编号（o+QQ号）
+     * 当前登录的用户编号（o+QQ号）.
+     *
      * @var string
      */
     protected $uin;
 
     /**
-     * cookie信息,由于client发起请求需要使用cookie信息故cookie也需要一同处理
+     * cookie信息,由于client发起请求需要使用cookie信息故cookie也需要一同处理.
+     *
      * @var CookieJar
      */
     protected $cookies;
@@ -167,13 +174,15 @@ class Credential
             'pSessionId' => $this->pSessionId,
             'uin' => $this->uin,
             'clientId' => $this->clientId,
-            'cookies' => $this->cookies->toArray()
+            'cookies' => $this->cookies->toArray(),
         ];
     }
 
     /**
-     * Create from a array data
+     * Create from a array data.
+     *
      * @param $data
+     *
      * @return static
      */
     public static function fromArray(array $data)
@@ -185,6 +194,7 @@ class Credential
                 $cookieJar->setCookie(new SetCookie($cookie));
             }
         }
+
         return new static($data['ptWebQQ'], $data['vfWebQQ'],
             $data['pSessionId'], $data['uin'], $data['clientId'],
             $cookieJar

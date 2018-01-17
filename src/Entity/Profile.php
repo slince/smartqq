@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 class Profile extends User
@@ -17,49 +18,57 @@ class Profile extends User
     protected $allow;
 
     /**
-     * QQ号
+     * QQ号.
+     *
      * @var int
      */
     protected $account;
 
     /**
-     * 邮箱
+     * 邮箱.
+     *
      * @var string
      */
     protected $email;
 
     /**
-     * 个性签名
+     * 个性签名.
+     *
      * @var string
      */
     protected $lnick;
 
     /**
-     * 生日
+     * 生日.
+     *
      * @var Birthday
      */
     protected $birthday;
 
     /**
-     * 未知
+     * 未知.
+     *
      * @var string
      */
     protected $occupation;
 
     /**
-     * 电话
+     * 电话.
+     *
      * @var string
      */
     protected $phone;
 
     /**
-     * 学院
+     * 学院.
+     *
      * @var string
      */
     protected $college;
 
     /**
-     * 未知
+     * 未知.
+     *
      * @var int
      */
     protected $constel;
@@ -70,43 +79,50 @@ class Profile extends User
     protected $blood;
 
     /**
-     * 主页
+     * 主页.
+     *
      * @var string
      */
     protected $homepage;
 
     /**
-     * 未知
+     * 未知.
+     *
      * @var int
      */
     protected $stat;
 
     /**
-     * vip_info
+     * vip_info.
+     *
      * @var int
      */
     protected $vipInfo;
 
     /**
-     * 国家
+     * 国家.
+     *
      * @var string
      */
     protected $country;
 
     /**
      * 省
+     *
      * @var string
      */
     protected $province;
 
     /**
      * 城市
+     *
      * @var string
      */
     protected $city;
 
     /**
-     * 简介
+     * 简介.
+     *
      * @var string
      */
     protected $personal;
@@ -117,19 +133,22 @@ class Profile extends User
     protected $nick;
 
     /**
-     * 生肖
+     * 生肖.
+     *
      * @var int
      */
     protected $shengXiao;
 
     /**
-     * female|male
+     * female|male.
+     *
      * @var string
      */
     protected $gender;
 
     /**
-     * 手机号
+     * 手机号.
+     *
      * @var string
      */
     protected $mobile;

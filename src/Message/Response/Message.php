@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Message\Response;
 
 use Slince\SmartQQ\Message\Message as BaseMessage;
@@ -15,23 +16,26 @@ use Slince\SmartQQ\Message\Content;
 class Message extends BaseMessage
 {
     /**
-     * 发送时间，时间戳
+     * 发送时间，时间戳.
+     *
      * @var int
      */
     protected $time;
 
     /**
-     * 消息类型，作用不明
+     * 消息类型，作用不明.
+     *
      * @var int
      */
     protected $msgType = 0;
 
     /**
      * Message constructor.
+     *
      * @param Content $content 消息内容
-     * @param int $time 发信时间
-     * @param int $msgId 消息id
-     * @param int $msgType 消息类型
+     * @param int     $time    发信时间
+     * @param int     $msgId   消息id
+     * @param int     $msgType 消息类型
      */
     public function __construct(Content $content, $time, $msgId, $msgType)
     {

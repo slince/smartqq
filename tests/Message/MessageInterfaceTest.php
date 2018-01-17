@@ -8,7 +8,7 @@ class MessageInterfaceTest extends TestCase
 {
     public function testMethod()
     {
-        $message  = $this->getMock(MessageInterface::class);
+        $message  = $this->getMockBuilder(MessageInterface::class)->getMock();
         $this->assertTrue(method_exists($message, 'getContent'));
     }
 }

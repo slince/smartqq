@@ -7,42 +7,49 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 class Friend extends User
 {
     /**
-     * flag,作用不明
+     * flag,作用不明.
+     *
      * @var int
      */
     protected $flag;
 
     /**
-     * face,作用不明
+     * face,作用不明.
+     *
      * @var int
      */
     protected $face;
 
     /**
-     * 昵称
+     * 昵称.
+     *
      * @var string
      */
     protected $nick;
 
     /**
-     * 用户QQ号
+     * 用户QQ号.
+     *
      * @var int
      */
     protected $qq;
 
     /**
-     * 是否是VIP
-     * @var boolean
+     * 是否是VIP.
+     *
+     * @var bool
      */
     protected $isVip;
 
     /**
-     * VIP等级
+     * VIP等级.
+     *
      * @var int
      */
     protected $vipLevel;
@@ -82,7 +89,7 @@ class Friend extends User
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isVip()
     {
@@ -162,7 +169,7 @@ class Friend extends User
     }
 
     /**
-     * @param boolean $isVip
+     * @param bool $isVip
      */
     public function setIsVip($isVip)
     {

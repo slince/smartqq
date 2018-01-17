@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Slince\SmartQQ\Credential;
@@ -26,19 +27,21 @@ class GetFriendsOnlineStatusRequest extends Request
     {
         $this->setTokens([
             'vfwebqq' => $credential->getVfWebQQ(),
-            'psessionid' => $credential->getPSessionId()
+            'psessionid' => $credential->getPSessionId(),
         ]);
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return EntityCollection
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             $onlineStatuses = [];
             foreach ($jsonData['result'] as $status) {
                 $onlineStatuses[] = EntityFactory::createEntity(OnlineStatus::class, [
@@ -47,6 +50,7 @@ class GetFriendsOnlineStatusRequest extends Request
                     'status' => $status['status'],
                 ]);
             }
+
             return new EntityCollection($onlineStatuses);
         }
         throw new ResponseException($jsonData['retcode'], $response);

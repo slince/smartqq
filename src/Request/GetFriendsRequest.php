@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use Cake\Collection\Collection;
@@ -36,15 +37,17 @@ class GetFriendsRequest extends Request
     }
 
     /**
-     * 解析响应数据
+     * 解析响应数据.
+     *
      * @param Response $response
+     *
      * @return EntityCollection
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         //有时候获取好友接口retcode=100003时也可以获取数据，但数据不完整故当做无效返回
-        if ($jsonData && $jsonData['retcode'] == 0) {
+        if ($jsonData && 0 == $jsonData['retcode']) {
             //好友基本信息
             $friendDatas = (new Collection($jsonData['result']['friends']))->combine('uin', function($entity) {
                 return $entity;
@@ -76,7 +79,7 @@ class GetFriendsRequest extends Request
                 $category = null;
                 if (isset($friendDatas[$uin])) {
                     $categoryIndex = $friendDatas[$uin]['categories'];
-                    if ($categoryIndex == 0) {
+                    if (0 == $categoryIndex) {
                         $category = Category::createMyFriendCategory();
                     } else {
                         $category = new Category($categories[$categoryIndex]['name'],
@@ -88,6 +91,7 @@ class GetFriendsRequest extends Request
                 $friend['category'] = $category;
                 $friends[] = EntityFactory::createEntity(Friend::class, $friend);
             }
+
             return new EntityCollection($friends);
         }
         throw new ResponseException($jsonData['retcode'], $response);

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Entity;
 
 class DiscussMember extends User
@@ -27,7 +28,8 @@ class DiscussMember extends User
     protected $status;
 
     /**
-     * 作用不明
+     * 作用不明.
+     *
      * @var int
      */
     protected $ruin;

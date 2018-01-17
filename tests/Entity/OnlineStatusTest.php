@@ -33,7 +33,7 @@ class OnlineStatusTest extends TestCase
     public function testSetWrongStatus()
     {
         $onlineStatus = new OnlineStatus();
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $onlineStatus->setStatus('invalid_status');
     }
 }

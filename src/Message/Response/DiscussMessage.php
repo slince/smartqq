@@ -7,34 +7,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Message\Response;
 
-use Slince\SmartQQ\Message\MessageInterface;
 use Slince\SmartQQ\Message\Content;
 
 class DiscussMessage extends Message
 {
     /**
-     * 接收用户编号，也是QQ号
+     * 接收用户编号，也是QQ号.
+     *
      * @var int
      */
     protected $toUin;
-    
+
     /**
-     * 讨论组编号
+     * 讨论组编号.
+     *
      * @var int
      */
     protected $fromUin;
 
     /**
      * 讨论组编号，同fromUin
-     * PS: 对应影响中的did
+     * PS: 对应影响中的did.
+     *
      * @var int
      */
     protected $discussId;
 
     /**
-     * 发信用户编号，非QQ号
+     * 发信用户编号，非QQ号.
+     *
      * @var int
      */
     protected $sendUin;
@@ -103,7 +107,7 @@ class DiscussMessage extends Message
     {
         return $this->discussId;
     }
-    
+
     /**
      * @return int
      */

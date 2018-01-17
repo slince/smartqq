@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Message;
 
 class Message implements MessageInterface
@@ -17,15 +18,17 @@ class Message implements MessageInterface
     protected $content;
 
     /**
-     * 消息id
+     * 消息id.
+     *
      * @var int
      */
     protected $msgId;
 
     /**
      * AbstractMessage constructor.
+     *
      * @param Content $content 消息内容
-     * @param int $msgId 消息id
+     * @param int     $msgId   消息id
      */
     public function __construct(Content $content, $msgId)
     {

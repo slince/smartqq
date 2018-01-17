@@ -7,26 +7,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Message;
 
 class Content
 {
     /**
-     * 消息内容
+     * 消息内容.
+     *
      * @var string
      */
     protected $content;
 
     /**
-     * 消息内容字体
+     * 消息内容字体.
+     *
      * @var Font
      */
     protected $font;
 
     /**
      * Content constructor.
+     *
      * @param string $content 消息内容正文
-     * @param Font $font 消息内容字体
+     * @param Font   $font    消息内容字体
      */
     public function __construct($content, Font $font = null)
     {
@@ -35,18 +39,20 @@ class Content
     }
 
     /**
-     * 魔术方法
+     * 魔术方法.
+     *
      * @return string
      */
     public function __toString()
     {
         $font = $this->getFont() ?: Font::createDefault();
+
         return \GuzzleHttp\json_encode([
             $this->getContent(),
             [
                 'font',
-                $font->toArray()
-            ]
+                $font->toArray(),
+            ],
         ]);
     }
 

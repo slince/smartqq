@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ;
 
 use GuzzleHttp\Client as HttpClient;
@@ -56,13 +57,15 @@ class Client
     protected $credential;
 
     /**
-     * 客户端id(固定值)
+     * 客户端id(固定值).
+     *
      * @var int
      */
     protected static $clientId = 53999199;
 
     /**
      * 获取ptwebqq的地址
+     *
      * @var string
      */
     protected $certificationUrl;
@@ -84,7 +87,7 @@ class Client
         }
         if (is_null($httpClient)) {
             $httpClient = new HttpClient([
-                'verify' => false
+                'verify' => false,
             ]);
         }
         $this->httpClient = $httpClient;
@@ -92,7 +95,9 @@ class Client
 
     /**
      * 开启登录流程自行获取凭证
+     *
      * @param string $loginQRImage 二维码图片位置
+     *
      * @return Credential
      */
     public function login($loginQRImage)
@@ -103,10 +108,10 @@ class Client
         $ptQrToken = Utils::hash33($qrSign);
         while (true) {
             $status = $this->verifyQrCodeStatus($ptQrToken);
-            if ($status == VerifyQrCodeRequest::STATUS_EXPIRED) {
+            if (VerifyQrCodeRequest::STATUS_EXPIRED == $status) {
                 $qrSign = $this->makeQrCodeImage($loginQRImage);
                 $ptQrToken = Utils::hash33($qrSign);
-            } elseif ($status == VerifyQrCodeRequest::STATUS_CERTIFICATION) {
+            } elseif (VerifyQrCodeRequest::STATUS_CERTIFICATION == $status) {
                 //授权成功跳出状态检查
                 break;
             }
@@ -116,12 +121,15 @@ class Client
         $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
         list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
         $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin, static::$clientId, $this->cookies);
+
         return $this->credential;
     }
 
     /**
      * 创建登录所需的二维码
+     *
      * @param string $loginQRImage
+     *
      * @return string
      */
     protected function makeQrCodeImage($loginQRImage)
@@ -129,27 +137,29 @@ class Client
         $response = $this->sendRequest(new GetQrCodeRequest());
         Utils::getFilesystem()->dumpFile($loginQRImage, $response->getBody());
         foreach ($this->getCookies() as $cookie) {
-            if (strcasecmp($cookie->getName(), 'qrsig') == 0) {
+            if (0 == strcasecmp($cookie->getName(), 'qrsig')) {
                 return $cookie->getValue();
             }
         }
-        throw new RuntimeException("Can not find parameter [qrsig]");
+        throw new RuntimeException('Can not find parameter [qrsig]');
     }
 
     /**
      * 验证二维码状态
+     *
      * @param int $ptQrToken qr token
+     *
      * @return int
      */
     protected function verifyQrCodeStatus($ptQrToken)
     {
         $request = new VerifyQrCodeRequest($ptQrToken);
         $response = $this->sendRequest($request);
-        if (strpos($response->getBody(), '未失效') !== false) {
+        if (false !== strpos($response->getBody(), '未失效')) {
             $status = VerifyQrCodeRequest::STATUS_UNEXPIRED;
-        } elseif (strpos($response->getBody(), '已失效') !== false) {
+        } elseif (false !== strpos($response->getBody(), '已失效')) {
             $status = VerifyQrCodeRequest::STATUS_EXPIRED;
-        } elseif (strpos($response->getBody(), '认证中') !== false) {
+        } elseif (false !== strpos($response->getBody(), '认证中')) {
             $status = VerifyQrCodeRequest::STATUS_ACCREDITATION;
         } else {
             $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
@@ -157,15 +167,18 @@ class Client
             if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
                 $this->certificationUrl = trim($matches[1]);
             } else {
-                throw new RuntimeException("Can not find certification url");
+                throw new RuntimeException('Can not find certification url');
             }
         }
+
         return $status;
     }
 
     /**
      * 获取ptwebqq的参数值
+     *
      * @param string $certificationUrl
+     *
      * @return string
      */
     protected function getPtWebQQ($certificationUrl)
@@ -174,27 +187,31 @@ class Client
         $request->setUri($certificationUrl);
         $this->sendRequest($request);
         foreach ($this->getCookies() as $cookie) {
-            if (strcasecmp($cookie->getName(), 'ptwebqq') == 0) {
+            if (0 == strcasecmp($cookie->getName(), 'ptwebqq')) {
                 return $cookie->getValue();
             }
         }
-        throw new RuntimeException("Can not find parameter [ptwebqq]");
+        throw new RuntimeException('Can not find parameter [ptwebqq]');
     }
 
     /**
      * @param string $ptWebQQ
+     *
      * @return string
      */
     protected function getVfWebQQ($ptWebQQ)
     {
         $request = new GetVfWebQQRequest($ptWebQQ);
         $response = $this->sendRequest($request);
+
         return GetVfWebQQRequest::parseResponse($response);
     }
 
     /**
-     * 获取pessionid和uin
+     * 获取pessionid和uin.
+     *
      * @param string $ptWebQQ
+     *
      * @return array
      */
     protected function getUinAndPSessionId($ptWebQQ)
@@ -203,9 +220,10 @@ class Client
             'ptwebqq' => $ptWebQQ,
             'clientid' => static::$clientId,
             'psessionid' => '',
-            'status' => 'online'
+            'status' => 'online',
         ]);
         $response = $this->sendRequest($request);
+
         return GetUinAndPsessionidRequest::parseResponse($response);
     }
 
@@ -224,8 +242,9 @@ class Client
     public function getCredential()
     {
         if (!$this->credential) {
-            throw new InvalidArgumentException("Please login first or set a credential");
+            throw new InvalidArgumentException('Please login first or set a credential');
         }
+
         return $this->credential;
     }
 
@@ -254,77 +273,94 @@ class Client
     }
 
     /**
-     * 获取所有的群
+     * 获取所有的群.
+     *
      * @return EntityCollection
      */
     public function getGroups()
     {
         $request = new GetGroupsRequest($this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetGroupsRequest::parseResponse($response);
     }
 
     /**
-     * 获取群详细信息
+     * 获取群详细信息.
+     *
      * @param Group $group
+     *
      * @return GroupDetail
      */
     public function getGroupDetail(Group $group)
     {
         $request = new GetGroupDetailRequest($group, $this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetGroupDetailRequest::parseResponse($response);
     }
 
     /**
-     * 获取所有讨论组
+     * 获取所有讨论组.
+     *
      * @return EntityCollection
      */
     public function getDiscusses()
     {
         $request = new GetDiscussesRequest($this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetDiscussesRequest::parseResponse($response);
     }
 
     /**
-     * 获取讨论组详情
+     * 获取讨论组详情.
+     *
      * @param Discuss $discuss
+     *
      * @return DiscussDetail
      */
     public function getDiscussDetail(Discuss $discuss)
     {
         $request = new GetDiscussDetailRequest($discuss, $this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetDiscussDetailRequest::parseResponse($response);
     }
 
     /**
-     * 获取所有的好友
+     * 获取所有的好友.
+     *
      * @return EntityCollection
      */
     public function getFriends()
     {
         $request = new GetFriendsRequest($this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetFriendsRequest::parseResponse($response);
     }
 
     /**
-     * 获取好友的详细信息
+     * 获取好友的详细信息.
+     *
      * @param Friend $friend
+     *
      * @return Profile
      */
     public function getFriendDetail(Friend $friend)
     {
         $request = new GetFriendDetailRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetFriendDetailRequest::parseResponse($response);
     }
 
     /**
-     * 获取好友的QQ号
+     * 获取好友的QQ号.
+     *
      * @param Friend $friend
+     *
      * @return int
      */
     public function getFriendQQ(Friend $friend)
@@ -333,70 +369,84 @@ class Client
         $response = $this->sendRequest($request);
         $qq = GetQQRequest::parseResponse($response);
         $friend->setQq($qq);
+
         return $qq;
     }
 
     /**
-     * 获取好友的个性签名
+     * 获取好友的个性签名.
+     *
      * @param Friend $friend
+     *
      * @return string
      */
     public function getFriendLnick(Friend $friend)
     {
         $request = new GetLnickRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetLnickRequest::parseResponse($response, $friend);
     }
 
     /**
      * 获取好友在线状态
+     *
      * @return EntityCollection
      */
     public function getFriendsOnlineStatus()
     {
         $request = new GetFriendsOnlineStatusRequest($this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetFriendsOnlineStatusRequest::parseResponse($response);
     }
 
     /**
-     * 获取最近的会话
+     * 获取最近的会话.
+     *
      * @return EntityCollection
      */
     public function getRecentList()
     {
         $request = new GetRecentListRequest($this->getCredential());
         $response = $this->sendRequest($request);
+
         return GetRecentListRequest::parseResponse($response);
     }
 
     /**
-     * 获取当前登录用户信息
+     * 获取当前登录用户信息.
+     *
      * @return Profile
      */
     public function getCurrentUserInfo()
     {
         $request = new GetCurrentUserRequest();
         $response = $this->sendRequest($request);
+
         return GetCurrentUserRequest::parseResponse($response);
     }
 
     /**
      * 轮询消息,
      * client并不会组装信息，只是将接口返回的信息完整抽象并返回
-     * 如果需要查询信息对应的数据，如发送人、发送群，请自行获取
+     * 如果需要查询信息对应的数据，如发送人、发送群，请自行获取.
+     *
      * @return ResponseMessage[]
      */
     public function pollMessages()
     {
         $request = new PollMessagesRequest($this->getCredential());
         $response = $this->sendRequest($request);
+
         return PollMessagesRequest::parseResponse($response);
     }
 
     /**
-     * 发送消息，包括好友消息，群消息，讨论组消息
+     * 发送消息，包括好友消息，群消息，讨论组消息.
+     *
      * @param RequestMessage $message
+     *
      * @return bool
      */
     public function sendMessage(RequestMessage $message)
@@ -409,20 +459,22 @@ class Client
             $request = new SendDiscusMessageRequest($message, $this->getCredential());
         }
         $response = $this->sendRequest($request);
+
         return SendMessageRequest::parseResponse($response);
     }
 
     /**
      * @param RequestInterface $request
+     *
      * @return Response
      */
     protected function sendRequest(RequestInterface $request)
     {
         $options = [
-            'cookies' => $this->getCookies()
+            'cookies' => $this->getCookies(),
         ];
         if ($parameters = $request->getParameters()) {
-            if ($request->getMethod() == RequestInterface::REQUEST_METHOD_GET) {
+            if (RequestInterface::REQUEST_METHOD_GET == $request->getMethod()) {
                 $options['query'] = $parameters;
             } else {
                 $options['form_params'] = $parameters;
@@ -431,10 +483,11 @@ class Client
         //如果有referer需要伪造该信息
         if ($referer = $request->getReferer()) {
             $options['headers'] = [
-                'Referer' => $referer
+                'Referer' => $referer,
             ];
         }
         $response = $this->httpClient->send(new Request($request->getMethod(), $request->getUri()), $options);
+
         return $response;
     }
 }
