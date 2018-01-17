@@ -28,7 +28,7 @@ class PollMessagesRequest extends Request
     public function __construct(Credential $credential)
     {
         $this->setParameter('r', \GuzzleHttp\json_encode([
-            'ptwebqq' => $credential->getPtWebQQ(),
+            'ptwebqq' => '',
             'clientid' => $credential->getClientId(),
             'psessionid' => $credential->getPSessionId(),
             'key' => ''

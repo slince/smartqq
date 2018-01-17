@@ -4,3 +4,6 @@ vendor/
 .buildpath
 composer.lock
 .idea
+examples/credential.json
+examples/result.log
+examples/smartqq-login-qr.png
