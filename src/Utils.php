@@ -55,7 +55,7 @@ class Utils
         $hex = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
         $hash = '';
         for ($i = 0; $i < 8; ++$i) {
-            $hash .= $hex[$x[$i] >> 4 & 0xf].$hex[$x[$i] & 0xf];
+            $hash .= $hex[$x[$i] >> 4 & 0xf] . $hex[$x[$i] & 0xf];
         }
 
         return $hash;
@@ -144,7 +144,7 @@ class Utils
     {
         list($s1, $s2) = explode(' ', microtime());
 
-        return (float) sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
+        return (float)sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
     }
 
     /**
