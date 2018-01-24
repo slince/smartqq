@@ -23,7 +23,7 @@ class SendMessageRequest extends Request
     public function makeMessageParameter(Message $message, Credential $credential)
     {
         return [
-            'content' => (string) $message->getContent(),
+            'content' => (string)$message->getContent(),
             'face' => $message->getFace(),
             'clientid' => $credential->getClientId(),
             'msg_id' => $message->getMsgId(),
