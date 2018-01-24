@@ -7,3 +7,4 @@ composer.lock
 examples/credential.json
 examples/result.log
 examples/smartqq-login-qr.png
+examples/test.php

@@ -1,10 +1,12 @@
 <?php
-/**
- * SmartQQ Library.
+/*
+ * This file is part of the slince/smartqq package.
  *
- * @author Tao <taosikai@yeah.net>
+ * (c) Slince <taosikai@yeah.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;

@@ -18,6 +18,8 @@ class SendMessageRequest extends Request
 {
     protected $method = RequestInterface::REQUEST_METHOD_POST;
 
+    protected $referer = 'http://d1.web2.qq.com/cfproxy.html?v=20151105001&callback=1';
+
     public function makeMessageParameter(Message $message, Credential $credential)
     {
         return [
@@ -37,8 +39,8 @@ class SendMessageRequest extends Request
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-//        return isset($jsonData['errCode']) && $jsonData['errCode'] === 0;
-        //由于接口返回错误但消息仍可以正常发出故此处不做判断直接返回成功
-        return true;
+        return isset($jsonData['errCode']) && $jsonData['errCode'] === 0;
+//        //由于接口返回错误但消息仍可以正常发出故此处不做判断直接返回成功
+//        return true;
     }
 }
