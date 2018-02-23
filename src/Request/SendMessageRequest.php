@@ -46,7 +46,7 @@ class SendMessageRequest extends Request
         ) {
             return true;
         }
-        if ($jsonData['retcode'] === 103) {
+        if (isset($jsonData['retcode']) && $jsonData['retcode'] === 103) {
             throw new Code103ResponseException($response);
         }
         return false;
