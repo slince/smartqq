@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests;
 
 use GuzzleHttp\Psr7\Response;
@@ -8,7 +9,6 @@ use Slince\SmartQQ\Credential;
 use Slince\SmartQQ\Entity\Discuss;
 use Slince\SmartQQ\Entity\Friend;
 use Slince\SmartQQ\Entity\Group;
-use Slince\SmartQQ\EntityFactory;
 use Slince\SmartQQ\Exception\Code103ResponseException;
 use Slince\SmartQQ\Exception\InvalidArgumentException;
 use Slince\SmartQQ\Exception\ResponseException;
@@ -24,9 +24,11 @@ class ClientTest extends TestCase
     }
 
     /**
-     * 创建mock
+     * 创建mock.
+     *
      * @param $requestResponse
-     * @return  Client
+     *
+     * @return Client
      */
     protected function getClientMock($requestResponse)
     {
@@ -46,7 +48,7 @@ class ClientTest extends TestCase
         $forPtWebQQResponse = new Response(200);
         $forVfWebQQResponse = $this->createResponseFromFixture('get_vfwebqq.txt');
         $forUinAndPSessionResponse = $this->createResponseFromFixture('get_uin_psession.txt');
-
+        $getOnlineStatusResponse = $this->createResponseFromFixture('get_friends_online_status.txt');
         $cookies = Credential::fromArray($this->readFixtureFileJson('credential.json'))->getCookies();
         $client->expects($this->any())
             ->method('sendRequest')
@@ -55,7 +57,8 @@ class ClientTest extends TestCase
                 $verifyStatusResponse,
                 $forPtWebQQResponse,
                 $forVfWebQQResponse,
-                $forUinAndPSessionResponse
+                $forUinAndPSessionResponse,
+                $getOnlineStatusResponse
             ));
         $client->expects($this->any())
             ->method('getCookies')
@@ -102,7 +105,7 @@ class ClientTest extends TestCase
 
         //test set client
         $httpClient = new \GuzzleHttp\Client([
-            'verify' => true //默认不开启校验ssl证书
+            'verify' => true, //默认不开启校验ssl证书
         ]);
         $client->setHttpClient($httpClient);
         $this->assertTrue($httpClient === $client->getHttpClient());
@@ -110,7 +113,7 @@ class ClientTest extends TestCase
         //test construct httpclient
         $httpClient2 = new \GuzzleHttp\Client([
             'verify' => true, //默认不开启校验ssl证书
-            'proxy' => '127.0.0.1:8888'
+            'proxy' => '127.0.0.1:8888',
         ]);
         $client2 = new Client(null, $httpClient2);
         $this->assertTrue($httpClient2 === $client2->getHttpClient());
@@ -133,6 +136,7 @@ class ClientTest extends TestCase
 
     /**
      * @depends testGetGroups
+     *
      * @param Group $group
      */
     public function testGetGroupDetail(Group $group)
@@ -177,6 +181,7 @@ class ClientTest extends TestCase
 
     /**
      * @depends testGetDiscusses
+     *
      * @param $discuss
      */
     public function testGetDiscussDetail(Discuss $discuss)
@@ -198,7 +203,7 @@ class ClientTest extends TestCase
 
     public function testGetFriends()
     {
-        $friends =  $this->createClientMock('get_friends.txt')->getFriends();
+        $friends = $this->createClientMock('get_friends.txt')->getFriends();
         $this->assertCount(1, $friends);
         $friend = $friends->first();
 
@@ -217,6 +222,7 @@ class ClientTest extends TestCase
 
     /**
      * @depends testGetFriends
+     *
      * @param Friend $friend
      */
     public function testGetFriendDetail(Friend $friend)
@@ -247,6 +253,7 @@ class ClientTest extends TestCase
 
     /**
      * @depends testGetFriends
+     *
      * @param Friend $friend
      */
     public function testGetFriendQQ(Friend $friend)
@@ -258,6 +265,7 @@ class ClientTest extends TestCase
 
     /**
      * @depends testGetFriends
+     *
      * @param Friend $friend
      */
     public function testGetFriendLnick(Friend $friend)
@@ -353,6 +361,7 @@ class ClientTest extends TestCase
 
     /**
      * @depends testGetFriends
+     *
      * @param $friend
      */
     public function testSendMessage($friend)
@@ -367,6 +376,7 @@ class ClientTest extends TestCase
 
     /**
      * @param $fixtureFilename
+     *
      * @return Client
      */
     protected function createClientMock($fixtureFilename)
@@ -385,6 +395,7 @@ class ClientTest extends TestCase
         $client->expects($this->any())
             ->method('getCredential')
             ->willReturn($credential);
+
         return $client;
     }
 
@@ -395,22 +406,24 @@ class ClientTest extends TestCase
 
     protected function readFixtureFile($filename)
     {
-        $content = file_get_contents(__DIR__ . "/Fixtures/{$filename}");
-        if ($content === false) {
-            throw new \Exception(sprintf("Fixture [%s] does not exists", $filename));
+        $content = file_get_contents(__DIR__."/Fixtures/{$filename}");
+        if (false === $content) {
+            throw new \Exception(sprintf('Fixture [%s] does not exists', $filename));
         }
+
         return $content;
     }
 
     protected function readFixtureFileJson($filename)
     {
         $rawContent = $this->readFixtureFile($filename);
+
         return \GuzzleHttp\json_decode($rawContent, true);
     }
 
     protected static function getQrImagePath()
     {
-        return __DIR__ . '/login.png';
+        return __DIR__.'/login.png';
     }
 
     public function tearDown()

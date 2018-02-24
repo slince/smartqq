@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Message;
 
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class FontTest extends TestCase
             'name' => 'foo',
             'color' => '000000',
             'size' => 18,
-            'style' => [30, 40, 50]
+            'style' => [30, 40, 50],
         ], $font->toArray());
     }
 

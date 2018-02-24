@@ -1,7 +1,7 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Entity;
 
-use Slince\SmartQQ\Entity\DiscussMember;
 use Slince\SmartQQ\Entity\GroupMember;
 
 class GroupMemberTest extends UserTestCase

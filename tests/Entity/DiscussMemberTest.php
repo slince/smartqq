@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Entity;
 
 use Slince\SmartQQ\Entity\DiscussMember;

@@ -24,7 +24,7 @@ class SendMessageRequest extends Request
     public function makeMessageParameter(Message $message, Credential $credential)
     {
         return [
-            'content' => (string)$message->getContent(),
+            'content' => (string) $message->getContent(),
             'face' => $message->getFace(),
             'clientid' => $credential->getClientId(),
             'msg_id' => $message->getMsgId(),
@@ -34,21 +34,24 @@ class SendMessageRequest extends Request
 
     /**
      * @param Response $response
+     *
      * @throws Code103ResponseException
+     *
      * @return bool
      */
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if (
-            (isset($jsonData['errCode']) && $jsonData['errCode'] === 0)
-            ||(isset($jsonData['retcode']) && $jsonData['retcode'] === 0)
+            (isset($jsonData['errCode']) && 0 === $jsonData['errCode'])
+            || (isset($jsonData['retcode']) && 0 === $jsonData['retcode'])
         ) {
             return true;
         }
-        if (isset($jsonData['retcode']) && $jsonData['retcode'] === 103) {
+        if (isset($jsonData['retcode']) && 103 === $jsonData['retcode']) {
             throw new Code103ResponseException($response);
         }
+
         return false;
     }
 }

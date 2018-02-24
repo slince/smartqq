@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -11,14 +12,14 @@ class EntityCollectionTest extends TestCase
     {
         $dataArray = [
             [
-                'name' => 'foo'
+                'name' => 'foo',
             ],
             [
-                'name' => 'bar'
+                'name' => 'bar',
             ],
             [
-                'name' => 'baz'
-            ]
+                'name' => 'baz',
+            ],
         ];
         $collection = new EntityCollection(EntityFactory::createEntities(FooEntity::class, $dataArray));
         $this->assertEquals('foo', $collection->firstByAttribute('name', 'foo')->getName());

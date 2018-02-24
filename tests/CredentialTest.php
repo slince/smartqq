@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests;
 
 use GuzzleHttp\Cookie\CookieJar;
@@ -45,7 +46,7 @@ class CredentialTest extends TestCase
             'pSessionId' => 'baz',
             'uin' => 1234,
             'clientId' => 604800,
-            'cookies' => []
+            'cookies' => [],
         ], $credential->toArray());
     }
 
@@ -57,7 +58,7 @@ class CredentialTest extends TestCase
             'pSessionId' => 'baz',
             'uin' => 1234,
             'clientId' => 604800,
-            'cookies' => []
+            'cookies' => [],
         ];
         $credential = Credential::fromArray($parameters);
         $this->assertEquals('foo', $credential->getPtWebQQ());

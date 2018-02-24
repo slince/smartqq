@@ -1,9 +1,9 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Message\Request;
 
 use PHPUnit\Framework\TestCase;
 use Slince\SmartQQ\Entity\Discuss;
-use Slince\SmartQQ\Entity\Friend;
 use Slince\SmartQQ\Message\Request\DiscussMessage;
 
 class DiscussMessageTest extends TestCase

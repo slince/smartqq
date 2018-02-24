@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Slince\SmartQQ\Request;
 
 use GuzzleHttp\Psr7\Response;
@@ -49,7 +50,7 @@ class PollMessagesRequest extends Request
     public static function parseResponse(Response $response)
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
-        if ($jsonData && 0 == $jsonData['retcode']) {
+        if ($jsonData && 0 == $jsonData['retcode'] && !empty($jsonData['result'])) {
             $messages = [];
             foreach ($jsonData['result'] as $messageData) {
                 $messages[] = static::makeResponseMessage($messageData['poll_type'], $messageData);
@@ -64,15 +65,9 @@ class PollMessagesRequest extends Request
 
     protected static function makeResponseMessage($type, $messageData)
     {
-        //正文字体
-        $fontParameters = $messageData['value']['content'][0][1];
-        $font = new Font($fontParameters['name'],
-            $fontParameters['color'],
-            $fontParameters['size'],
-            $fontParameters['style']
-        );
+        $contents = $messageData['value']['content'];
         //消息正文
-        $content = new Content($messageData['value']['content'][1], $font);
+        $content = static::parseContents($contents);
         switch ($messageData['poll_type']) {
             case Message::TYPE_FRIEND:
                 $message = new FriendMessage(
@@ -114,5 +109,35 @@ class PollMessagesRequest extends Request
         }
 
         return $message;
+    }
+
+    /**
+     * Parse Contents.
+     *
+     * @param array $contents
+     *
+     * @return Content
+     */
+    protected static function parseContents($contents)
+    {
+        //正文字体
+        $fontParameters = $contents[0][1];
+        $font = new Font($fontParameters['name'],
+            $fontParameters['color'],
+            $fontParameters['size'],
+            $fontParameters['style']
+        );
+        unset($contents[0]);
+        $contentString = implode('', array_map(function($content){
+            if ($content && is_array($content) && 'face' === $content[0]) { //处理表情
+                $faceText = Content::searchFaceText($content[1]);
+
+                return $faceText ? '['.$faceText.']' : '';
+            } else {
+                return (string) $content;
+            }
+        }, $contents));
+
+        return new Content($contentString, $font);
     }
 }

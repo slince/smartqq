@@ -121,6 +121,8 @@ class Client
         $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
         list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
         $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin, static::$clientId, $this->cookies);
+        //获取在线状态避免103
+        $this->getFriendsOnlineStatus();
 
         return $this->credential;
     }

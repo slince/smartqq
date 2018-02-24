@@ -1,9 +1,9 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Entity;
 
 use PHPUnit\Framework\TestCase;
 use Slince\SmartQQ\Entity\OnlineStatus;
-use Slince\SmartQQ\Exception\InvalidArgumentException;
 
 class OnlineStatusTest extends TestCase
 {
@@ -28,12 +28,5 @@ class OnlineStatusTest extends TestCase
         $onlineStatus = new OnlineStatus();
         $onlineStatus->setStatus(OnlineStatus::ONLINE);
         $this->assertEquals(OnlineStatus::ONLINE, strval($onlineStatus));
-    }
-
-    public function testSetWrongStatus()
-    {
-        $onlineStatus = new OnlineStatus();
-        $this->expectException(InvalidArgumentException::class);
-        $onlineStatus->setStatus('invalid_status');
     }
 }

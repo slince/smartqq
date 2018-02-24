@@ -1,15 +1,15 @@
 <?php
 /**
- * 获取群相关信息
+ * 获取群相关信息.
  */
 use Slince\SmartQQ\Client;
 
-include __DIR__ . '/bootstrap.php';
+include __DIR__.'/bootstrap.php';
 
 //创建smartQQ客户端
 $smartQQ = new Client(getCredential());
 
-## 群信息
+//# 群信息
 
 //1、获取所有群
 $groups = $smartQQ->getGroups();

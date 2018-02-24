@@ -54,7 +54,7 @@ class EntityFactory
     protected static function applyProperties($entityInstance, $data)
     {
         foreach ($data as $property => $value) {
-            $funcName = 'set' . ucfirst($property);
+            $funcName = 'set'.ucfirst($property);
             if (method_exists($entityInstance, $funcName)) {
                 $entityInstance->$funcName($value);
             }

@@ -1,9 +1,9 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Entity;
 
 use Slince\SmartQQ\Entity\Category;
 use Slince\SmartQQ\Entity\Friend;
-use Slince\SmartQQ\Entity\OnlineStatus;
 
 class FriendTest extends UserTestCase
 {

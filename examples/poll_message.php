@@ -1,6 +1,6 @@
 <?php
 /**
- * 获取消息
+ * 获取消息.
  */
 use Slince\SmartQQ\Client;
 use Slince\SmartQQ\Message\Response\FriendMessage;
@@ -9,7 +9,7 @@ use Slince\SmartQQ\Message\Response\DiscussMessage;
 use Slince\SmartQQ\Entity\Discuss;
 use Slince\SmartQQ\Entity\DiscussDetail;
 
-include __DIR__ . '/bootstrap.php';
+include __DIR__.'/bootstrap.php';
 
 //创建smartQQ客户端
 $smartQQ = new Client(getCredential());
@@ -18,8 +18,10 @@ $groups = $smartQQ->getGroups();
 $discusses = $smartQQ->getDiscusses();
 
 /**
- * 获取讨论组详情
+ * 获取讨论组详情.
+ *
  * @param Discuss $discuss
+ *
  * @return DiscussDetail
  */
 function getDiscussDetails(Discuss $discuss)
@@ -29,13 +31,14 @@ function getDiscussDetails(Discuss $discuss)
     if (isset($discussDetails[$discuss->getId()])) {
         return $discussDetails[$discuss->getId()];
     }
+
     return $discussDetails[$discuss->getId()] = $smartQQ->getDiscussDetail($discuss);
 }
 
 while (true) {
     $messages = $smartQQ->pollMessages();
     if ($messages) {
-        printR("收到消息" . PHP_EOL);
+        printR('收到消息'.PHP_EOL);
         foreach ($messages as $message) {
             if ($message instanceof FriendMessage) {
                 $friend = $friends->firstByAttribute('uin', $message->getFromUin());

@@ -49,7 +49,7 @@ class Message extends BaseMessage
      */
     public function __toString()
     {
-        return $this->content->getContent();
+        return (string) $this->content->getContent();
     }
 
     /**

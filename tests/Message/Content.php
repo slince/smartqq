@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Message;
 
 use PHPUnit\Framework\TestCase;

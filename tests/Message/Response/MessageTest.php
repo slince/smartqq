@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests\Message\Response;
 
 use PHPUnit\Framework\TestCase;
@@ -7,7 +8,6 @@ use Slince\SmartQQ\Message\Response\Message;
 
 class MessageTest extends TestCase
 {
-
     public function testGetter()
     {
         $now = time();
@@ -40,6 +40,12 @@ class MessageTest extends TestCase
     {
         $now = time();
         $message = new Message(new Content('foo'), $now, 100, 123);
-        $this->assertEquals('foo', (string)$message);
+        $this->assertEquals('foo', (string) $message);
+    }
+
+    public function testSearchFace()
+    {
+        $this->assertEquals(14, Content::searchFaceId('微笑'));
+        $this->assertEquals('微笑', Content::searchFaceText(14));
     }
 }

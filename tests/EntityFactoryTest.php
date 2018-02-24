@@ -1,4 +1,5 @@
 <?php
+
 namespace Slince\SmartQQ\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -9,7 +10,7 @@ class EntityFactoryTest extends TestCase
     public function testCreateEntity()
     {
         $foo = EntityFactory::createEntity(FooEntity::class, [
-            'name' => 'bar'
+            'name' => 'bar',
         ]);
         $this->assertInstanceOf(FooEntity::class, $foo);
         $this->assertEquals('bar', $foo->getName());
@@ -19,14 +20,14 @@ class EntityFactoryTest extends TestCase
     {
         $dataArray = [
             [
-                'name' => 'foo'
+                'name' => 'foo',
             ],
             [
-                'name' => 'bar'
+                'name' => 'bar',
             ],
             [
-                'name' => 'baz'
-            ]
+                'name' => 'baz',
+            ],
         ];
         $entities = EntityFactory::createEntities(FooEntity::class, $dataArray);
         $this->assertEquals(3, count($entities));

@@ -10,8 +10,6 @@
 
 namespace Slince\SmartQQ\Entity;
 
-use Slince\SmartQQ\Exception\InvalidArgumentException;
-
 class OnlineStatus
 {
     /**
@@ -39,6 +37,8 @@ class OnlineStatus
     protected $uin;
 
     /**
+     * busy,away,online.
+     *
      * @var string
      */
     protected $status;
@@ -72,9 +72,6 @@ class OnlineStatus
      */
     public function setStatus($status)
     {
-        if ($status != static::ONLINE && $status != static::OFFLINE) {
-            throw new InvalidArgumentException();
-        }
         $this->status = $status;
     }
 

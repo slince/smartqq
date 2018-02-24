@@ -1,20 +1,18 @@
 <?php
 /**
- * 获取好友相关信息
+ * 获取好友相关信息.
  */
 use Slince\SmartQQ\Client;
 
-include __DIR__ . '/bootstrap.php';
+include __DIR__.'/bootstrap.php';
 
 //创建smartQQ客户端
 $smartQQ = new Client(getCredential());
 
-
-## 好友相关
+//# 好友相关
 
 //1、获取所有好友
 $friends = $smartQQ->getFriends();
-
 
 //2、从好友中筛选出指定好友，
 /**
@@ -22,7 +20,6 @@ $friends = $smartQQ->getFriends();
  * smartqq会多次发起请求
  */
 $friend = $friends->firstByAttribute('nick', '清延°');
-
 
 //3、获取好友的详细信息
 $profile = $smartQQ->getFriendDetail($friend);
