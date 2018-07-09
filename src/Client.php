@@ -12,42 +12,17 @@ namespace Slince\SmartQQ;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
-use Slince\SmartQQ\Entity\Discuss;
-use Slince\SmartQQ\Entity\DiscussDetail;
-use Slince\SmartQQ\Entity\Friend;
-use Slince\SmartQQ\Entity\Group;
-use Slince\SmartQQ\Entity\GroupDetail;
-use Slince\SmartQQ\Entity\Profile;
+use GuzzleHttp\Psr7\Request as HttpRequest;
+use GuzzleHttp\Psr7\Response as HttpResponse;
+use Slince\SmartQQ\Entity;
 use Slince\SmartQQ\Exception\InvalidArgumentException;
 use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Message\Request\FriendMessage;
 use Slince\SmartQQ\Message\Request\GroupMessage;
 use Slince\SmartQQ\Message\Request\Message as RequestMessage;
 use Slince\SmartQQ\Message\Response\Message as ResponseMessage;
-use Slince\SmartQQ\Request\GetLnickRequest;
-use Slince\SmartQQ\Request\RequestInterface;
-use Slince\SmartQQ\Request\GetCurrentUserRequest;
-use Slince\SmartQQ\Request\GetDiscussDetailRequest;
-use Slince\SmartQQ\Request\GetDiscussesRequest;
-use Slince\SmartQQ\Request\GetFriendDetailRequest;
-use Slince\SmartQQ\Request\GetFriendsOnlineStatusRequest;
-use Slince\SmartQQ\Request\GetFriendsRequest;
-use Slince\SmartQQ\Request\GetGroupDetailRequest;
-use Slince\SmartQQ\Request\GetGroupsRequest;
-use Slince\SmartQQ\Request\GetPtWebQQRequest;
-use Slince\SmartQQ\Request\GetQQRequest;
-use Slince\SmartQQ\Request\GetQrCodeRequest;
-use Slince\SmartQQ\Request\GetRecentListRequest;
-use Slince\SmartQQ\Request\GetUinAndPsessionidRequest;
-use Slince\SmartQQ\Request\GetVfWebQQRequest;
-use Slince\SmartQQ\Request\PollMessagesRequest;
-use Slince\SmartQQ\Request\SendDiscusMessageRequest;
-use Slince\SmartQQ\Request\SendFriendMessageRequest;
-use Slince\SmartQQ\Request\SendGroupMessageRequest;
-use Slince\SmartQQ\Request\SendMessageRequest;
-use Slince\SmartQQ\Request\VerifyQrCodeRequest;
+use Slince\SmartQQ\Request;
+
 
 class Client
 {
@@ -108,10 +83,10 @@ class Client
         $ptQrToken = Utils::hash33($qrSign);
         while (true) {
             $status = $this->verifyQrCodeStatus($ptQrToken);
-            if (VerifyQrCodeRequest::STATUS_EXPIRED == $status) {
+            if (Request\VerifyQrCodeRequest::STATUS_EXPIRED == $status) {
                 $qrSign = $this->makeQrCodeImage($loginQRImage);
                 $ptQrToken = Utils::hash33($qrSign);
-            } elseif (VerifyQrCodeRequest::STATUS_CERTIFICATION == $status) {
+            } elseif (Request\VerifyQrCodeRequest::STATUS_CERTIFICATION == $status) {
                 //授权成功跳出状态检查
                 break;
             }
@@ -136,7 +111,7 @@ class Client
      */
     protected function makeQrCodeImage($loginQRImage)
     {
-        $response = $this->sendRequest(new GetQrCodeRequest());
+        $response = $this->sendRequest(new Request\GetQrCodeRequest());
         Utils::getFilesystem()->dumpFile($loginQRImage, $response->getBody());
         foreach ($this->getCookies() as $cookie) {
             if (0 == strcasecmp($cookie->getName(), 'qrsig')) {
@@ -155,16 +130,16 @@ class Client
      */
     protected function verifyQrCodeStatus($ptQrToken)
     {
-        $request = new VerifyQrCodeRequest($ptQrToken);
+        $request = new Request\VerifyQrCodeRequest($ptQrToken);
         $response = $this->sendRequest($request);
         if (false !== strpos($response->getBody(), '未失效')) {
-            $status = VerifyQrCodeRequest::STATUS_UNEXPIRED;
+            $status = Request\VerifyQrCodeRequest::STATUS_UNEXPIRED;
         } elseif (false !== strpos($response->getBody(), '已失效')) {
-            $status = VerifyQrCodeRequest::STATUS_EXPIRED;
+            $status = Request\VerifyQrCodeRequest::STATUS_EXPIRED;
         } elseif (false !== strpos($response->getBody(), '认证中')) {
-            $status = VerifyQrCodeRequest::STATUS_ACCREDITATION;
+            $status = Request\VerifyQrCodeRequest::STATUS_ACCREDITATION;
         } else {
-            $status = VerifyQrCodeRequest::STATUS_CERTIFICATION;
+            $status = Request\VerifyQrCodeRequest::STATUS_CERTIFICATION;
             //找出认证url
             if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
                 $this->certificationUrl = trim($matches[1]);
@@ -185,7 +160,7 @@ class Client
      */
     protected function getPtWebQQ($certificationUrl)
     {
-        $request = new GetPtWebQQRequest();
+        $request = new Request\GetPtWebQQRequest();
         $request->setUri($certificationUrl);
         $this->sendRequest($request);
         foreach ($this->getCookies() as $cookie) {
@@ -203,10 +178,10 @@ class Client
      */
     protected function getVfWebQQ($ptWebQQ)
     {
-        $request = new GetVfWebQQRequest($ptWebQQ);
+        $request = new Request\GetVfWebQQRequest($ptWebQQ);
         $response = $this->sendRequest($request);
 
-        return GetVfWebQQRequest::parseResponse($response);
+        return Request\GetVfWebQQRequest::parseResponse($response);
     }
 
     /**
@@ -218,7 +193,7 @@ class Client
      */
     protected function getUinAndPSessionId($ptWebQQ)
     {
-        $request = new GetUinAndPsessionidRequest([
+        $request = new Request\GetUinAndPsessionidRequest([
             'ptwebqq' => $ptWebQQ,
             'clientid' => static::$clientId,
             'psessionid' => '',
@@ -226,7 +201,7 @@ class Client
         ]);
         $response = $this->sendRequest($request);
 
-        return GetUinAndPsessionidRequest::parseResponse($response);
+        return Request\GetUinAndPsessionidRequest::parseResponse($response);
     }
 
     /**
@@ -281,25 +256,25 @@ class Client
      */
     public function getGroups()
     {
-        $request = new GetGroupsRequest($this->getCredential());
+        $request = new Request\GetGroupsRequest($this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetGroupsRequest::parseResponse($response);
+        return Request\GetGroupsRequest::parseResponse($response);
     }
 
     /**
      * 获取群详细信息.
      *
-     * @param Group $group
+     * @param Entity\Group $group
      *
-     * @return GroupDetail
+     * @return Entity\GroupDetail
      */
-    public function getGroupDetail(Group $group)
+    public function getGroupDetail(Entity\Group $group)
     {
-        $request = new GetGroupDetailRequest($group, $this->getCredential());
+        $request = new Request\GetGroupDetailRequest($group, $this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetGroupDetailRequest::parseResponse($response);
+        return Request\GetGroupDetailRequest::parseResponse($response);
     }
 
     /**
@@ -309,67 +284,70 @@ class Client
      */
     public function getDiscusses()
     {
-        $request = new GetDiscussesRequest($this->getCredential());
+        $request = new Request\GetDiscussesRequest($this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetDiscussesRequest::parseResponse($response);
+        return Request\GetDiscussesRequest::parseResponse($response);
     }
 
     /**
      * 获取讨论组详情.
      *
-     * @param Discuss $discuss
+     * @param Entity\Discuss $discuss
      *
-     * @return DiscussDetail
+     * @return Entity\DiscussDetail
      */
-    public function getDiscussDetail(Discuss $discuss)
+    public function getDiscussDetail(Entity\Discuss $discuss)
     {
-        $request = new GetDiscussDetailRequest($discuss, $this->getCredential());
+        $request = new Request\GetDiscussDetailRequest($discuss, $this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetDiscussDetailRequest::parseResponse($response);
+        return Request\GetDiscussDetailRequest::parseResponse($response);
     }
 
     /**
      * 获取所有的好友.
      *
-     * @return EntityCollection
+     * @return EntityCollection|Entity\Friend[]
      */
     public function getFriends()
     {
-        $request = new GetFriendsRequest($this->getCredential());
+        $request = new Request\GetFriendsRequest($this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetFriendsRequest::parseResponse($response);
+        return Request\GetFriendsRequest::parseResponse($response);
     }
 
     /**
      * 获取好友的详细信息.
      *
-     * @param Friend $friend
+     * @param Entity\Friend $friend
      *
-     * @return Profile
+     * @return Entity\Profile
      */
-    public function getFriendDetail(Friend $friend)
+    public function getFriendDetail(Entity\Friend $friend)
     {
-        $request = new GetFriendDetailRequest($friend, $this->getCredential());
+        $request = new Request\GetFriendDetailRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetFriendDetailRequest::parseResponse($response);
+        return Request\GetFriendDetailRequest::parseResponse($response);
     }
 
     /**
      * 获取好友的QQ号.
      *
-     * @param Friend $friend
+     * @param Entity\Friend $friend
      *
      * @return int
+     * @deprecated 此接口 Smartqq 官方已经不再提供
      */
-    public function getFriendQQ(Friend $friend)
+    public function getFriendQQ(Entity\Friend $friend)
     {
-        $request = new GetQQRequest($friend, $this->getCredential());
+        @trigger_error('The api is not supported now',E_USER_DEPRECATED);
+
+        $request = new Request\GetQQRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
-        $qq = GetQQRequest::parseResponse($response);
+        $qq = Request\GetQQRequest::parseResponse($response);
         $friend->setQq($qq);
 
         return $qq;
@@ -378,16 +356,16 @@ class Client
     /**
      * 获取好友的个性签名.
      *
-     * @param Friend $friend
+     * @param Entity\Friend $friend
      *
      * @return string
      */
-    public function getFriendLnick(Friend $friend)
+    public function getFriendLnick(Entity\Friend $friend)
     {
-        $request = new GetLnickRequest($friend, $this->getCredential());
+        $request = new Request\GetLnickRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetLnickRequest::parseResponse($response, $friend);
+        return Request\GetLnickRequest::parseResponse($response, $friend);
     }
 
     /**
@@ -397,10 +375,10 @@ class Client
      */
     public function getFriendsOnlineStatus()
     {
-        $request = new GetFriendsOnlineStatusRequest($this->getCredential());
+        $request = new Request\GetFriendsOnlineStatusRequest($this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetFriendsOnlineStatusRequest::parseResponse($response);
+        return Request\GetFriendsOnlineStatusRequest::parseResponse($response);
     }
 
     /**
@@ -410,23 +388,23 @@ class Client
      */
     public function getRecentList()
     {
-        $request = new GetRecentListRequest($this->getCredential());
+        $request = new Request\GetRecentListRequest($this->getCredential());
         $response = $this->sendRequest($request);
 
-        return GetRecentListRequest::parseResponse($response);
+        return Request\GetRecentListRequest::parseResponse($response);
     }
 
     /**
      * 获取当前登录用户信息.
      *
-     * @return Profile
+     * @return Entity\Profile
      */
     public function getCurrentUserInfo()
     {
-        $request = new GetCurrentUserRequest();
+        $request = new Request\GetCurrentUserRequest();
         $response = $this->sendRequest($request);
 
-        return GetCurrentUserRequest::parseResponse($response);
+        return Request\GetCurrentUserRequest::parseResponse($response);
     }
 
     /**
@@ -438,10 +416,10 @@ class Client
      */
     public function pollMessages()
     {
-        $request = new PollMessagesRequest($this->getCredential());
+        $request = new Request\PollMessagesRequest($this->getCredential());
         $response = $this->sendRequest($request);
 
-        return PollMessagesRequest::parseResponse($response);
+        return Request\PollMessagesRequest::parseResponse($response);
     }
 
     /**
@@ -454,29 +432,30 @@ class Client
     public function sendMessage(RequestMessage $message)
     {
         if ($message instanceof FriendMessage) {
-            $request = new SendFriendMessageRequest($message, $this->getCredential());
+            $request = new Request\SendFriendMessageRequest($message, $this->getCredential());
         } elseif ($message instanceof GroupMessage) {
-            $request = new SendGroupMessageRequest($message, $this->getCredential());
+            $request = new Request\SendGroupMessageRequest($message, $this->getCredential());
         } else {
-            $request = new SendDiscusMessageRequest($message, $this->getCredential());
+            $request = new Request\SendDiscusMessageRequest($message, $this->getCredential());
         }
         $response = $this->sendRequest($request);
 
-        return SendMessageRequest::parseResponse($response);
+        return Request\SendMessageRequest::parseResponse($response);
     }
 
+
     /**
-     * @param RequestInterface $request
+     * @param Request\RequestInterface $request
      *
-     * @return Response
+     * @return HttpResponse
      */
-    protected function sendRequest(RequestInterface $request)
+    protected function sendRequest(Request\RequestInterface $request)
     {
         $options = [
             'cookies' => $this->getCookies(),
         ];
         if ($parameters = $request->getParameters()) {
-            if (RequestInterface::REQUEST_METHOD_GET == $request->getMethod()) {
+            if (Request\RequestInterface::REQUEST_METHOD_GET == $request->getMethod()) {
                 $options['query'] = $parameters;
             } else {
                 $options['form_params'] = $parameters;
@@ -488,7 +467,10 @@ class Client
                 'Referer' => $referer,
             ];
         }
-        $response = $this->httpClient->send(new Request($request->getMethod(), $request->getUri()), $options);
+        $response = $this->httpClient->send(
+            new HttpRequest($request->getMethod(), $request->getUri()),
+            $options
+        );
 
         return $response;
     }
