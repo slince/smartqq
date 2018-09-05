@@ -184,4 +184,4 @@ $messages = $smartQQ->pollMessages();
 
 - 本组件只是对原生的请求与数据进行了整理并进行了合理的抽象，并没有过多的进行业务层级的封装。
 
-- SmartQQ接口一直在调整，如果api无法使用请直接提[issue](https://github.com/slince/smartqq/issues/new)，或者给我发邮件;如果你找到了原因并且有了解决方案欢迎PR
+- SmartQQ接口一直在调整，如果api无法使用请直接提[issue](https://github.com/slince/smartqq/issues/new)，或者给我发邮件;如果你找到了原因并且有了解决方案欢迎 PR。
