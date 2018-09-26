@@ -11,7 +11,6 @@
 
 namespace Slince\SmartQQ;
 
-
 use GuzzleHttp\Exception\ConnectException;
 use Slince\EventDispatcher\DispatcherInterface;
 use Slince\EventDispatcher\Event;
@@ -81,24 +80,24 @@ class MessageHandler
     {
         while (true) {
             try {
-                $messages =  $this->client->pollMessages();
-                if ($messages) {
-                    foreach ($messages as $message) {
-                        // 收到消息时触发事件
-                        $event = new Event(static::EVENT_MESSAGE, null, [
-                            'message' => $message
-                        ]);
-                        $this->eventDispatcher->dispatch($event);
-                    }
-                } else {
-                    //延缓2秒
-                    usleep(2000000);
+                $messages = $this->client->pollMessages();
+                foreach ($messages as $message) {
+                    // 收到消息时触发事件
+                    $event = new Event(static::EVENT_MESSAGE, null, [
+                        'message' => $message
+                    ]);
+                    $this->eventDispatcher->dispatch($event);
                 }
             } catch (ResponseException $exception) {
                 if (in_array($exception->getCode(), static::$ignoredCodes)) {
                     $this->testLogin();
+                } else {
+                    throw $exception; // 其它状态码接着抛出异常
                 }
             } catch (ConnectException $exception) {
+                // 超时请求忽略
+            } finally {
+                //延缓2秒
                 usleep(2000000);
             }
         }
@@ -111,9 +110,9 @@ class MessageHandler
     {
         try {
             $this->client->getFriendsOnlineStatus();
-        } catch (ResponseException $exc) {
+        } catch (\Exception $exception) {
             //登录凭证可能失效
-            throw new RuntimeException('The credential may be expired, please login again.', $exc->getCode());
+            throw new RuntimeException('The credential may be expired, please login again.', $exception->getCode());
         }
     }
 }

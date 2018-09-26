@@ -34,20 +34,6 @@ class Client
     protected $credential;
 
     /**
-     * 客户端id(固定值).
-     *
-     * @var int
-     */
-    protected static $clientId = 53999199;
-
-    /**
-     * 获取ptwebqq的地址
-     *
-     * @var string
-     */
-    protected $certificationUrl;
-
-    /**
      * @var HttpClient
      */
     protected $httpClient;
@@ -56,11 +42,6 @@ class Client
      * @var DispatcherInterface
      */
     protected $eventDispatcher;
-
-    /**
-     * @var CookieJar
-     */
-    protected $cookies;
 
     /**
      * @var MessageHandler
@@ -91,137 +72,29 @@ class Client
     /**
      * 开启登录流程自行获取凭证
      *
-     * @param string $loginQRImage 二维码图片位置
+     * @param string|callable $qrCallback 二维码图片位置|或者自定义处理器
      *
      * @return Credential
      */
-    public function login($loginQRImage)
+    public function login($qrCallback)
     {
-        //如果登录则重置cookie
-        $this->cookies = new CookieJar();
-        $qrSign = $this->makeQrCodeImage($loginQRImage);
-        $ptQrToken = Utils::hash33($qrSign);
-        while (true) {
-            $status = $this->verifyQrCodeStatus($ptQrToken);
-            if (Request\VerifyQrCodeRequest::STATUS_EXPIRED == $status) {
-                $qrSign = $this->makeQrCodeImage($loginQRImage);
-                $ptQrToken = Utils::hash33($qrSign);
-            } elseif (Request\VerifyQrCodeRequest::STATUS_CERTIFICATION == $status) {
-                //授权成功跳出状态检查
-                break;
-            }
-            sleep(1);
+        $resolver = new CredentialResolver($this);
+
+        // 兼容二维码位置传参
+        if (is_string($qrCallback)) {
+            $qrCallback = function ($qrcode) use($qrCallback){
+                file_put_contents($qrCallback, $qrcode);
+            };
         }
-        $ptWebQQ = $this->getPtWebQQ($this->certificationUrl);
-        $vfWebQQ = $this->getVfWebQQ($ptWebQQ);
-        list($uin, $pSessionId) = $this->getUinAndPSessionId($ptWebQQ);
-        $this->credential = new Credential($ptWebQQ, $vfWebQQ, $pSessionId, $uin, static::$clientId, $this->cookies);
+
+        // 进行授权流程，确认授权
+        $credential = $resolver->resolve($qrCallback);
+        $this->setCredential($credential);
+
         //获取在线状态避免103
         $this->getFriendsOnlineStatus();
 
         return $this->credential;
-    }
-
-    /**
-     * 创建登录所需的二维码
-     *
-     * @param string $loginQRImage
-     *
-     * @return string
-     */
-    protected function makeQrCodeImage($loginQRImage)
-    {
-        $response = $this->sendRequest(new Request\GetQrCodeRequest());
-        Utils::getFilesystem()->dumpFile($loginQRImage, $response->getBody());
-        foreach ($this->getCookies() as $cookie) {
-            if (0 == strcasecmp($cookie->getName(), 'qrsig')) {
-                return $cookie->getValue();
-            }
-        }
-        throw new RuntimeException('Can not find parameter [qrsig]');
-    }
-
-    /**
-     * 验证二维码状态
-     *
-     * @param int $ptQrToken qr token
-     *
-     * @return int
-     */
-    protected function verifyQrCodeStatus($ptQrToken)
-    {
-        $request = new Request\VerifyQrCodeRequest($ptQrToken);
-        $response = $this->sendRequest($request);
-        if (false !== strpos($response->getBody(), '未失效')) {
-            $status = Request\VerifyQrCodeRequest::STATUS_UNEXPIRED;
-        } elseif (false !== strpos($response->getBody(), '已失效')) {
-            $status = Request\VerifyQrCodeRequest::STATUS_EXPIRED;
-        } elseif (false !== strpos($response->getBody(), '认证中')) {
-            $status = Request\VerifyQrCodeRequest::STATUS_ACCREDITATION;
-        } else {
-            $status = Request\VerifyQrCodeRequest::STATUS_CERTIFICATION;
-            //找出认证url
-            if (preg_match("#'(http.+)'#U", strval($response->getBody()), $matches)) {
-                $this->certificationUrl = trim($matches[1]);
-            } else {
-                throw new RuntimeException('Can not find certification url');
-            }
-        }
-
-        return $status;
-    }
-
-    /**
-     * 获取ptwebqq的参数值
-     *
-     * @param string $certificationUrl
-     *
-     * @return string
-     */
-    protected function getPtWebQQ($certificationUrl)
-    {
-        $request = new Request\GetPtWebQQRequest();
-        $request->setUri($certificationUrl);
-        $this->sendRequest($request);
-        foreach ($this->getCookies() as $cookie) {
-            if (0 == strcasecmp($cookie->getName(), 'ptwebqq')) {
-                return $cookie->getValue();
-            }
-        }
-        throw new RuntimeException('Can not find parameter [ptwebqq]');
-    }
-
-    /**
-     * @param string $ptWebQQ
-     *
-     * @return string
-     */
-    protected function getVfWebQQ($ptWebQQ)
-    {
-        $request = new Request\GetVfWebQQRequest($ptWebQQ);
-        $response = $this->sendRequest($request);
-
-        return Request\GetVfWebQQRequest::parseResponse($response);
-    }
-
-    /**
-     * 获取pessionid和uin.
-     *
-     * @param string $ptWebQQ
-     *
-     * @return array
-     */
-    protected function getUinAndPSessionId($ptWebQQ)
-    {
-        $request = new Request\GetUinAndPsessionidRequest([
-            'ptwebqq' => $ptWebQQ,
-            'clientid' => static::$clientId,
-            'psessionid' => '',
-            'status' => 'online',
-        ]);
-        $response = $this->sendRequest($request);
-
-        return Request\GetUinAndPsessionidRequest::parseResponse($response);
     }
 
     /**
@@ -246,14 +119,8 @@ class Client
     }
 
     /**
-     * @return CookieJar
-     */
-    public function getCookies()
-    {
-        return $this->cookies;
-    }
-
-    /**
+     * 设置 http 请求客户端.
+     *
      * @param HttpClient $httpClient
      */
     public function setHttpClient($httpClient)
@@ -262,6 +129,7 @@ class Client
     }
 
     /**
+     * 获取 http 客户端
      * @return HttpClient
      */
     public function getHttpClient()
@@ -270,6 +138,8 @@ class Client
     }
 
     /**
+     * 设置事件处理器.
+     *
      * @param DispatcherInterface $eventDispatcher
      */
     public function setEventDispatcher($eventDispatcher)
@@ -278,6 +148,8 @@ class Client
     }
 
     /**
+     * 获取事件处理器.
+     *
      * @return DispatcherInterface
      */
     public function getEventDispatcher()
@@ -494,11 +366,13 @@ class Client
 
 
     /**
-     * @param Request\RequestInterface $request
+     * 发送请求
      *
+     * @param Request\RequestInterface $request
+     * @param array $options
      * @return HttpResponse
      */
-    protected function sendRequest(Request\RequestInterface $request)
+    public function sendRequest(Request\RequestInterface $request, array $options = [])
     {
         $options = [
             'cookies' => $this->getCookies(),
