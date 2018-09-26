@@ -11,20 +11,17 @@
 namespace Slince\SmartQQ;
 
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request as HttpRequest;
 use GuzzleHttp\Psr7\Response as HttpResponse;
 use Slince\EventDispatcher\Dispatcher;
 use Slince\EventDispatcher\DispatcherInterface;
 use Slince\SmartQQ\Entity;
 use Slince\SmartQQ\Exception\InvalidArgumentException;
-use Slince\SmartQQ\Exception\RuntimeException;
 use Slince\SmartQQ\Message\Request\FriendMessage;
 use Slince\SmartQQ\Message\Request\GroupMessage;
 use Slince\SmartQQ\Message\Request\Message as RequestMessage;
 use Slince\SmartQQ\Message\Response\Message as ResponseMessage;
 use Slince\SmartQQ\Request;
-
 
 class Client
 {
@@ -98,15 +95,18 @@ class Client
     }
 
     /**
+     * 设置凭据.
+     *
      * @param Credential $credential
      */
     public function setCredential(Credential $credential)
     {
-        $this->cookies = $credential->getCookies();
         $this->credential = $credential;
     }
 
     /**
+     * 获取正在使用的凭据.
+     *
      * @return Credential
      */
     public function getCredential()
@@ -292,7 +292,7 @@ class Client
     /**
      * 获取最近的会话.
      *
-     * @return EntityCollection
+     * @return EntityCollection|Entity\Recent[]
      */
     public function getRecentList()
     {
@@ -370,13 +370,15 @@ class Client
      *
      * @param Request\RequestInterface $request
      * @param array $options
+     *
      * @return HttpResponse
      */
     public function sendRequest(Request\RequestInterface $request, array $options = [])
     {
-        $options = [
-            'cookies' => $this->getCookies(),
-        ];
+        // cookies 必须启用.
+        if (!isset($options['cookies']) && $this->credential) {
+            $options['cookies'] = $this->credential->getCookies();
+        }
         if ($parameters = $request->getParameters()) {
             if (Request\RequestInterface::REQUEST_METHOD_GET == $request->getMethod()) {
                 $options['query'] = $parameters;

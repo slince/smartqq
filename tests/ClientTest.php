@@ -92,9 +92,6 @@ class ClientTest extends TestCase
         $client->setCredential($credential2);
         $this->assertFalse($credential === $client->getCredential());
         $this->assertTrue($credential2 === $client->getCredential());
-
-        //test credential cookies
-        $this->assertTrue($client->getCookies() === $credential2->getCookies());
     }
 
     public function testHttpClient()
