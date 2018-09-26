@@ -100,7 +100,7 @@ class Request implements RequestInterface
     /**
      * 获取请求参数.
      *
-     * @return string
+     * @return array
      */
     public function getParameters()
     {
@@ -133,7 +133,7 @@ class Request implements RequestInterface
      *
      * @param array $tokens
      */
-    public function setTokens($tokens)
+    public function setTokens(array $tokens)
     {
         $this->tokens = $tokens;
     }

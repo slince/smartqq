@@ -72,15 +72,15 @@ interface RequestInterface
     /**
      * 设置链接中的占位符.
      *
-     * @param $tokens
+     * @param array $tokens
      */
-    public function setTokens($tokens);
+    public function setTokens(array $tokens);
 
     /**
      * 设置链接中的指定占位符.
      *
-     * @param $name
-     * @param $token
+     * @param string $name
+     * @param string $token
      */
     public function setToken($name, $token);
 }
