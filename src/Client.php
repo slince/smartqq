@@ -14,6 +14,8 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request as HttpRequest;
 use GuzzleHttp\Psr7\Response as HttpResponse;
+use Slince\EventDispatcher\Dispatcher;
+use Slince\EventDispatcher\DispatcherInterface;
 use Slince\SmartQQ\Entity;
 use Slince\SmartQQ\Exception\InvalidArgumentException;
 use Slince\SmartQQ\Exception\RuntimeException;
@@ -51,11 +53,25 @@ class Client
     protected $httpClient;
 
     /**
+     * @var DispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @var CookieJar
      */
     protected $cookies;
 
-    public function __construct(Credential $credential = null, HttpClient $httpClient = null)
+    /**
+     * @var MessageHandler
+     */
+    protected $messageHandler;
+
+    public function __construct(
+        Credential $credential = null,
+        HttpClient $httpClient = null,
+        DispatcherInterface $eventDispatcher = null
+    )
     {
         if (!is_null($credential)) {
             $this->setCredential($credential);
@@ -65,7 +81,11 @@ class Client
                 'verify' => false,
             ]);
         }
+        if (is_null($eventDispatcher)) {
+            $eventDispatcher = new Dispatcher();
+        }
         $this->httpClient = $httpClient;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -250,6 +270,22 @@ class Client
     }
 
     /**
+     * @param DispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher($eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @return DispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
+    }
+
+    /**
      * 获取所有的群.
      *
      * @return EntityCollection
@@ -420,6 +456,19 @@ class Client
         $response = $this->sendRequest($request);
 
         return Request\PollMessagesRequest::parseResponse($response);
+    }
+
+    /**
+     * 获取 Message handler.
+     *
+     * @return MessageHandler
+     */
+    public function getMessageHandler()
+    {
+        if (null !== $this->messageHandler) {
+            return $this->messageHandler;
+        }
+        return $this->messageHandler = new MessageHandler($this);
     }
 
     /**
