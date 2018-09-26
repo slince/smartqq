@@ -25,12 +25,12 @@ class DiscussDetail
     protected $name;
 
     /**
-     * @var EntityCollection
+     * @var EntityCollection|DiscussMember[]
      */
     protected $members;
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getDid()
     {
@@ -38,7 +38,7 @@ class DiscussDetail
     }
 
     /**
-     * @param mixed $did
+     * @param int $did
      */
     public function setDid($did)
     {
@@ -46,7 +46,7 @@ class DiscussDetail
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -54,7 +54,7 @@ class DiscussDetail
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -62,7 +62,9 @@ class DiscussDetail
     }
 
     /**
-     * @return EntityCollection
+     * 获取讨论组成员
+     *
+     * @return EntityCollection|DiscussMember[]
      */
     public function getMembers()
     {

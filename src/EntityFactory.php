@@ -15,8 +15,8 @@ class EntityFactory
     /**
      * 创建多个实体对象
      *
-     * @param $entityClass
-     * @param $dataArray
+     * @param string $entityClass
+     * @param array $dataArray
      *
      * @return array
      */
@@ -30,8 +30,8 @@ class EntityFactory
     /**
      * 创建实体对象
      *
-     * @param $entityClass
-     * @param $data
+     * @param string $entityClass
+     * @param array $data
      *
      * @return object
      */
@@ -46,8 +46,8 @@ class EntityFactory
     /**
      * 设置属性参数.
      *
-     * @param $entityInstance
-     * @param $data
+     * @param object $entityInstance
+     * @param array $data
      *
      * @return object
      */

@@ -204,7 +204,7 @@ class GroupDetail
     }
 
     /**
-     * @return EntityCollection
+     * @return EntityCollection|GroupMember[]
      */
     public function getMembers()
     {
@@ -212,7 +212,7 @@ class GroupDetail
     }
 
     /**
-     * @param EntityCollection $members
+     * @param EntityCollection|GroupMember[] $members
      */
     public function setMembers($members)
     {

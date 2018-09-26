@@ -181,7 +181,7 @@ class Credential
     /**
      * Create from a array data.
      *
-     * @param $data
+     * @param array $data
      *
      * @return static
      */

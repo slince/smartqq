@@ -17,8 +17,8 @@ class EntityCollection extends Collection
     /**
      * 根据实体属性筛选指定一个实体.
      *
-     * @param $attributeName
-     * @param $attributeValue
+     * @param string $attributeName
+     * @param mixed $attributeValue
      *
      * @return object|null
      */

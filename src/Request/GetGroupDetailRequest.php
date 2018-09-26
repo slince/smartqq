@@ -43,6 +43,7 @@ class GetGroupDetailRequest extends Request
      */
     public static function parseResponse(Response $response)
     {
+        echo printPrettyScreen((string)$response->getBody());exit;
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && 0 == $jsonData['retcode']) {
             //群成员的vip信息
