@@ -2,8 +2,7 @@
 
 namespace Slince\SmartQQ\Tests;
 
-use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
+use Slince\EventDispatcher\DispatcherInterface;
 use Slince\SmartQQ\Client;
 use Slince\SmartQQ\Credential;
 use Slince\SmartQQ\Entity\Discuss;
@@ -15,6 +14,7 @@ use Slince\SmartQQ\Exception\ResponseException;
 use Slince\SmartQQ\Message\Response\DiscussMessage;
 use Slince\SmartQQ\Message\Response\FriendMessage;
 use Slince\SmartQQ\Message\Response\GroupMessage;
+use Slince\SmartQQ\MessageHandler;
 
 class ClientTest extends TestCase
 {
@@ -33,12 +33,12 @@ class ClientTest extends TestCase
     public function testCredential()
     {
         //test construct credential
-        $credential = Credential::fromArray(Utils::readFixtureFileJson('credential.json'));
+        $credential = Credential::fromArray($this->readFixtureFileJson('credential.json'));
         $client = new Client($credential);
         $this->assertTrue($credential === $client->getCredential());
 
         //test set credential
-        $credential2 = Credential::fromArray(Utils::readFixtureFileJson('credential.json'));
+        $credential2 = Credential::fromArray($this->readFixtureFileJson('credential.json'));
         $client->setCredential($credential2);
         $this->assertFalse($credential === $client->getCredential());
         $this->assertTrue($credential2 === $client->getCredential());
@@ -294,6 +294,18 @@ class ClientTest extends TestCase
         $this->assertNotEmpty($messages[2]->getSendUin());
     }
 
+    public function testMessageHandler()
+    {
+        $client = new Client();
+        $this->assertInstanceOf(MessageHandler::class, $client->getMessageHandler());
+    }
+
+    public function testDispatcher()
+    {
+        $client = new Client();
+        $this->assertInstanceOf(DispatcherInterface::class, $client->getEventDispatcher());
+    }
+
     public function test103CodeResponse()
     {
         $this->expectException(Code103ResponseException::class);
@@ -319,31 +331,6 @@ class ClientTest extends TestCase
         $this->assertTrue($client->sendMessage(new \Slince\SmartQQ\Message\Request\FriendMessage($friend, '你好')));
         $this->assertTrue($client->sendMessage(new \Slince\SmartQQ\Message\Request\GroupMessage($group, '你好')));
         $this->assertTrue($client->sendMessage(new \Slince\SmartQQ\Message\Request\DiscussMessage($discuss, '你好')));
-    }
-
-    /**
-     * @param $fixtureFilename
-     *
-     * @return Client
-     */
-    protected function createClientMock($fixtureFilename)
-    {
-        $credential = Credential::fromArray(Utils::readFixtureFileJson('credential.json'));
-        $response = Utils::createResponseFromFixture($fixtureFilename);
-
-        $client = $this->getMockBuilder(Client::class)
-            ->setMethods(['sendRequest', 'getCredential'])
-            ->getMock();
-
-        $client->expects($this->any())
-            ->method('sendRequest')
-            ->willReturn($response);
-
-        $client->expects($this->any())
-            ->method('getCredential')
-            ->willReturn($credential);
-
-        return $client;
     }
 
     protected static function getQrImagePath()

@@ -76,31 +76,31 @@ class Client
     /**
      * 开启登录流程自行获取凭证
      *
-     * @param string|callable $qrCallback 二维码图片位置|或者自定义处理器
-     *
+     * @param string|callable $callback 二维码图片位置|或者自定义处理器
      * @return Credential
      */
-    public function login($qrCallback)
+    public function login($callback)
     {
         // 兼容二维码位置传参
-        if (is_string($qrCallback)) {
-            $qrCallback = function ($qrcode) use($qrCallback){
-                Utils::getFilesystem()->dumpFile($qrCallback, $qrcode);
+        if (is_string($callback)) {
+            /* @deprecated 后面会废除此用法，建议传闭包自己处理二维码 */
+            $callback = function ($qrcode) use($callback){
+                Utils::getFilesystem()->dumpFile($callback, $qrcode);
             };
         }
 
         $resolver = new CredentialResolver($this);
         // 进行授权流程，确认授权
-        $resolver->resolve($qrCallback);
+        $resolver->resolve($callback);
+        // 等待授权验证成功
         $credential = $resolver->wait();
-
         $this->setCredential($credential);
-
         //获取在线状态避免103
         $this->getFriendsOnlineStatus();
 
-        return $this->credential;
+        return $credential;
     }
+
 
     /**
      * 设置凭据.
@@ -143,16 +143,6 @@ class Client
     public function getHttpClient()
     {
         return $this->httpClient;
-    }
-
-    /**
-     * 设置事件处理器.
-     *
-     * @param DispatcherInterface $eventDispatcher
-     */
-    public function setEventDispatcher($eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

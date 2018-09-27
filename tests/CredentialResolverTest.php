@@ -3,7 +3,6 @@
 namespace Slince\SmartQQ\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use Slince\SmartQQ\Credential;
 use Slince\SmartQQ\CredentialResolver;
 
@@ -16,13 +15,13 @@ class CredentialResolverTest extends TestCase
             ->setMethods(['sendRequest', 'getCookies'])
             ->getMock();
 
-        $forQrImageResponse = Utils::createResponseFromFixture('qrcode.png');
-        $verifyStatusResponse = Utils::createResponseFromFixture('verify_status_certified.txt');
+        $forQrImageResponse = $this->createResponseFromFixture('qrcode.png');
+        $verifyStatusResponse = $this->createResponseFromFixture('verify_status_certified.txt');
         $forPtWebQQResponse = new Response(200);
-        $forVfWebQQResponse = Utils::createResponseFromFixture('get_vfwebqq.txt');
-        $forUinAndPSessionResponse = Utils::createResponseFromFixture('get_uin_psession.txt');
-        $getOnlineStatusResponse = Utils::createResponseFromFixture('get_friends_online_status.txt');
-        $cookies = Credential::fromArray(Utils::readFixtureFileJson('credential.json'))->getCookies();
+        $forVfWebQQResponse = $this->createResponseFromFixture('get_vfwebqq.txt');
+        $forUinAndPSessionResponse = $this->createResponseFromFixture('get_uin_psession.txt');
+        $getOnlineStatusResponse = $this->createResponseFromFixture('get_friends_online_status.txt');
+        $cookies = Credential::fromArray($this->readFixtureFileJson('credential.json'))->getCookies();
 
         $resolver->expects($this->any())
             ->method('sendRequest')

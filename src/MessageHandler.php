@@ -38,6 +38,11 @@ class MessageHandler
     protected $eventDispatcher;
 
     /**
+     * @var boolean
+     */
+    protected $stop = false;
+
+    /**
      * 可以被忽略的状态码.
      *
      * @var array
@@ -78,7 +83,7 @@ class MessageHandler
      */
     public function listen()
     {
-        while (true) {
+        while (!$this->stop) {
             try {
                 $messages = $this->client->pollMessages();
                 foreach ($messages as $message) {
@@ -91,16 +96,30 @@ class MessageHandler
             } catch (ResponseException $exception) {
                 if (in_array($exception->getCode(), static::$ignoredCodes)) {
                     $this->testLogin();
+                    usleep(2000000);
                 } else {
                     throw $exception; // 其它状态码接着抛出异常
                 }
             } catch (ConnectException $exception) {
                 // 超时请求忽略
-            } finally {
-                //延缓2秒
                 usleep(2000000);
             }
         }
+    }
+
+    /**
+     * 终止下一次消息监听.
+     *
+     * ```php
+     * $handler->onMessage(function($message) use ($handler){
+     *     var_dump($message);
+     *     $handler->stop();  //停止
+     * });
+     * ```
+     */
+    public function stop()
+    {
+        $this->stop = true;
     }
 
     /**

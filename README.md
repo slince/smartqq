@@ -23,20 +23,26 @@ composer require slince/smartqq
 登录是获取授权的必备步骤，由于SmartQQ抛弃了用户名密码的登录方式，所以只能采用二维码登录
 
 ```php
-use Slince\SmartQQ\Client;
+$smartQQ = new Slince\SmartQQ\Client();
 
-$smartQQ = new Client();
+$smartQQ->login(function($qrcode){ //$qrcode 是二维码字符串
 
-$smartQQ->login('/path/to/qrcode.png'); //参数为保存二维码的位置
+    // 自定义逻辑
+    @file_put_contents('/path/to/qrcode.png', $qrcode);
+});
 ```
-如果成功的话你会在`/path/to/qrcode.png`下发现二维码，使用手机扫描即可登录；注意：程序会阻塞直到确认成功；成功之后你可以通过下面方式持久化登录凭证，用于下次查询。
+如果成功的话你会在`/path/to/qrcode.png`下发现二维码，使用手机扫描即可登录；
+注意：程序会阻塞直到确认成功；成功之后你可以通过下面方式持久化登录凭证，用于下次查询。
 
 ```php
 $credential = $smartQQ->getCredential();
+
+//将凭证对象转换为标量方便存储，写入数据库或者缓存系统
 $credentialParameters = $credential->toArray();
 ```
 
-通过下面方式还原一个凭证对象；需要注意的是此次凭证并不会长久有效，如果该凭证长时间没有被用来发起查询，则很可能会失效
+通过下面方式还原一个凭证对象；需要注意的是此次凭证并不会长久有效，
+如果该凭证长时间没有被用来发起查询，则很可能会失效。
 
 ```php
 //还原凭证对象
@@ -171,10 +177,21 @@ var_dump($result);
 ```php
 $messages = $smartQQ->pollMessages();
 ```
-关于消息的处理请参照examples
+关于消息的处理请参照 examples.
 
+当然你也可以使用 `MessageHandler` 来帮忙维护客户端消息。
+
+```php
+$handler = $smartQQ->getMessageHandler();
+
+$handler->onMessage(function(Slince\SmartQQ\Message\Response\Message $message $message) use ($hander){
+    var_dump($message);
+    $handler->stop(); //停止消息轮询
+});
+```
 
 详细使用案例以及更多其它案例请参考[examples](./examples)
+
 
 ## 其它
 
