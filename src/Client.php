@@ -26,6 +26,13 @@ use Slince\SmartQQ\Request;
 class Client
 {
     /**
+     * 客户端id(固定值).
+     *
+     * @var int
+     */
+    static $clientId = 53999199;
+
+    /**
      * @var Credential
      */
     protected $credential;
@@ -85,7 +92,7 @@ class Client
         }
 
         // 进行授权流程，确认授权
-        $credential = $resolver->resolve($qrCallback);
+        $credential = $resolver->resolve($qrCallback)->wait();
         $this->setCredential($credential);
 
         //获取在线状态避免103
@@ -375,7 +382,7 @@ class Client
      */
     public function sendRequest(Request\RequestInterface $request, array $options = [])
     {
-        // cookies 必须启用.
+        // cookies 必须启用，如果不设置则使用当前凭证的cookie.
         if (!isset($options['cookies']) && $this->credential) {
             $options['cookies'] = $this->credential->getCookies();
         }

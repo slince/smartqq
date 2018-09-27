@@ -17,13 +17,6 @@ use Slince\SmartQQ\Exception\RuntimeException;
 class CredentialResolver
 {
     /**
-     * 客户端id(固定值).
-     *
-     * @var int
-     */
-    protected static $clientId = 53999199;
-
-    /**
      * @var CookieJar
      */
     protected $cookies;
@@ -49,16 +42,27 @@ class CredentialResolver
      * 获取授权凭据.
      *
      * @param callable $qrCallback
-     * @return Credential
+     * @return $this
      */
     public function resolve($qrCallback)
     {
+        // 重置cookie
         $this->cookies = new CookieJar();
 
         //获取二维码资源
         $response = $this->sendRequest(new Request\GetQrCodeRequest());
         $qrCallback((string)$response->getBody());
 
+        return $this;
+    }
+
+    /**
+     * 等待授权验证.
+     *
+     * @return Credential
+     */
+    public function wait()
+    {
         //查找"qrsig"参数
         $qrSign = $this->findQRSign();
         //计算ptqrtoken
@@ -75,7 +79,7 @@ class CredentialResolver
                 break;
             } elseif (Request\VerifyQrCodeRequest::STATUS_EXPIRED == $status) {
                 //查找"qrsig"参数
-                $qrSign = $this->findQRSign($this->cookies);
+                $qrSign = $this->findQRSign();
                 //计算ptqrtoken
                 $ptQrToken = Utils::hash33($qrSign);
             }
@@ -92,7 +96,7 @@ class CredentialResolver
             $vfWebQQ,
             $pSessionId,
             $uin,
-            static::$clientId,
+            Client::$clientId, //smartqq保留字段，固定值
             $this->cookies
         );
 
@@ -198,7 +202,7 @@ class CredentialResolver
     protected function sendRequest(Request\RequestInterface $request)
     {
         return $this->client->sendRequest($request, [
-            'cookies' => $this->cookies
+            'cookies' => $this->cookies //使用当前cookies
         ]);
     }
 }
