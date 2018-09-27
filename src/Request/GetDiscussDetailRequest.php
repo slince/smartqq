@@ -47,7 +47,7 @@ class GetDiscussDetailRequest extends Request
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && 0 == $jsonData['retcode']) {
             //成员在线状态
-            $statuses = (new Collection($jsonData['result']['mem_status']))->combine('uin', function($entity) {
+            $statuses = (new Collection($jsonData['result']['mem_status']))->combine('uin', function ($entity) {
                 return $entity;
             })->toArray();
             //成员基本信息

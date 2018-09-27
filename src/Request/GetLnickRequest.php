@@ -42,7 +42,7 @@ class GetLnickRequest extends Request
     {
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && 0 == $jsonData['retcode']) {
-            $info = (new Collection($jsonData['result']))->filter(function($info) use($friend){
+            $info = (new Collection($jsonData['result']))->filter(function ($info) use ($friend) {
                 return $info['uin'] == $friend->getUin();
             })->first();
 

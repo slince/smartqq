@@ -16,13 +16,13 @@ class EntityFactory
      * 创建多个实体对象
      *
      * @param string $entityClass
-     * @param array $dataArray
+     * @param array  $dataArray
      *
      * @return array
      */
     public static function createEntities($entityClass, $dataArray)
     {
-        return array_map(function($data) use ($entityClass) {
+        return array_map(function ($data) use ($entityClass) {
             return static::createEntity($entityClass, $data);
         }, $dataArray);
     }
@@ -31,7 +31,7 @@ class EntityFactory
      * 创建实体对象
      *
      * @param string $entityClass
-     * @param array $data
+     * @param array  $data
      *
      * @return object
      */
@@ -47,7 +47,7 @@ class EntityFactory
      * 设置属性参数.
      *
      * @param object $entityInstance
-     * @param array $data
+     * @param array  $data
      *
      * @return object
      */

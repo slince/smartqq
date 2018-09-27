@@ -16,7 +16,6 @@ use Slince\SmartQQ\Exception\RuntimeException;
 
 class CredentialResolver
 {
-
     /**
      * @var Client
      */
@@ -48,6 +47,7 @@ class CredentialResolver
      * 获取授权凭据.
      *
      * @param callable $callback
+     *
      * @return $this
      */
     public function resolve($callback)
@@ -56,6 +56,7 @@ class CredentialResolver
         $this->cookies = new CookieJar();
         $this->callback = $callback;
         $this->createQRSource();
+
         return $this;
     }
 
@@ -111,11 +112,11 @@ class CredentialResolver
     {
         //获取二维码资源
         $response = $this->sendRequest(new Request\GetQrCodeRequest());
-        call_user_func($this->callback, (string)$response->getBody());
+        call_user_func($this->callback, (string) $response->getBody());
     }
 
     /**
-     * 从cookie中查找 "qrsig" 参数
+     * 从cookie中查找 "qrsig" 参数.
      *
      * @return string
      */
@@ -213,7 +214,7 @@ class CredentialResolver
     protected function sendRequest(Request\RequestInterface $request)
     {
         return $this->client->sendRequest($request, [
-            'cookies' => $this->cookies //使用当前cookies
+            'cookies' => $this->cookies, //使用当前cookies
         ]);
     }
 

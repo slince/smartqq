@@ -62,7 +62,7 @@ class DiscussDetail
     }
 
     /**
-     * 获取讨论组成员
+     * 获取讨论组成员.
      *
      * @return EntityCollection|DiscussMember[]
      */

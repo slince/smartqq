@@ -46,7 +46,7 @@ class GetGroupDetailRequest extends Request
         $jsonData = \GuzzleHttp\json_decode($response->getBody(), true);
         if ($jsonData && 0 == $jsonData['retcode']) {
             //群成员的vip信息
-            $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity) {
+            $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function ($entity) {
                 return $entity;
             })->toArray();
             //群成员的名片信息, 如果全部成员都没有设置群名片则会不存在这个字段
@@ -81,7 +81,7 @@ class GetGroupDetailRequest extends Request
                     'country' => $memberData['country'],
                     'city' => $memberData['city'],
                     'card' => isset($cards[$uin]) ? $cards[$uin] : null,
-                    'isVip' => isset($vipInfos[$uin]) ? $vipInfos[$uin]['is_vip'] == 1 : false,
+                    'isVip' => isset($vipInfos[$uin]) ? 1 == $vipInfos[$uin]['is_vip'] : false,
                     'vipLevel' => isset($vipInfos[$uin]) ? $vipInfos[$uin]['vip_level'] : 0,
                 ]);
                 $members[] = $member;

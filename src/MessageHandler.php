@@ -48,7 +48,7 @@ class MessageHandler
      * @var array
      */
     protected static $ignoredCodes = [
-        0, 100003, 100100, 100012
+        0, 100003, 100100, 100012,
     ];
 
     public function __construct(Client $client)
@@ -58,7 +58,7 @@ class MessageHandler
     }
 
     /**
-     * 绑定消息处理回调
+     * 绑定消息处理回调.
      *
      * ```php
      * $handler->onMessage(function(Slince\SmartQQ\Message\Response\Message $message){
@@ -73,13 +73,13 @@ class MessageHandler
         if (!is_callable($handler)) {
             throw new InvalidArgumentException('Message handler should be callable.');
         }
-        $this->eventDispatcher->addListener(static::EVENT_MESSAGE, function(Event $event) use ($handler){
+        $this->eventDispatcher->addListener(static::EVENT_MESSAGE, function (Event $event) use ($handler) {
             $handler($event->getArgument('message'));
         });
     }
 
     /**
-     * 开始监听客户端消息
+     * 开始监听客户端消息.
      */
     public function listen()
     {
@@ -89,7 +89,7 @@ class MessageHandler
                 foreach ($messages as $message) {
                     // 收到消息时触发事件
                     $event = new Event(static::EVENT_MESSAGE, null, [
-                        'message' => $message
+                        'message' => $message,
                     ]);
                     $this->eventDispatcher->dispatch($event);
                 }
@@ -123,7 +123,7 @@ class MessageHandler
     }
 
     /**
-     * 测试登录
+     * 测试登录.
      */
     protected function testLogin()
     {

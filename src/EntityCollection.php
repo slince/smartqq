@@ -18,13 +18,13 @@ class EntityCollection extends Collection
      * 根据实体属性筛选指定一个实体.
      *
      * @param string $attributeName
-     * @param mixed $attributeValue
+     * @param mixed  $attributeValue
      *
      * @return object|null
      */
     public function firstByAttribute($attributeName, $attributeValue)
     {
-        $callback = function($entity) use ($attributeName, $attributeValue) {
+        $callback = function ($entity) use ($attributeName, $attributeValue) {
             $method = 'get'.ucfirst($attributeName);
 
             return $entity->$method() == $attributeValue;

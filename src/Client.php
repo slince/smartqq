@@ -15,13 +15,11 @@ use GuzzleHttp\Psr7\Request as HttpRequest;
 use GuzzleHttp\Psr7\Response as HttpResponse;
 use Slince\EventDispatcher\Dispatcher;
 use Slince\EventDispatcher\DispatcherInterface;
-use Slince\SmartQQ\Entity;
 use Slince\SmartQQ\Exception\InvalidArgumentException;
 use Slince\SmartQQ\Message\Request\FriendMessage;
 use Slince\SmartQQ\Message\Request\GroupMessage;
 use Slince\SmartQQ\Message\Request\Message as RequestMessage;
 use Slince\SmartQQ\Message\Response\Message as ResponseMessage;
-use Slince\SmartQQ\Request;
 
 class Client
 {
@@ -30,7 +28,7 @@ class Client
      *
      * @var int
      */
-    static $clientId = 53999199;
+    public static $clientId = 53999199;
 
     /**
      * @var Credential
@@ -56,8 +54,7 @@ class Client
         Credential $credential = null,
         HttpClient $httpClient = null,
         DispatcherInterface $eventDispatcher = null
-    )
-    {
+    ) {
         if (!is_null($credential)) {
             $this->setCredential($credential);
         }
@@ -77,6 +74,7 @@ class Client
      * 开启登录流程自行获取凭证
      *
      * @param string|callable $callback 二维码图片位置|或者自定义处理器
+     *
      * @return Credential
      */
     public function login($callback)
@@ -84,7 +82,7 @@ class Client
         // 兼容二维码位置传参
         if (is_string($callback)) {
             /* @deprecated 后面会废除此用法，建议传闭包自己处理二维码 */
-            $callback = function ($qrcode) use($callback){
+            $callback = function ($qrcode) use ($callback) {
                 Utils::getFilesystem()->dumpFile($callback, $qrcode);
             };
         }
@@ -100,7 +98,6 @@ class Client
 
         return $credential;
     }
-
 
     /**
      * 设置凭据.
@@ -137,7 +134,8 @@ class Client
     }
 
     /**
-     * 获取 http 客户端
+     * 获取 http 客户端.
+     *
      * @return HttpClient
      */
     public function getHttpClient()
@@ -245,11 +243,12 @@ class Client
      * @param Entity\Friend $friend
      *
      * @return int
+     *
      * @deprecated 此接口 Smartqq 官方已经不再提供
      */
     public function getFriendQQ(Entity\Friend $friend)
     {
-        @trigger_error('The api is not supported now',E_USER_DEPRECATED);
+        @trigger_error('The api is not supported now', E_USER_DEPRECATED);
 
         $request = new Request\GetQQRequest($friend, $this->getCredential());
         $response = $this->sendRequest($request);
@@ -338,6 +337,7 @@ class Client
         if (null !== $this->messageHandler) {
             return $this->messageHandler;
         }
+
         return $this->messageHandler = new MessageHandler($this);
     }
 
@@ -362,12 +362,11 @@ class Client
         return Request\SendMessageRequest::parseResponse($response);
     }
 
-
     /**
      * 发送请求
      *
      * @param Request\RequestInterface $request
-     * @param array $options
+     * @param array                    $options
      *
      * @return HttpResponse
      */

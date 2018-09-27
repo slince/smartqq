@@ -168,7 +168,7 @@ class Request implements RequestInterface
      */
     protected function processUri($uri)
     {
-        return preg_replace_callback('#\{([a-zA-Z0-9_,]*)\}#i', function($matches) {
+        return preg_replace_callback('#\{([a-zA-Z0-9_,]*)\}#i', function ($matches) {
             return isset($this->tokens[$matches[1]]) ? $this->tokens[$matches[1]] : '';
         }, $uri);
     }

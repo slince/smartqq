@@ -49,19 +49,19 @@ class GetFriendsRequest extends Request
         //有时候获取好友接口retcode=100003时也可以获取数据，但数据不完整故当做无效返回
         if ($jsonData && 0 == $jsonData['retcode']) {
             //好友基本信息
-            $friendDatas = (new Collection($jsonData['result']['friends']))->combine('uin', function($entity) {
+            $friendDatas = (new Collection($jsonData['result']['friends']))->combine('uin', function ($entity) {
                 return $entity;
             })->toArray();
             //markNames
-            $markNames = (new Collection($jsonData['result']['marknames']))->combine('uin', function($entity) {
+            $markNames = (new Collection($jsonData['result']['marknames']))->combine('uin', function ($entity) {
                 return $entity;
             })->toArray();
             //分类
-            $categories = (new Collection($jsonData['result']['categories']))->combine('index', function($entity) {
+            $categories = (new Collection($jsonData['result']['categories']))->combine('index', function ($entity) {
                 return $entity;
             })->toArray();
             //vip信息
-            $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function($entity) {
+            $vipInfos = (new Collection($jsonData['result']['vipinfo']))->combine('u', function ($entity) {
                 return $entity;
             })->toArray();
             $friends = [];
@@ -73,7 +73,7 @@ class GetFriendsRequest extends Request
                     'face' => $friendData['face'],
                     'nick' => $friendData['nick'],
                     'markName' => isset($markNames[$uin]) ? $markNames[$uin]['markname'] : null,
-                    'isVip' => isset($vipInfos[$uin]) ? $vipInfos[$uin]['is_vip'] == 1 : false,
+                    'isVip' => isset($vipInfos[$uin]) ? 1 == $vipInfos[$uin]['is_vip'] : false,
                     'vipLevel' => isset($vipInfos[$uin]) ? $vipInfos[$uin]['vip_level'] : 0,
                 ];
                 $category = null;
@@ -82,7 +82,8 @@ class GetFriendsRequest extends Request
                     if (0 == $categoryIndex) {
                         $category = Category::createMyFriendCategory();
                     } else {
-                        $category = new Category($categories[$categoryIndex]['name'],
+                        $category = new Category(
+                            $categories[$categoryIndex]['name'],
                             $categories[$categoryIndex]['index'],
                             $categories[$categoryIndex]['sort']
                         );

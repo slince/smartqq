@@ -122,13 +122,14 @@ class PollMessagesRequest extends Request
     {
         //正文字体
         $fontParameters = $contents[0][1];
-        $font = new Font($fontParameters['name'],
+        $font = new Font(
+            $fontParameters['name'],
             $fontParameters['color'],
             $fontParameters['size'],
             $fontParameters['style']
         );
         unset($contents[0]);
-        $contentString = implode('', array_map(function($content){
+        $contentString = implode('', array_map(function ($content) {
             if ($content && is_array($content) && 'face' === $content[0]) { //处理表情
                 $faceText = Content::searchFaceText($content[1]);
 
