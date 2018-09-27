@@ -2,7 +2,6 @@
 
 namespace Slince\SmartQQ\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Slince\SmartQQ\EntityCollection;
 use Slince\SmartQQ\EntityFactory;
 
