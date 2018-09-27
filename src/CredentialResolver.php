@@ -34,6 +34,11 @@ class CredentialResolver
      */
     protected $certificationUrl;
 
+    /**
+     * @var callable
+     */
+    protected $callback;
+
     public function __construct(Client $client)
     {
         $this->client = $client;
@@ -42,17 +47,15 @@ class CredentialResolver
     /**
      * 获取授权凭据.
      *
-     * @param callable $qrCallback
+     * @param callable $callback
      * @return $this
      */
-    public function resolve($qrCallback)
+    public function resolve($callback)
     {
         // 重置cookie
         $this->cookies = new CookieJar();
-        //获取二维码资源
-        $response = $this->sendRequest(new Request\GetQrCodeRequest());
-        $qrCallback((string)$response->getBody());
-
+        $this->callback = $callback;
+        $this->createQRSource();
         return $this;
     }
 
@@ -78,6 +81,7 @@ class CredentialResolver
                 //授权成功跳出状态检查
                 break;
             } elseif (Request\VerifyQrCodeRequest::STATUS_EXPIRED == $status) {
+                $this->createQRSource();
                 //查找"qrsig"参数
                 $qrSign = $this->findQRSign();
                 //计算ptqrtoken
@@ -101,6 +105,13 @@ class CredentialResolver
         );
 
         return $credential;
+    }
+
+    protected function createQRSource()
+    {
+        //获取二维码资源
+        $response = $this->sendRequest(new Request\GetQrCodeRequest());
+        call_user_func($this->callback, (string)$response->getBody());
     }
 
     /**
