@@ -3,7 +3,6 @@
 namespace Slince\SmartQQ\Tests;
 
 use GuzzleHttp\Cookie\CookieJar;
-use PHPUnit\Framework\TestCase;
 use Slince\SmartQQ\Credential;
 
 class CredentialTest extends TestCase

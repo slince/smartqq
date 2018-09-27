@@ -26,7 +26,6 @@ composer require slince/smartqq
 $smartQQ = new Slince\SmartQQ\Client();
 
 $smartQQ->login(function($qrcode){ //$qrcode 是二维码字符串
-
     // 自定义逻辑
     @file_put_contents('/path/to/qrcode.png', $qrcode);
 });
@@ -184,7 +183,7 @@ $messages = $smartQQ->pollMessages();
 ```php
 $handler = $smartQQ->getMessageHandler();
 
-$handler->onMessage(function(Slince\SmartQQ\Message\Response\Message $message $message) use ($hander){
+$handler->onMessage(function(Slince\SmartQQ\Message\Response\Message $message) use ($hander){
     var_dump($message);
     $handler->stop(); //停止消息轮询
 });
