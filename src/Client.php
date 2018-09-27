@@ -82,17 +82,18 @@ class Client
      */
     public function login($qrCallback)
     {
-        $resolver = new CredentialResolver($this);
-
         // 兼容二维码位置传参
         if (is_string($qrCallback)) {
             $qrCallback = function ($qrcode) use($qrCallback){
-                file_put_contents($qrCallback, $qrcode);
+                Utils::getFilesystem()->dumpFile($qrCallback, $qrcode);
             };
         }
 
+        $resolver = new CredentialResolver($this);
         // 进行授权流程，确认授权
-        $credential = $resolver->resolve($qrCallback)->wait();
+        $resolver->resolve($qrCallback);
+        $credential = $resolver->wait();
+
         $this->setCredential($credential);
 
         //获取在线状态避免103

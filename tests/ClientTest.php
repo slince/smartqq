@@ -23,56 +23,6 @@ class ClientTest extends TestCase
         @unlink(static::getQrImagePath());
     }
 
-    /**
-     * 创建mock.
-     *
-     * @param $requestResponse
-     *
-     * @return Client
-     */
-    protected function getClientMock($requestResponse)
-    {
-        return $this->getMockBuilder(Client::class)->getMock()
-            ->method('sendRequest')
-            ->willReturn($requestResponse);
-    }
-
-    public function testLogin()
-    {
-        $client = $this->getMockBuilder(Client::class)
-            ->setMethods(['sendRequest', 'getCookies'])
-            ->getMock();
-
-        $forQrImageResponse = $this->createResponseFromFixture('qrcode.png');
-        $verifyStatusResponse = $this->createResponseFromFixture('verify_status_certified.txt');
-        $forPtWebQQResponse = new Response(200);
-        $forVfWebQQResponse = $this->createResponseFromFixture('get_vfwebqq.txt');
-        $forUinAndPSessionResponse = $this->createResponseFromFixture('get_uin_psession.txt');
-        $getOnlineStatusResponse = $this->createResponseFromFixture('get_friends_online_status.txt');
-        $cookies = Credential::fromArray($this->readFixtureFileJson('credential.json'))->getCookies();
-        $client->expects($this->any())
-            ->method('sendRequest')
-            ->will($this->onConsecutiveCalls(
-                $forQrImageResponse,
-                $verifyStatusResponse,
-                $forPtWebQQResponse,
-                $forVfWebQQResponse,
-                $forUinAndPSessionResponse,
-                $getOnlineStatusResponse
-            ));
-        $client->expects($this->any())
-            ->method('getCookies')
-            ->willReturn($cookies);
-
-        $credential = $client->login(static::getQrImagePath());
-        $this->assertEquals($credential, $client->getCredential());
-        $this->assertInstanceOf(Credential::class, $client->getCredential());
-        $this->assertNotEmpty($credential->getUin());
-        $this->assertNotEmpty($credential->getPtWebQQ());
-        $this->assertNotEmpty($credential->getVfWebQQ());
-        $this->assertNotEmpty($credential->getPSessionId());
-    }
-
     public function testGetCredential()
     {
         $client = new Client();
@@ -83,12 +33,12 @@ class ClientTest extends TestCase
     public function testCredential()
     {
         //test construct credential
-        $credential = Credential::fromArray($this->readFixtureFileJson('credential.json'));
+        $credential = Credential::fromArray(Utils::readFixtureFileJson('credential.json'));
         $client = new Client($credential);
         $this->assertTrue($credential === $client->getCredential());
 
         //test set credential
-        $credential2 = Credential::fromArray($this->readFixtureFileJson('credential.json'));
+        $credential2 = Credential::fromArray(Utils::readFixtureFileJson('credential.json'));
         $client->setCredential($credential2);
         $this->assertFalse($credential === $client->getCredential());
         $this->assertTrue($credential2 === $client->getCredential());
@@ -378,8 +328,8 @@ class ClientTest extends TestCase
      */
     protected function createClientMock($fixtureFilename)
     {
-        $credential = Credential::fromArray($this->readFixtureFileJson('credential.json'));
-        $response = $this->createResponseFromFixture($fixtureFilename);
+        $credential = Credential::fromArray(Utils::readFixtureFileJson('credential.json'));
+        $response = Utils::createResponseFromFixture($fixtureFilename);
 
         $client = $this->getMockBuilder(Client::class)
             ->setMethods(['sendRequest', 'getCredential'])
@@ -394,28 +344,6 @@ class ClientTest extends TestCase
             ->willReturn($credential);
 
         return $client;
-    }
-
-    protected function createResponseFromFixture($filename, $statusCode = 200, $headers = [])
-    {
-        return new Response($statusCode, $headers, $this->readFixtureFile($filename));
-    }
-
-    protected function readFixtureFile($filename)
-    {
-        $content = file_get_contents(__DIR__."/Fixtures/{$filename}");
-        if (false === $content) {
-            throw new \Exception(sprintf('Fixture [%s] does not exists', $filename));
-        }
-
-        return $content;
-    }
-
-    protected function readFixtureFileJson($filename)
-    {
-        $rawContent = $this->readFixtureFile($filename);
-
-        return \GuzzleHttp\json_decode($rawContent, true);
     }
 
     protected static function getQrImagePath()

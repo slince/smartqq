@@ -16,6 +16,12 @@ use Slince\SmartQQ\Exception\RuntimeException;
 
 class CredentialResolver
 {
+
+    /**
+     * @var Client
+     */
+    protected $client;
+
     /**
      * @var CookieJar
      */
@@ -27,11 +33,6 @@ class CredentialResolver
      * @var string
      */
     protected $certificationUrl;
-
-    /**
-     * @var Client
-     */
-    protected $client;
 
     public function __construct(Client $client)
     {
@@ -48,7 +49,6 @@ class CredentialResolver
     {
         // 重置cookie
         $this->cookies = new CookieJar();
-
         //获取二维码资源
         $response = $this->sendRequest(new Request\GetQrCodeRequest());
         $qrCallback((string)$response->getBody());
@@ -110,7 +110,7 @@ class CredentialResolver
      */
     protected function findQRSign()
     {
-        foreach ($this->cookies as $cookie) {
+        foreach ($this->getCookies() as $cookie) {
             if (0 === strcasecmp($cookie->getName(), 'qrsig')) {
                 return $cookie->getValue();
             }
@@ -128,7 +128,7 @@ class CredentialResolver
     protected function getQrCodeStatus($ptQrToken)
     {
         $request = new Request\VerifyQrCodeRequest($ptQrToken);
-        $response = $this->client->sendRequest($request);
+        $response = $this->sendRequest($request);
         if (false !== strpos($response->getBody(), '未失效')) {
             $status = Request\VerifyQrCodeRequest::STATUS_UNEXPIRED;
         } elseif (false !== strpos($response->getBody(), '已失效')) {
@@ -158,7 +158,7 @@ class CredentialResolver
         $request = new Request\GetPtWebQQRequest();
         $request->setUri($this->certificationUrl);
         $this->sendRequest($request);
-        foreach ($this->cookies as $cookie) {
+        foreach ($this->getCookies() as $cookie) {
             if (0 === strcasecmp($cookie->getName(), 'ptwebqq')) {
                 return $cookie->getValue();
             }
@@ -190,7 +190,7 @@ class CredentialResolver
     {
         $request = new Request\GetUinAndPsessionidRequest([
             'ptwebqq' => $ptWebQQ,
-            'clientid' => static::$clientId,
+            'clientid' => Client::$clientId,
             'psessionid' => '',
             'status' => 'online',
         ]);
@@ -204,5 +204,10 @@ class CredentialResolver
         return $this->client->sendRequest($request, [
             'cookies' => $this->cookies //使用当前cookies
         ]);
+    }
+
+    protected function getCookies()
+    {
+        return $this->cookies;
     }
 }
